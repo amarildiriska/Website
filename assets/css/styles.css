@@ -658,62 +658,28 @@ p {
     margin-bottom: 2rem;
 }
 
-.book-cover {
+.book-cover-container {
     position: relative;
-    width: 300px;
-    height: 400px;
-    margin: 0 auto;
-    perspective: 1000px;
-}
-
-.book-spine {
-    position: absolute;
-    left: -10px;
-    top: 0;
-    width: 20px;
-    height: 100%;
-    background: linear-gradient(to right, #4A4A4A, #6A6A6A);
-    border-radius: 4px 0 0 4px;
-}
-
-.book-front {
     width: 100%;
-    height: 100%;
-    background: var(--purple-gradient);
-    border-radius: 8px;
-    padding: 2rem;
+    max-width: 350px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    color: white;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    transform: rotateY(-5deg);
-    transition: transform 0.3s ease;
+    align-items: center;
+    gap: 2rem;
 }
 
-.book-front:hover {
-    transform: rotateY(0deg);
+.book-cover-image {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.book-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 1rem;
-}
-
-.book-subtitle h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    text-align: center;
-}
-
-.book-subtitle p {
-    font-size: 0.9rem;
-    opacity: 0.9;
-    text-align: center;
-    line-height: 1.5;
+.book-cover-image:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3);
 }
 
 .book-actions {
