@@ -1,4 +1,4 @@
-// Dashboard functionality for expense tracking
+// Dashboard functionality for expense tracking with database persistence
 
 document.addEventListener('DOMContentLoaded', function() {
     // Check if we're on the dashboard page
@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // Transaction storage
-    let transactions = JSON.parse(localStorage.getItem('riskas-transactions') || '[]');
+    // Transaction storage - will be loaded from API
+    let transactions = [];
 
     // DOM elements
     const expenseForm = document.getElementById('expense-form');
@@ -20,10 +20,66 @@ document.addEventListener('DOMContentLoaded', function() {
     const netBalanceEl = document.getElementById('net-balance');
     const printReportBtn = document.getElementById('print-report');
 
+    // API functions
+    async function loadTransactions() {
+        try {
+            const response = await fetch('/api/transactions');
+            if (!response.ok) {
+                throw new Error('Failed to load transactions');
+            }
+            transactions = await response.json();
+            renderTransactions();
+            updateSummary();
+        } catch (error) {
+            console.error('Error loading transactions:', error);
+            showError('Failed to load transactions from database');
+        }
+    }
+
+    async function createTransaction(transactionData) {
+        try {
+            const response = await fetch('/api/transactions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(transactionData)
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'Failed to create transaction');
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Error creating transaction:', error);
+            showError(error.message);
+            throw error;
+        }
+    }
+
+    async function deleteTransaction(id) {
+        try {
+            const response = await fetch(`/api/transactions/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete transaction');
+            }
+
+            return true;
+        } catch (error) {
+            console.error('Error deleting transaction:', error);
+            showError('Failed to delete transaction');
+            return false;
+        }
+    }
+
     // Initialize dashboard
-    function init() {
-        renderTransactions();
-        updateSummary();
+    async function init() {
+        await loadTransactions();
         
         // Add event listeners
         expenseForm.addEventListener('submit', handleFormSubmit);
@@ -31,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Handle form submission
-    function handleFormSubmit(e) {
+    async function handleFormSubmit(e) {
         e.preventDefault();
 
         const description = descriptionInput.value.trim();
@@ -49,31 +105,25 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Create transaction
-        const transaction = {
-            id: generateId(),
-            description,
-            amount,
-            type,
-            date: new Date().toISOString(),
-            displayDate: new Date().toLocaleDateString()
-        };
+        try {
+            // Create transaction via API
+            const newTransaction = await createTransaction({
+                description,
+                amount,
+                type
+            });
 
-        // Add to transactions array
-        transactions.unshift(transaction);
-        
-        // Save to localStorage
-        saveTransactions();
-        
-        // Update UI
-        renderTransactions();
-        updateSummary();
-        
-        // Reset form
-        expenseForm.reset();
-        
-        // Show success message
-        showSuccess('Transaction added successfully!');
+            // Reload transactions from database to get the updated list
+            await loadTransactions();
+            
+            // Reset form
+            expenseForm.reset();
+            
+            // Show success message
+            showSuccess('Transaction added successfully!');
+        } catch (error) {
+            // Error already handled in createTransaction function
+        }
     }
 
     // Generate unique ID
@@ -92,13 +142,13 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="transaction-item" data-id="${transaction.id}">
                 <div>
                     <div class="transaction-description">${escapeHtml(transaction.description)}</div>
-                    <div style="font-size: 0.8rem; opacity: 0.7;">${transaction.displayDate}</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7;">${formatDate(transaction.date)}</div>
                 </div>
                 <div style="display: flex; align-items: center;">
                     <span class="transaction-amount ${transaction.type}">
-                        ${transaction.type === 'income' ? '+' : '-'}${formatCurrency(Math.abs(transaction.amount))}
+                        ${transaction.type === 'income' ? '+' : '-'}${formatCurrency(Math.abs(parseFloat(transaction.amount)))}
                     </span>
-                    <button class="transaction-delete" onclick="deleteTransaction('${transaction.id}')" aria-label="Delete transaction">
+                    <button class="transaction-delete" onclick="deleteTransactionHandler(${transaction.id})" aria-label="Delete transaction">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14Z"/>
                             <path d="M10 11v6M14 11v6"/>
@@ -114,10 +164,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update summary statistics
     function updateSummary() {
         const totals = transactions.reduce((acc, transaction) => {
+            const amount = parseFloat(transaction.amount);
             if (transaction.type === 'income') {
-                acc.income += transaction.amount;
+                acc.income += amount;
             } else {
-                acc.expenses += transaction.amount;
+                acc.expenses += amount;
             }
             return acc;
         }, { income: 0, expenses: 0 });
@@ -138,20 +189,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Delete transaction
-    window.deleteTransaction = function(id) {
+    // Delete transaction handler
+    window.deleteTransactionHandler = async function(id) {
         if (confirm('Are you sure you want to delete this transaction?')) {
-            transactions = transactions.filter(t => t.id !== id);
-            saveTransactions();
-            renderTransactions();
-            updateSummary();
-            showSuccess('Transaction deleted successfully!');
+            const success = await deleteTransaction(id);
+            if (success) {
+                await loadTransactions();
+                showSuccess('Transaction deleted successfully!');
+            }
         }
     };
 
-    // Save transactions to localStorage
-    function saveTransactions() {
-        localStorage.setItem('riskas-transactions', JSON.stringify(transactions));
+    // Format date for display
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString();
     }
 
     // Format currency
