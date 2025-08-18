@@ -85,9 +85,10 @@ p {
     text-decoration: none;
 }
 
-.brand-icon {
-    width: 24px;
-    height: 24px;
+.brand-logo {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
 }
 
 .brand-text {
