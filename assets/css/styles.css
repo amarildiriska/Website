@@ -1288,3 +1288,60 @@ p {
         grid-template-columns: 1fr; /* Single column layout for core values */
     }
 }
+/* --- Added code for mobile responsiveness below --- */
+
+@media (max-width: 768px) {
+    /* Adjust container padding for smaller screens */
+    .container {
+        padding: 0 1rem;
+    }
+
+    /* Stack contact info and visual vertically */
+    .contact-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .contact-info,
+    .contact-visual {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Make images and SVGs responsive */
+    .contact-visual img,
+    .contact-visual svg {
+        width: 100%;
+        height: auto;
+    }
+
+    /* Adjust the rest of the page content */
+    .about-content,
+    .expertise-content,
+    .steps-layout,
+    .dashboard-layout {
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+    }
+
+    .about-text,
+    .about-image,
+    .expertise-image,
+    .expertise-list {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .about-image img,
+    .expertise-image img,
+    .expertise-image svg {
+        width: 100%;
+        height: auto;
+    }
+
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+}
