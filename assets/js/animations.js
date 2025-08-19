@@ -157,18 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let lastScrollTop = 0;
     const navbar = document.querySelector('.header');
     
-    window.addEventListener('scroll', () => {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        if (scrollTop > lastScrollTop && scrollTop > 100) {
-            // Scrolling down
-            navbar.style.transform = 'translateY(-100%)';
-        } else {
-            // Scrolling up
-            navbar.style.transform = 'translateY(0)';
-        }
-        
-        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    
     });
 
     // Add smooth scrolling for anchor links

@@ -125,10 +125,14 @@ p {
     left: 0;
     right: 0;
     z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transform: translateY(0);
-    transition: transform 0.3s ease-in-out;
-}
+    background-color: rgba(550, 550, 550, 0.1);
+    backdrop-filter: blur(100px);
+    -webkit-backdrop-filter: blur(100px);
+
+    border-bottom: 1px solid rgba(250, 250, 250, 0.3);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);  
+    }
+
 
 .nav {
     display: flex;
@@ -152,8 +156,8 @@ p {
 }
 
 .brand-logo {
-    width: 32px;
-    height: 32px;
+    width: 50px;
+    height: 50px;
     object-fit: contain;
 }
 
@@ -356,6 +360,18 @@ p {
     font-weight: 600;
 }
 
+. welcome-box {
+    background-color: #f2f2f2; /* light gray */
+    padding: 40px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.welcome-box .hero-cta-button {
+    margin-top: 20px;
+    display: inline-block;
+}
+
 /* Sections */
 .section-title {
     text-align: center;
@@ -406,7 +422,7 @@ p {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
     position: relative;
     overflow: hidden;
 }

@@ -9,6 +9,105 @@ document.addEventListener('DOMContentLoaded', function() {
     // Transaction storage - will be loaded from API
     let transactions = [];
 
+let transactions = [];
+
+// Save to localStorage
+function saveTransactions() {
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+}
+
+// Load from localStorage
+function loadTransactions() {
+    const stored = localStorage.getItem('transactions');
+    if (stored) {
+        transactions = JSON.parse(stored);
+        renderTransactions();
+        updateTotals();
+    }
+}
+
+// Show transactions on screen
+function renderTransactions() {
+    const list = document.getElementById('transactions-list');
+    list.innerHTML = "";
+    transactions.forEach((t, index) => {
+        const div = document.createElement('div');
+        div.classList.add('transaction-item');
+        div.innerHTML = `
+            <span>${t.description}</span>
+            <span>${t.type === "income" ? "+" : "-"}$${t.amount}</span>
+            <button onclick="deleteTransaction(${index})">X</button>
+        `;
+        list.appendChild(div);
+    });
+}
+
+// Update totals
+function updateTotals() {
+    let income = 0, expense = 0;
+    transactions.forEach(t => {
+        if (t.type === "income") income += t.amount;
+        else expense += t.amount;
+    });
+    document.getElementById('total-income').textContent = "$" + income.toFixed(2);
+    document.getElementById('total-expenses').textContent = "$" + expense.toFixed(2);
+    document.getElementById('net-balance').textContent = "$" + (income - expense).toFixed(2);
+}
+
+// Handle form submission
+document.getElementById('expense-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const description = document.getElementById('description').value.trim();
+    const amount = parseFloat(document.getElementById('amount').value);
+    const type = document.getElementById('type').value;
+
+    if (!description || isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid description and amount.");
+        return;
+    }
+
+    const transaction = { description, amount, type };
+    transactions.push(transaction);
+    saveTransactions();
+    renderTransactions();
+    updateTotals();
+
+    // Clear form
+    document.getElementById('expense-form').reset();
+});
+
+}
+
+// Delete
+function deleteTransaction(index) {
+    transactions.splice(index, 1);
+    saveTransactions();
+    renderTransactions();
+    updateTotals();
+}
+
+// Form submit
+document.getElementById('expense-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const description = document.getElementById('description').value;
+    const amount = parseFloat(document.getElementById('amount').value);
+    const type = document.getElementById('type').value;
+
+    transactions.push({ description, amount, type });
+
+    saveTransactions();
+    renderTransactions();
+    updateTotals();
+
+    this.reset();
+});
+
+// Load when page opens
+loadTransactions();
+
+
     // DOM elements
     const expenseForm = document.getElementById('expense-form');
     const descriptionInput = document.getElementById('description');

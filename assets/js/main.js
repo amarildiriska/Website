@@ -66,11 +66,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (header) {
         window.addEventListener('scroll', function() {
             if (window.scrollY > 100) {
-                header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-                header.style.backdropFilter = 'blur(10px)';
+                header.style.backgroundColor = 'rgba(255,255,255, 0.15)';
+                header.style.backdropFilter = 'blur(20px)';
             } else {
-                header.style.backgroundColor = '#ffffff';
-                header.style.backdropFilter = 'none';
+                header.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                header.style.backdropFilter = 'blur(20px) saturate(180%)';
             }
         });
     }
