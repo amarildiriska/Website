@@ -1249,3 +1249,42 @@ p {
         color: black !important;
     }
 }
+/* --- Added code for mobile responsiveness below --- */
+
+/* Media query for screens up to 768px wide */
+@media (max-width: 768px) {
+    /* Adjust container padding for smaller screens */
+    .container {
+        padding: 0 1rem;
+    }
+
+    /* Simplify the main layouts by stacking elements vertically */
+    .about-content,
+    .expertise-content {
+        display: flex; /* Use flexbox for easier control */
+        flex-direction: column; /* Stack items vertically */
+        gap: 2rem; /* Reduce gap for smaller screens */
+        align-items: center; /* Center items for a cleaner look */
+    }
+
+    .about-text,
+    .about-image,
+    .expertise-image,
+    .expertise-list {
+        width: 100%; /* Ensure elements take full width */
+        max-width: 100%; /* Ensure elements don't overflow */
+    }
+
+    /* Make images and SVGs responsive */
+    .about-image img,
+    .expertise-image img,
+    .expertise-image svg {
+        width: 100%; /* Image fills its container */
+        height: auto; /* Maintain aspect ratio */
+    }
+
+    /* Adjust grid layouts to a single column */
+    .values-grid {
+        grid-template-columns: 1fr; /* Single column layout for core values */
+    }
+}
