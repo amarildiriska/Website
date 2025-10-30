@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>File Your Taxes | Riska's Finance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1f2937; /* gray-800 */
+      --muted: #6b7280; /* gray-500 */
+      --brand: #ff6a3d; /* soft orange like your CTA */
+      --brand-600: #ff5a22;
+      --line: #e5e7eb; /* gray-200 */
+      --card: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin:0; padding:0; font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:var(--text); background:var(--bg); }
+    .container { width: min(1100px, 92vw); margin: 0 auto; }
+    .header-bar { position: sticky; top: 0; z-index: 40; backdrop-filter: blur(8px); background: rgba(255,255,255,.8); border-bottom:1px solid var(--line); }
+    .header-inner { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 0; }
+    .brand { display:flex; align-items:center; gap:10px; font-weight:600; }
+    .brand img { height:24px; width:24px; }
+    nav a { text-decoration:none; color:var(--muted); font-weight:500; margin-left:18px; }
+    nav a.active, nav a:hover { color:var(--text); }
+
+    .hero { position:relative; padding: clamp(36px, 5vw, 64px) 0 18px; display:grid; grid-template-columns: 1.2fr .8fr; gap:28px; align-items:center; }
+    .hero h1 { font-size: clamp(28px, 3.6vw, 44px); line-height:1.1; margin:0 0 12px; }
+    .hero p { color:var(--muted); margin:0 0 18px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px; box-shadow: 0 6px 18px rgba(0,0,0,.04); }
+    .badge { display:inline-flex; align-items:center; gap:8px; background:#f9fafb; color:#374151; border:1px solid var(--line); padding:6px 10px; border-radius:999px; font-size:12px; font-weight:600; }
+    .steps { display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin:22px 0 8px; }
+    .step { border:1px dashed var(--line); border-radius:14px; padding:14px; }
+    .step h4 { margin:0 0 6px; font-size:14px; }
+    .step p { margin:0; color:var(--muted); font-size:13px; }
+
+    form { display:grid; gap:18px; }
+    fieldset { border:1px solid var(--line); border-radius:14px; padding:18px; }
+    legend { padding:0 8px; font-weight:600; color:#111827; }
+
+    .grid-2 { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:14px; }
+    .grid-3 { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:14px; }
+    .input { display:flex; flex-direction:column; gap:6px; }
+    label { font-size:14px; font-weight:600; color:#111827; }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="number"], select, textarea { width:100%; border:1px solid var(--line); border-radius:10px; padding:12px; font-size:14px; background:#fff; }
+    textarea { min-height:110px; resize:vertical; }
+    .hint { font-size:12px; color:var(--muted); }
+
+    .checkbox-row { display:flex; flex-wrap:wrap; gap:10px 16px; }
+    .checkbox-row label { font-weight:500; color:var(--text); }
+
+    .btn { appearance:none; border:none; border-radius:12px; padding:12px 16px; font-weight:700; cursor:pointer; }
+    .btn-primary { background:var(--brand); color:#fff; }
+    .btn-primary:hover { background:var(--brand-600); }
+    .btn-outline { background:#fff; border:1px solid var(--line); }
+
+    .footer-note { color:var(--muted); font-size:13px; }
+
+    /* Responsive */
+    @media (max-width: 940px) {
+      .hero { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+
+  <!-- Uploadcare widget (secure file uploads without your own backend). Replace public key below. -->
+  <script>
+    // If you don't plan to use Uploadcare, remove the script and file input with role="uploadcare-uploader" below.
+  </script>
+  <script>
+    // Basic mode toggle for Individual vs Business sections
+    function toggleBusinessFields() {
+      const type = document.querySelector('input[name="filing_type"]:checked')?.value;
+      const biz = document.getElementById('business-fields');
+      biz.style.display = (type === 'business') ? 'block' : 'none';
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('input[name="filing_type"]').forEach(r => r.addEventListener('change', toggleBusinessFields));
+      toggleBusinessFields();
+
+      // Simple success state on submit for Formspree-style action
+      const form = document.getElementById('tax-intake-form');
+      form.addEventListener('submit', function(e){
+        // Allow normal submit; also swap button text
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = true; btn.textContent = 'Sending...';
+      });
+    });
+  </script>
+</head>
+<body>
+  <!-- Optional top bar to match your site nav -->
+  <header class="header-bar">
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="assets/img/logo-mark.png" alt="Riska's Finance" />
+        <span>Riska's Finance</span>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="steps.html">Steps to Financial Success</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a class="active" href="#">File Taxes</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <span class="badge">Secure • Private • Easy</span>
+        <h1>File Your Taxes with Riska's Finance</h1>
+        <p>Use this secure intake to start your individual or business tax return. You'll upload documents, answer a few questions, and we’ll follow up to finish your filing.</p>
+        <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
+          <a class="btn btn-primary" href="#start">Start Now</a>
+          <a class="btn btn-outline" href="https://calendly.com/" target="_blank" rel="noopener">Schedule a Call</a>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <h4>1) Intake</h4>
+            <p>Tell us about you and your tax situation.</p>
+          </div>
+          <div class="step">
+            <h4>2) Upload</h4>
+            <p>Securely send W‑2s, 1099s, receipts and more.</p>
+          </div>
+          <div class="step">
+            <h4>3) File</h4>
+            <p>We review with you, then e‑file with the IRS and state.</p>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 8px;">Need help?</h3>
+        <p class="hint" style="margin-top:0">Email <a href="mailto:hello@riskasfinance.com">hello@riskasfinance.com</a> or call (xxx) xxx‑xxxx. Average response time: same business day.</p>
+        <ul style="margin:10px 0 0; padding-left:18px; color:var(--muted);">
+          <li>Bank‑level encryption on submissions</li>
+          <li>No sharing of your data without consent</li>
+          <li>Document retention per IRS Circular 230</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="start" style="margin: 16px 0 60px;">
+      <form id="tax-intake-form" class="card" method="POST" action="https://formspree.io/f/yourFormID">
+        <!-- Replace action with your Formspree endpoint or another form handler. -->
+        
+        <fieldset>
+          <legend>Contact Information</legend>
+          <div class="grid-3">
+            <div class="input">
+              <label for="first_name">First Name</label>
+              <input id="first_name" name="first_name" type="text" required />
+            </div>
+            <div class="input">
+              <label for="last_name">Last Name</label>
+              <input id="last_name" name="last_name" type="text" required />
+            </div>
+            <div class="input">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required />
+            </div>
+            <div class="input">
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" placeholder="(555) 555‑5555" />
+            </div>
+            <div class="input">
+              <label for="city">City</label>
+              <input id="city" name="city" type="text" />
+            </div>
+            <div class="input">
+              <label for="state">State</label>
+              <input id="state" name="state" type="text" />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Filing Type</legend>
+          <div class="checkbox-row">
+            <label><input type="radio" name="filing_type" value="individual" checked /> Individual</label>
+            <label><input type="radio" name="filing_type" value="business" /> Business (LLC, S‑Corp, C‑Corp, Partnership)</label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Tax Year</legend>
+          <div class="grid-3">
+            <div class="input">
+              <label for="tax_year">Which year are you filing?</label>
+              <select id="tax_year" name="tax_year" required>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="prior">Prior Years (enter details below)</option>
+              </select>
+            </div>
+            <div class="input">
+              <label for="deadline">Do you have a deadline?</label>
+              <input id="deadline" name="deadline" type="date" />
+              <span class="hint">If you received a notice or have an extension.</span>
+            </div>
+            <div class="input">
+              <label for="promo">How did you hear about us?</label>
+              <input id="promo" name="promo" type="text" placeholder="Referral, Google, Facebook, etc." />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Your Situation</legend>
+          <div class="grid-2">
+            <div class="input">
+              <label for="status">Filing Status</label>
+              <select id="status" name="status">
+                <option>Single</option>
+                <option>Married filing jointly</option>
+                <option>Married filing separately</option>
+                <option>Head of household</option>
+                <option>Qualifying surviving spouse</option>
+              </select>
+            </div>
+            <div class="input">
+              <label for="dependents">Number of Dependents</label>
+              <input id="dependents" name="dependents" type="number" min="0" step="1" value="0" />
+            </div>
+          </div>
+
+          <div class="input">
+            <label>Income Forms you expect to include</label>
+            <div class="checkbox-row">
+              <label><input type="checkbox" name="forms" value="W-2" /> W‑2</label>
+              <label><input type="checkbox" name="forms" value="1099-NEC" /> 1099‑NEC</label>
+              <label><input type="checkbox" name="forms" value="1099-MISC" /> 1099‑MISC</label>
+              <label><input type="checkbox" name="forms" value="1099-INT" /> 1099‑INT</label>
+              <label><input type="checkbox" name="forms" value="1099-DIV" /> 1099‑DIV</label>
+              <label><input type="checkbox" name="forms" value="1099-B" /> 1099‑B</label>
+              <label><input type="checkbox" name="forms" value="K-1" /> K‑1</label>
+              <label><input type="checkbox" name="forms" value="Rental" /> Rental</label>
+              <label><input type="checkbox" name="forms" value="Crypto" /> Crypto</label>
+              <label><input type="checkbox" name="forms" value="Other" /> Other</label>
+            </div>
+          </div>
+
+          <div id="business-fields" style="display:none; margin-top:10px;">
+            <div class="grid-2">
+              <div class="input">
+                <label for="biz_name">Business Name</label>
+                <input id="biz_name" name="biz_name" type="text" />
+              </div>
+              <div class="input">
+                <label for="ein">EIN (if any)</label>
+                <input id="ein" name="ein" type="text" />
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="input">
+                <label for="entity">Entity Type</label>
+                <select id="entity" name="entity">
+                  <option value="LLC">LLC</option>
+                  <option value="S-Corp">S‑Corp</option>
+                  <option value="C-Corp">C‑Corp</option>
+                  <option value="Partnership">Partnership</option>
+                  <option value="Sole Prop">Sole Prop</option>
+                </select>
+              </div>
+              <div class="input">
+                <label for="bookkeeping">Do you use QuickBooks?</label>
+                <select id="bookkeeping" name="bookkeeping">
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Upload Documents</legend>
+          <p class="hint">You can upload multiple files (PDF, JPG, PNG, DOCX). If you don't have everything now, submit what you have—more can be added later.</p>
+          <!-- Option A: Uploadcare widget returns secure links inside the form field below -->
+          <div class="input">
+            <label for="docs">Select or drag files</label>
+            <input id="docs" name="docs" type="file" multiple />
+            <span class="hint">For true secure hosting without your own server, consider Uploadcare/Filestack/Jotform. Replace this with your preferred uploader.</span>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Notes for Your Preparer</legend>
+          <div class="input">
+            <label for="notes">Anything else we should know?</label>
+            <textarea id="notes" name="notes" placeholder="New address? IRS notice? Major life events?"></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Consent & Signature</legend>
+          <div class="checkbox-row" style="margin-bottom:10px;">
+            <label><input type="checkbox" required name="consent" /> I agree to the Riska’s Finance engagement terms and privacy policy, and authorize electronic communication.</label>
+          </div>
+          <div class="grid-2">
+            <div class="input">
+              <label for="signature">Type your full name (acts as e‑signature)</label>
+              <input id="signature" name="signature" type="text" required />
+            </div>
+            <div class="input">
+              <label for="sig_date">Date</label>
+              <input id="sig_date" name="sig_date" type="date" required />
+            </div>
+          </div>
+          <p class="footer-note">By submitting, you authorize us to review your documents and contact you with next steps and pricing before filing anything. We will not e‑file without your explicit approval.</p>
+        </fieldset>
+
+        <div style="display:flex; gap:12px; align-items:center; justify-content:flex-start;">
+          <button id="submit-btn" class="btn btn-primary" type="submit">Submit Intake</button>
+          <a class="btn btn-outline" href="https://calendly.com/" target="_blank" rel="noopener">Book a Review Call</a>
+        </div>
+        <p class="hint" style="margin-top:8px;">After you submit, you’ll receive a confirmation email with a copy of your answers.</p>
+      </form>
+    </section>
+
+    <section class="card" style="margin-bottom:60px;">
+      <h3 style="margin-top:0;">What happens after I submit?</h3>
+      <ol style="margin:8px 0 0; padding-left:18px;">
+        <li>We review your intake and documents.</li>
+        <li>We email you a quote and list of anything missing.</li>
+        <li>We prepare your returns and meet with you to review.</li>
+        <li>You sign the e‑file authorization (Form 8879) and we file.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer style="border-top:1px solid var(--line); padding:24px 0;">
+    <div class="container" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px;">
+      <p class="footer-note">© <span id="yr"></span> Riska's Finance • All rights reserved</p>
+      <p class="footer-note"><a href="#">Engagement Terms</a> • <a href="#">Privacy Policy</a></p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
