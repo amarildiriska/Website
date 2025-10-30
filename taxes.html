@@ -1,82 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.80">
+  <meta charset="UTF-8" />
+  <!-- Mobile-first viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>File Your Taxes | Riska's Finance</title>
 
-  <!-- Site styles & fonts (matches your index.html setup) -->
+  <!-- Your site styles & fonts -->
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
+    /* ====== Design tokens ====== */
     :root{
-      --bg:#ffffff;--text:#1f2937;--muted:#6b7280;--brand:#ff6a3d;--brand-600:#ff5a22;--line:#e5e7eb;--card:#ffffff;
+      --bg:#ffffff;
+      --text:#111827;           /* gray-900 */
+      --muted:#6b7280;          /* gray-500 */
+      --line:#e5e7eb;           /* gray-200 */
+      --brand:#ff6a3d;          /* CTA orange */
+      --brand-600:#ff5a22;
+      --surface:#ffffff;
+      --shadow:0 8px 24px rgba(0,0,0,.06);
+      --radius:14px;
+      --radius-lg:18px;
+      --space: clamp(16px, 3vw, 28px);
+      --container: min(980px, 92vw);
     }
+
+    /* ====== Base ====== */
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:var(--bg)}
-    .container{width:min(1100px,92vw);margin:0 auto}
-    /* Top nav wrapper (compatible with your index structure) */
-    .header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
-    .nav-brand{display:flex;align-items:center;gap:10px;font-weight:600}
-    .brand-logo{height:24px;width:auto}
-    .nav-menu{display:flex;list-style:none;margin:0;padding:0;gap:14px;flex-wrap:wrap}
-    .nav-link{display:inline-block;text-decoration:none;color:var(--muted);font-weight:500;padding:8px 10px;border-radius:10px}
-    .nav-link:hover,.nav-link.active{color:#111827}
-    .nav-link.cta{background:var(--brand);color:#fff;font-weight:700}
-    .nav-toggle{display:none}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:var(--bg);
+      line-height:1.5;
+    }
+    img{max-width:100%;display:block}
 
-    /* Hero */
-    .hero{padding: clamp(36px,5vw,64px) 0 18px;background: url('attached_assets/backround.png') no-repeat center/cover;color:#fff;position:relative}
-    .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.35));}
-    .hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center}
-    .hero h1{margin:0 0 10px;font-size: clamp(28px,3.6vw,44px);line-height:1.1}
-    .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700}
-    .hero-ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .btn{appearance:none;border:none;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;text-decoration:none}
-    .btn-primary{background:var(--brand);color:#fff}
+    .container{width:var(--container);margin-inline:auto}
+
+    /* ====== Header / Nav (mobile-friendly) ====== */
+    .header{
+      position:sticky; top:0; z-index:40;
+      background:rgba(255,255,255,.9);
+      backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--line);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:12px 0;
+      width:var(--container); margin-inline:auto;
+    }
+    .nav-brand{display:flex; align-items:center; gap:10px; font-weight:700}
+    .brand-logo{height:28px;width:auto}
+    .nav-menu{display:flex; align-items:center; gap:10px; list-style:none; margin:0; padding:0}
+    .nav-link{
+      display:inline-block; text-decoration:none; color:var(--muted);
+      font-weight:600; padding:10px 12px; border-radius:10px;
+    }
+    .nav-link:hover, .nav-link.active{color:var(--text)}
+    .nav-link.cta{background:var(--brand); color:#fff}
+
+    /* Small screens: collapse menu to a single row that wraps nicely */
+    @media (max-width: 640px){
+      .nav{flex-wrap:wrap}
+      .nav-menu{width:100%; justify-content:flex-start; gap:8px}
+      .nav-link{padding:8px 10px}
+      .nav-link.cta{margin-left:auto}
+    }
+
+    /* ====== Hero ====== */
+    .hero{
+      position:relative;
+      color:#fff;
+      background:url('attached_assets/backround.png') center/cover no-repeat;
+    }
+    .hero::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.45),rgba(0,0,0,.45))}
+    .hero-inner{
+      position:relative; z-index:1;
+      padding: clamp(28px, 6vw, 64px) 0;
+      display:grid; gap:var(--space);
+      grid-template-columns: 1.1fr .9fr;
+      align-items:center;
+      width:var(--container); margin-inline:auto;
+    }
+    .hero h1{margin:0 0 8px; font-size: clamp(26px, 4.4vw, 42px); line-height:1.1}
+    .hero p{margin:0; color:#e5e7eb; max-width:60ch}
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px; font-size:12px; font-weight:800;
+      color:#fff; border:1px solid rgba(255,255,255,.55);
+      border-radius:999px; background:rgba(255,255,255,.12);
+      margin-bottom:8px;
+    }
+    .hero-ctas{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    .btn{appearance:none; border:none; border-radius:12px; padding:12px 16px; font-weight:800; cursor:pointer; text-decoration:none}
+    .btn-primary{background:var(--brand); color:#fff}
     .btn-primary:hover{background:var(--brand-600)}
-    .btn-outline{background:transparent;border:1px solid rgba(255,255,255,.7);color:#fff}
+    .btn-outline{background:transparent; border:1px solid rgba(255,255,255,.7); color:#fff}
 
-    /* Cards & steps */
-    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 6px 18px rgba(0,0,0,.04)}
-    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0 0}
-    .step{border:1px dashed var(--line);border-radius:14px;padding:14px;background:#fff;color:var(--text)}
-    .step h4{margin:0 0 6px;font-size:14px}
-    .step p{margin:0;color:var(--muted);font-size:13px}
+    @media (max-width: 900px){ .hero-inner{grid-template-columns:1fr} }
 
-    /* Form */
-    form{display:grid;gap:18px}
-    fieldset{border:1px solid var(--line);border-radius:14px;padding:18px}
-    legend{padding:0 8px;font-weight:700;color:#111827}
-    .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-    .grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-    .input{display:flex;flex-direction:column;gap:6px}
-    label{font-size:14px;font-weight:600;color:#111827}
-    input[type="text"],input[type="email"],input[type="tel"],input[type="date"],input[type="number"],select,textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px;font-size:14px;background:#fff}
-    textarea{min-height:110px;resize:vertical}
-    .checkbox-row{display:flex;flex-wrap:wrap;gap:10px 16px}
-    .hint{font-size:12px;color:var(--muted)}
-    .footer-note{color:var(--muted);font-size:13px}
+    /* ====== Cards / Sections ====== */
+    .card{
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:var(--radius-lg);
+      padding:clamp(16px,2.8vw,22px);
+      box-shadow:var(--shadow);
+    }
 
-    /* Responsive */
-    @media (max-width: 940px){.hero-inner{grid-template-columns:1fr}}
-    @media (max-width: 720px){.grid-2,.grid-3{grid-template-columns:1fr}}
+    .steps{
+      display:grid; gap:12px; margin-top:12px;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+    }
+    .step{border:1px dashed var(--line); border-radius:var(--radius); padding:12px; background:#fff; color:var(--text)}
+    .step h4{margin:0 0 4px; font-size:14px}
+    .step p{margin:0; color:var(--muted); font-size:13px}
+
+    /* ====== Form ====== */
+    form{display:grid; gap:16px}
+    fieldset{
+      border:1px solid var(--line); border-radius:var(--radius);
+      padding:16px; margin:0;
+    }
+    legend{padding:0 8px; font-weight:800; color:#111827}
+    .grid-2{display:grid; gap:12px; grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid-3{display:grid; gap:12px; grid-template-columns:repeat(3,minmax(0,1fr))}
+    .input{display:flex; flex-direction:column; gap:6px}
+    label{font-size:14px; font-weight:700; color:#111827}
+    input[type="text"],input[type="email"],input[type="tel"],input[type="date"],input[type="number"],select,textarea{
+      width:100%; border:1px solid var(--line); border-radius:10px; padding:12px; font-size:14px; background:#fff;
+    }
+    textarea{min-height:110px; resize:vertical}
+    .checkbox-row{display:flex; flex-wrap:wrap; gap:10px 16px}
+    .hint{font-size:12px; color:var(--muted)}
+    .foot-note{color:var(--muted); font-size:13px}
+
+    /* Mobile stack for inputs/grids */
+    @media (max-width: 780px){
+      .grid-2, .grid-3{grid-template-columns:1fr}
+    }
+
+    /* ====== Footer ====== */
+    .site-footer{border-top:1px solid var(--line); padding:20px 0; color:var(--muted)}
+    .footer-row{display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; width:var(--container); margin-inline:auto}
   </style>
 
   <script>
-    // Show/hide business fields
+    // Toggle business fields visibility
     function toggleBusinessFields(){
       const type = document.querySelector('input[name="filing_type"]:checked')?.value;
       const biz = document.getElementById('business-fields');
-      biz.style.display = (type === 'business') ? 'block' : 'none';
+      if (biz) biz.style.display = (type === 'business') ? 'block' : 'none';
     }
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('input[name="filing_type"]').forEach(r => r.addEventListener('change', toggleBusinessFields));
       toggleBusinessFields();
+
+      // Submit UX
       const form = document.getElementById('tax-intake-form');
       form.addEventListener('submit', () => {
         const btn = document.getElementById('submit-btn');
@@ -87,115 +172,109 @@
 </head>
 <body>
 
-  <!-- Navigation Header -->
-    <header class="header">
-        <nav class="nav">
-            <div class="nav-brand">
-                <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo">
-                <span class="brand-text">Riska's Finance</span>
-            </div>
-            <ul class="nav-menu" id="nav-menu">
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link active">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="about.html" class="nav-link">About Us</a>
-                </li>
-                <li class="nav-item">
-                    <a href="contact.html" class="nav-link">Contact</a>
-                </li>
-                <li class="nav-item">
-                    <a href="steps.html" class="nav-link">Steps to Financial Success</a>
-                </li>
-                <li class="nav-item">
-                    <a href="dashboard.html" class="nav-link">Dashboard</a>
-                </li>
-				<li class="nav-item">
-                    <a href="taxes.html" class="nav-link">File Taxes</a>
-			</ul>
-            <button class="nav-toggle" id="nav-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </nav>
-    </header>
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container hero-inner">
+  <!-- ====== Header / Navigation ====== -->
+  <header class="header">
+    <nav class="nav">
+      <div class="nav-brand">
+        <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo" />
+        <span>Riska's Finance</span>
+      </div>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+        <li><a href="steps.html" class="nav-link">Steps to Financial Success</a></li>
+        <li><a href="taxes.html" class="nav-link active cta">File Taxes</a></li>
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+      </ul>
+      <!-- (Optional) mobile hamburger if you add JS later -->
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu" hidden>
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ====== Hero ====== -->
+  <section class="hero" aria-label="Start filing your taxes">
+    <div class="hero-inner">
       <div>
         <span class="badge">Secure • Private • Easy</span>
         <h1>File Your Taxes with Riska's Finance</h1>
-        <p style="margin:0;color:#e5e7eb;max-width:52ch">
-          Start your individual or business tax return in minutes. Upload documents, answer a few quick questions, and we’ll follow up to finish your filing.
-        </p>
+        <p>Start your individual or business return in minutes. Upload your documents, answer a few questions, and we’ll follow up to finish your filing.</p>
         <div class="hero-ctas">
           <a class="btn btn-primary" href="#start">Start Now</a>
           <a class="btn btn-outline" href="https://calendly.com/riskas-finances" target="_blank" rel="noopener">Schedule a Call</a>
         </div>
+
         <div class="steps">
           <div class="step"><h4>1) Intake</h4><p>Tell us about you and your tax situation.</p></div>
           <div class="step"><h4>2) Upload</h4><p>Securely send W-2s, 1099s, receipts and more.</p></div>
-          <div class="step"><h4>3) File</h4><p>We review with you, then e-file with the IRS and state.</p></div>
+          <div class="step"><h4>3) File</h4><p>We review together and e-file your return(s).</p></div>
         </div>
       </div>
+
       <div class="card" style="background:#ffffffd9">
-        <h3 style="margin:0 0 8px;">Questions?</h3>
+        <h3 style="margin:0 0 6px;">Questions?</h3>
         <p class="hint" style="margin:0">
           Email <a href="mailto:Riskas.finances@gmail.com">Riskas.finances@gmail.com</a> or call +1 (815) 677-5807.
         </p>
-        <ul style="margin:10px 0 0;padding-left:18px;color:var(--muted)">
+        <ul style="margin:10px 0 0; padding-left:18px; color:var(--muted)">
           <li>Bank-level encryption on submissions</li>
           <li>No sharing of your data without consent</li>
-          <li>Document retention per IRS Circular 230</li>
+          <li>Document retention aligned with IRS Circular 230</li>
         </ul>
       </div>
     </div>
   </section>
 
-  <main class="container" style="margin:16px auto 60px;">
-    <!-- Intake Form -->
-    <section id="start">
-      <form id="tax-intake-form" class="card" method="POST" action="https://formspree.io/f/yourFormID" enctype="multipart/form-data">
-        <!-- Replace action with your form endpoint -->
+  <!-- ====== Main ====== -->
+  <main class="container" style="margin:16px auto 56px;">
+    <section id="start" class="card" aria-labelledby="intake-title">
+      <h2 id="intake-title" style="margin:0 0 8px;">Secure Intake Form</h2>
+      <p class="hint" style="margin:0 0 10px;">It’s okay if you don’t have every document—submit what you have and we’ll help you with the rest.</p>
+
+      <form id="tax-intake-form" method="POST" action="https://formspree.io/f/yourFormID" enctype="multipart/form-data">
+        <!-- Contact -->
         <fieldset>
           <legend>Contact Information</legend>
           <div class="grid-3">
             <div class="input">
               <label for="first_name">First Name</label>
-              <input id="first_name" name="first_name" type="text" required>
+              <input id="first_name" name="first_name" type="text" required />
             </div>
             <div class="input">
               <label for="last_name">Last Name</label>
-              <input id="last_name" name="last_name" type="text" required>
+              <input id="last_name" name="last_name" type="text" required />
             </div>
             <div class="input">
               <label for="email">Email</label>
-              <input id="email" name="email" type="email" required>
+              <input id="email" name="email" type="email" required />
             </div>
             <div class="input">
               <label for="phone">Phone</label>
-              <input id="phone" name="phone" type="tel" placeholder="(555) 555-5555">
+              <input id="phone" name="phone" type="tel" placeholder="(555) 555-5555" />
             </div>
             <div class="input">
               <label for="city">City</label>
-              <input id="city" name="city" type="text">
+              <input id="city" name="city" type="text" />
             </div>
             <div class="input">
               <label for="state">State</label>
-              <input id="state" name="state" type="text">
+              <input id="state" name="state" type="text" />
             </div>
           </div>
         </fieldset>
 
+        <!-- Filing Type -->
         <fieldset>
           <legend>Filing Type</legend>
           <div class="checkbox-row">
-            <label><input type="radio" name="filing_type" value="individual" checked> Individual</label>
-            <label><input type="radio" name="filing_type" value="business"> Business (LLC, S-Corp, C-Corp, Partnership)</label>
+            <label><input type="radio" name="filing_type" value="individual" checked /> Individual</label>
+            <label><input type="radio" name="filing_type" value="business" /> Business (LLC, S-Corp, C-Corp, Partnership)</label>
           </div>
         </fieldset>
 
+        <!-- Tax Year -->
         <fieldset>
           <legend>Tax Year</legend>
           <div class="grid-3">
@@ -205,21 +284,22 @@
                 <option value="2024">2024</option>
                 <option value="2023">2023</option>
                 <option value="2022">2022</option>
-                <option value="prior">Prior Years (enter details below)</option>
+                <option value="prior">Prior year(s)</option>
               </select>
             </div>
             <div class="input">
-              <label for="deadline">Do you have a deadline?</label>
-              <input id="deadline" name="deadline" type="date">
-              <span class="hint">If you received a notice or have an extension.</span>
+              <label for="deadline">Deadline (if any)</label>
+              <input id="deadline" name="deadline" type="date" />
+              <span class="hint">For notices or extensions, add the date.</span>
             </div>
             <div class="input">
               <label for="promo">How did you hear about us?</label>
-              <input id="promo" name="promo" type="text" placeholder="Referral, Google, Facebook, etc.">
+              <input id="promo" name="promo" type="text" placeholder="Referral, Google, Facebook, etc." />
             </div>
           </div>
         </fieldset>
 
+        <!-- Situation -->
         <fieldset>
           <legend>Your Situation</legend>
           <div class="grid-2">
@@ -235,35 +315,36 @@
             </div>
             <div class="input">
               <label for="dependents">Number of Dependents</label>
-              <input id="dependents" name="dependents" type="number" min="0" step="1" value="0">
+              <input id="dependents" name="dependents" type="number" min="0" step="1" value="0" />
             </div>
           </div>
 
           <div class="input">
-            <label>Income Forms you expect to include</label>
+            <label>Income forms you expect to include</label>
             <div class="checkbox-row">
-              <label><input type="checkbox" name="forms" value="W-2"> W-2</label>
-              <label><input type="checkbox" name="forms" value="1099-NEC"> 1099-NEC</label>
-              <label><input type="checkbox" name="forms" value="1099-MISC"> 1099-MISC</label>
-              <label><input type="checkbox" name="forms" value="1099-INT"> 1099-INT</label>
-              <label><input type="checkbox" name="forms" value="1099-DIV"> 1099-DIV</label>
-              <label><input type="checkbox" name="forms" value="1099-B"> 1099-B</label>
-              <label><input type="checkbox" name="forms" value="K-1"> K-1</label>
-              <label><input type="checkbox" name="forms" value="Rental"> Rental</label>
-              <label><input type="checkbox" name="forms" value="Crypto"> Crypto</label>
-              <label><input type="checkbox" name="forms" value="Other"> Other</label>
+              <label><input type="checkbox" name="forms" value="W-2" /> W-2</label>
+              <label><input type="checkbox" name="forms" value="1099-NEC" /> 1099-NEC</label>
+              <label><input type="checkbox" name="forms" value="1099-MISC" /> 1099-MISC</label>
+              <label><input type="checkbox" name="forms" value="1099-INT" /> 1099-INT</label>
+              <label><input type="checkbox" name="forms" value="1099-DIV" /> 1099-DIV</label>
+              <label><input type="checkbox" name="forms" value="1099-B" /> 1099-B</label>
+              <label><input type="checkbox" name="forms" value="K-1" /> K-1</label>
+              <label><input type="checkbox" name="forms" value="Rental" /> Rental</label>
+              <label><input type="checkbox" name="forms" value="Crypto" /> Crypto</label>
+              <label><input type="checkbox" name="forms" value="Other" /> Other</label>
             </div>
           </div>
 
-          <div id="business-fields" style="display:none;margin-top:10px;">
+          <!-- Business extras (hidden unless Business selected) -->
+          <div id="business-fields" style="display:none; margin-top:10px;">
             <div class="grid-2">
               <div class="input">
                 <label for="biz_name">Business Name</label>
-                <input id="biz_name" name="biz_name" type="text">
+                <input id="biz_name" name="biz_name" type="text" />
               </div>
               <div class="input">
                 <label for="ein">EIN (if any)</label>
-                <input id="ein" name="ein" type="text">
+                <input id="ein" name="ein" type="text" />
               </div>
             </div>
             <div class="grid-2">
@@ -288,16 +369,17 @@
           </div>
         </fieldset>
 
+        <!-- Uploads -->
         <fieldset>
           <legend>Upload Documents</legend>
-          <p class="hint">You can upload multiple files (PDF, JPG, PNG, DOCX). If you don't have everything now, submit what you have—more can be added later.</p>
+          <p class="hint">Upload multiple files (PDF, JPG, PNG, DOCX). You can send more later if needed.</p>
           <div class="input">
-            <label for="docs">Select or drag files</label>
-            <input id="docs" name="docs" type="file" multiple>
-            <span class="hint">For hosted uploads without your own server, you can swap this for Uploadcare/Filestack/Jotform later.</span>
+            <label for="docs">Select files</label>
+            <input id="docs" name="docs" type="file" multiple />
           </div>
         </fieldset>
 
+        <!-- Notes -->
         <fieldset>
           <legend>Notes for Your Preparer</legend>
           <div class="input">
@@ -306,52 +388,54 @@
           </div>
         </fieldset>
 
+        <!-- Consent -->
         <fieldset>
           <legend>Consent & Signature</legend>
           <div class="checkbox-row" style="margin-bottom:10px;">
             <label>
-              <input type="checkbox" required name="consent">
+              <input type="checkbox" required name="consent" />
               I agree to Riska’s Finance engagement terms and privacy policy, and authorize electronic communication.
             </label>
           </div>
           <div class="grid-2">
             <div class="input">
-              <label for="signature">Type your full name (acts as e-signature)</label>
-              <input id="signature" name="signature" type="text" required>
+              <label for="signature">Type your full name (e-signature)</label>
+              <input id="signature" name="signature" type="text" required />
             </div>
             <div class="input">
               <label for="sig_date">Date</label>
-              <input id="sig_date" name="sig_date" type="date" required>
+              <input id="sig_date" name="sig_date" type="date" required />
             </div>
           </div>
-          <p class="footer-note">We will review and send pricing/next steps before filing anything. We do not e-file without your explicit approval.</p>
+          <p class="foot-note">We’ll review and confirm pricing/next steps before filing. We do not e-file without your approval.</p>
         </fieldset>
 
-        <div style="display:flex;gap:12px;align-items:center;">
+        <!-- Submit -->
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
           <button id="submit-btn" class="btn btn-primary" type="submit">Submit Intake</button>
-          <a class="btn" style="border:1px solid var(--line);text-decoration:none" href="https://calendly.com/riskas-finances" target="_blank" rel="noopener">Book a Review Call</a>
+          <a class="btn" style="border:1px solid var(--line); text-decoration:none" href="https://calendly.com/riskas-finances" target="_blank" rel="noopener">Book a Review Call</a>
         </div>
-        <p class="hint" style="margin-top:8px;">After you submit, you’ll receive a confirmation email with a copy of your answers.</p>
+        <p class="hint" style="margin-top:6px;">After you submit, you’ll receive a confirmation email with a copy of your answers.</p>
       </form>
     </section>
 
     <!-- Process explainer -->
-    <section class="card" style="margin-top:20px;">
-      <h3 style="margin:0 0 8px;">What happens after I submit?</h3>
-      <ol style="margin:8px 0 0;padding-left:18px;">
+    <section class="card" style="margin-top:16px;">
+      <h3 style="margin:0 0 6px;">What happens next?</h3>
+      <ol style="margin:6px 0 0; padding-left:18px;">
         <li>We review your intake and documents.</li>
-        <li>We email you a quote and list of anything missing.</li>
-        <li>We prepare your returns and meet with you to review.</li>
-        <li>You sign the e-file authorization (Form 8879) and we file.</li>
+        <li>We email a quote and list of anything missing.</li>
+        <li>We prepare your returns and meet to review.</li>
+        <li>You sign Form 8879 and we e-file.</li>
       </ol>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer style="border-top:1px solid var(--line);padding:24px 0;">
-    <div class="container" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
-      <p class="footer-note">© <span id="yr"></span> Riska's Finance • 614 Crawford Ave, Dixon IL 61021 • +1 (815) 677-5807</p>
-      <p class="footer-note"><a href="index.html">Home</a> • <a href="contact.html">Contact</a></p>
+  <!-- ====== Footer ====== -->
+  <footer class="site-footer">
+    <div class="footer-row">
+      <p>© <span id="yr"></span> Riska's Finance • 614 Crawford Ave, Dixon IL 61021 • +1 (815) 677-5807</p>
+      <p><a href="index.html">Home</a> • <a href="contact.html">Contact</a></p>
     </div>
   </footer>
 
@@ -360,6 +444,3 @@
   </script>
 </body>
 </html>
-
-
-
