@@ -9,10 +9,94 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.css">
+    
+    <style>
+        /* Specific Styles for Book Landing Page */
+        .steps-hero {
+            background: linear-gradient(135deg, #f9fafb 0%, #fff 100%);
+            padding: 5rem 0;
+        }
+        
+        .steps-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        /* Book Cover 3D Effect */
+        .book-cover-image {
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 20px 20px 40px rgba(0,0,0,0.15);
+            transform: rotateY(-5deg) rotateX(2deg);
+            transition: transform 0.3s ease;
+            border-radius: 4px;
+        }
+        .book-cover-image:hover {
+            transform: rotateY(0deg) scale(1.02);
+        }
+
+        /* Step Cards */
+        .step-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #f3f4f6;
+            transition: transform 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .step-card:hover { transform: translateY(-5px); border-color: #FF6B35; }
+        
+        .step-number-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #f3f4f6;
+            line-height: 1;
+            z-index: 0;
+        }
+        
+        .step-icon {
+            color: #FF6B35;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .step-content { position: relative; z-index: 1; }
+
+        /* CTA Button */
+        .book-cta-btn {
+            display: inline-block;
+            background-color: #FF6B35;
+            color: white;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+            transition: background 0.3s, transform 0.2s;
+        }
+        .book-cta-btn:hover {
+            background-color: #e55a2b;
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Fix */
+        @media (max-width: 768px) {
+            .steps-layout { grid-template-columns: 1fr; text-align: center; }
+            .book-cover-image { margin: 0 auto; max-width: 280px; }
+            .step-card { text-align: left; }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation Header -->
-  <header class="header">
+    <header class="header">
     <nav class="nav">
       <a class="nav-brand" href="index.html" aria-label="Riska's Finance Home">
         <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo">
@@ -33,108 +117,122 @@
   </header>
 
     <main>
-        <!-- Steps Hero Section -->
         <section class="steps-hero">
             <div class="container">
                 <div class="steps-layout">
+                    
                     <div class="steps-info">
-                        <h1 class="steps-title">Steps to Become Financially Successful</h1>
-                        <p class="steps-description">
-                            Discover the essential steps to take control of your money and build lasting wealth. In this practical and easy-to-follow guide, 
-                            <em>Steps to Become Financially Successful</em> breaks down the habits, strategies, and mindset needed to achieve financial freedom, no 
-                            matter your starting point. Whether you're just getting started or looking to level up your finances, this book offers clear advice and real-world tips to help you succeed!
+                        <span style="color: #FF6B35; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; font-size: 0.9rem;">New Release</span>
+                        <h1 class="steps-title" style="font-size: 3rem; line-height: 1.1; margin: 1rem 0;">Steps to Become Financially Successful</h1>
+                        <p class="steps-description" style="font-size: 1.1rem; color: #555; line-height: 1.6; margin-bottom: 2rem;">
+                            Discover the essential habits, strategies, and mindset needed to build lasting wealth. Whether you're just starting out or looking to level up, this practical guide offers clear advice to help you succeed.
                         </p>
+                        
                         <div class="steps-action">
-                            <a href="https://arbririska.com/" target="_blank" class="cta-button">Access Website</a>
+                            <a href="https://arbririska.com/" target="_blank" class="book-cta-btn">
+                                <span style="display: flex; align-items: center; gap: 10px;">
+                                    Get Your Copy <i data-feather="arrow-right"></i>
+                                </span>
+                            </a>
+                            <p style="margin-top: 1rem; font-size: 0.9rem; color: #888;">Available now on ArbriRiska.com</p>
                         </div>
                     </div>
                     
                     <div class="steps-visual">
                         <div class="book-cover-container">
                             <img src="attached_assets/image_1755482153404.png" alt="Steps to Becoming Financially Successful by Arbri Riska" class="book-cover-image">
-                            <div class="book-actions">
-                            
-                                                         </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Financial Guide Steps -->
-        <section class="guide-steps">
+        <section class="guide-steps" style="padding: 5rem 0; background-color: #fcfcfc;">
             <div class="container">
-                <h2 class="section-title">Your Path to Financial Freedom</h2>
-                <div class="steps-grid">
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h2 class="section-title">Your Path to Financial Freedom</h2>
+                    <p style="color: #666; max-width: 600px; margin: 0 auto;">An 8-step roadmap designed to take you from where you are today to where you want to be.</p>
+                </div>
+                
+                <div class="steps-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+                    
                     <article class="step-card">
-                        <div class="step-number">1</div>
-                        <h3 class="step-title">Assess Your Current Situation</h3>
-                        <p class="step-description">
-                            Take a comprehensive look at your income, expenses, debts, and assets. Understanding where you stand financially is the first step toward improvement.
-                        </p>
+                        <div class="step-number-badge">01</div>
+                        <div class="step-icon"><i data-feather="pie-chart" width="32" height="32"></i></div>
+                        <div class="step-content">
+                            <h3 class="step-title">Assess Your Situation</h3>
+                            <p class="step-description">Take a comprehensive look at your income, expenses, debts, and assets. You can't improve what you don't measure.</p>
+                        </div>
                     </article>
 
                     <article class="step-card">
-                        <div class="step-number">2</div>
-                        <h3 class="step-title">Set Clear Financial Goals</h3>
-                        <p class="step-description">
-                            Define short-term and long-term financial objectives. Whether it's building an emergency fund, buying a home, or planning for retirement, clear goals provide direction.
-                        </p>
+                        <div class="step-number-badge">02</div>
+                        <div class="step-icon"><i data-feather="target" width="32" height="32"></i></div>
+                        <div class="step-content">
+                            <h3 class="step-title">Set Clear Goals</h3>
+                            <p class="step-description">Define short-term and long-term objectives. Whether it's buying a home or retiring early, clarity provides direction.</p>
+                        </div>
                     </article>
 
                     <article class="step-card">
-                        <div class="step-number">3</div>
-                        <h3 class="step-title">Create a Budget and Stick to It</h3>
-                        <p class="step-description">
-                            Develop a realistic budget that accounts for all income and expenses. Track your spending and make adjustments as needed to stay on course.
-                        </p>
+                        <div class="step-number-badge">03</div>
+                        <div class="step-icon"><i data-feather="list" width="32" height="32"></i></div>
+                        <div class="step-content">
+                            <h3 class="step-title">Create a Budget</h3>
+                            <p class="step-description">Develop a realistic plan for your money. Track your spending and make adjustments to ensure you stay profitable.</p>
+                        </div>
                     </article>
 
                     <article class="step-card">
-                        <div class="step-number">4</div>
-                        <h3 class="step-title">Build an Emergency Fund</h3>
-                        <p class="step-description">
-                            Start with a goal of saving 3-6 months of expenses. An emergency fund provides financial security and prevents you from going into debt during unexpected situations.
-                        </p>
+                        <div class="step-number-badge">04</div>
+                        <div class="step-icon"><i data-feather="shield" width="32" height="32"></i></div>
+                        <div class="step-content">
+                            <h3 class="step-title">Emergency Fund</h3>
+                            <p class="step-description">Save 3-6 months of expenses. This fund protects you from going into debt when life throws a curveball.</p>
+                        </div>
                     </article>
 
                     <article class="step-card">
-                        <div class="step-number">5</div>
-                        <h3 class="step-title">Pay Down High-Interest Debt</h3>
-                        <p class="step-description">
-                            Focus on eliminating credit card debt and other high-interest loans. Use strategies like the debt snowball or debt avalanche method to accelerate payoff.
-                        </p>
+                        <div class="step-number-badge">05</div>
+                        <div class="step-icon"><i data-feather="trending-down" width="32" height="32"></i></div>
+                        <div class="step-content">
+                            <h3 class="step-title">Eliminate Debt</h3>
+                            <p class="step-description">Focus on high-interest credit cards and loans. Use the debt snowball or avalanche method to become debt-free.</p>
+                        </div>
                     </article>
 
                     <article class="step-card">
-                        <div class="step-number">6</div>
-                        <h3 class="step-title">Start Investing for the Future</h3>
-                        <p class="step-description">
-                            Begin investing in retirement accounts, index funds, or other investment vehicles. The power of compound interest works best when you start early.
-                        </p>
+                        <div class="step-number-badge">06</div>
+                        <div class="step-icon"><i data-feather="trending-up" width="32" height="32"></i></div>
+                        <div class="step-content">
+                            <h3 class="step-title">Start Investing</h3>
+                            <p class="step-description">Put your money to work. Use retirement accounts and index funds to let compound interest grow your wealth.</p>
+                        </div>
                     </article>
 
                     <article class="step-card">
-                        <div class="step-number">7</div>
-                        <h3 class="step-title">Protect Your Wealth</h3>
-                        <p class="step-description">
-                            Ensure you have adequate insurance coverage and consider estate planning. Protecting your wealth is just as important as building it.
-                        </p>
+                        <div class="step-number-badge">07</div>
+                        <div class="step-icon"><i data-feather="lock" width="32" height="32"></i></div>
+                        <div class="step-content">
+                            <h3 class="step-title">Protect Wealth</h3>
+                            <p class="step-description">Ensure you have adequate insurance and estate planning. Defense is just as important as offense.</p>
+                        </div>
                     </article>
 
                     <article class="step-card">
-                        <div class="step-number">8</div>
-                        <h3 class="step-title">Continuously Educate Yourself</h3>
-                        <p class="step-description">
-                            Stay informed about financial trends, investment opportunities, and tax strategies. Financial education is an ongoing process that pays dividends.
-                        </p>
+                        <div class="step-number-badge">08</div>
+                        <div class="step-icon"><i data-feather="book-open" width="32" height="32"></i></div>
+                        <div class="step-content">
+                            <h3 class="step-title">Stay Educated</h3>
+                            <p class="step-description">Financial trends change. Commit to lifelong learning to spot new opportunities and avoid pitfalls.</p>
+                        </div>
                     </article>
+                    
                 </div>
             </div>
         </section>
 
-        <!-- Call to Action -->
-        <section class="guide-cta">
+         <section class="guide-cta">
             <div class="container">
                 <div class="cta-content">
                     <h2>Ready to Start Your Financial Journey?</h2>
@@ -145,7 +243,6 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -161,5 +258,10 @@
 
     <script src="assets/js/main.js"></script>
     <script src="assets/js/animations.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
+    <script>
+        feather.replace();
+    </script>
 </body>
 </html>
