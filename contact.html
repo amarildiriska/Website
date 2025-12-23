@@ -9,10 +9,108 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.css">
+    
+    <style>
+        /* Contact Page Specific Styles */
+        .contact-hero {
+            background-color: #ffffff; /* Changed from black to white */
+            color: #111827; /* Changed text to dark grey */
+            padding: 3rem 0;
+            text-align: center;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr; /* Give form slightly more space */
+            gap: 4rem;
+            margin-top: 2rem;
+            align-items: start;
+        }
+        
+        /* Contact Info Cards */
+        .info-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            transition: transform 0.2s;
+            border: 1px solid #f3f4f6;
+        }
+        .info-card:hover { transform: translateY(-3px); border-color: #FF6B35; }
+        
+        .icon-box {
+            background: #FFF1EB;
+            color: #FF6B35;
+            padding: 12px;
+            border-radius: 8px;
+            min-width: 48px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .info-content h3 { margin: 0 0 0.25rem 0; font-size: 1.1rem; color: #111; font-weight: 600; }
+        .info-content p, .info-content a { color: #666; font-size: 0.95rem; text-decoration: none; line-height: 1.5; }
+        .info-content a:hover { color: #FF6B35; text-decoration: underline; }
+
+        /* Form Styles */
+        .contact-form-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #f3f4f6;
+        }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #374151; }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: #f9fafb;
+        }
+        .form-control:focus { 
+            outline: none; 
+            border-color: #FF6B35; 
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1); 
+        }
+        
+        .submit-btn {
+            background-color: #FF6B35;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        .submit-btn:hover { background-color: #e55a2b; }
+
+        /* Mobile Fix */
+        @media (max-width: 768px) {
+            .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
+            .contact-form-card { padding: 1.5rem; order: 2; }
+            .contact-info-section { order: 1; }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation Header -->
-  <header class="header">
+    <header class="header">
     <nav class="nav">
       <a class="nav-brand" href="index.html" aria-label="Riska's Finance Home">
         <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo">
@@ -33,85 +131,95 @@
   </header>
 
     <main>
-        <!-- Contact Hero Section -->
         <section class="contact-hero">
             <div class="container">
-                <h1 class="page-title">Contact Us</h1>
+                <h1 class="page-title" style="margin-bottom: 1rem; font-size: 2.5rem; font-weight: 700;">Contact Us</h1>
+                <p style="max-width: 600px; margin: 0 auto; color: #6b7280; font-size: 1.1rem; line-height: 1.6;">
+                    Have a question about your taxes or accounting needs? Send us a message and we'll get back to you within 24 hours.
+                </p>
             </div>
         </section>
 
-        <!-- Get In Touch Section -->
-        <section class="contact-content">
+        <section class="contact-content" style="padding: 3rem 0; background-color: #ffffff;">
             <div class="container">
                 <div class="contact-layout">
-                    <div class="contact-info">
-                        <h2 class="contact-title">Get In Touch</h2>
-                        <p class="contact-description">
-                            If you're interested in collaborating, please provide your information, and we will contact you soon. We look forward to connecting with you.
-                        </p>
-                        
-                        <div class="contact-details">
-                            <div class="contact-detail">
-                                <h3>Email</h3>
-                                <a href="mailto:Riskas.finances@gmail.com" class="contact-link">
-                                    Riskas.finances@gmail.com
-                                </a>
-                            </div>
-                            
-                            <div class="contact-detail">
-                                <h3>Phone</h3>
-                                <a href="tel:+18156775807" class="contact-link">
-                                    (815) 677-5807
-								</a>
-								<br> <a href="tel:+18154401394" class="contact-link">
-       								(815) 440-1394
-                                </a>
-                            </div>
-                            
-                            <div class="contact-detail">
-                                <h3>Address</h3>
-                                <p class="contact-text">
-                                    614 Crawford Ave, Dixon IL, 61021
-                                </p>
-                            </div>
-                            
-                            <div class="contact-detail">
-                                <h3>Business Hours</h3>
-                                <p class="contact-text">
-                                    Mon-Fri, 9 AM - 5 PM
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-action">
-                            <a href="https://calendly.com/riskas-finances" target="_blank" class="cta-button">Schedule an Appointment</a>
-                        </div>
-                    </div>
                     
-                    <div class="contact-visual">
-                        <img src="attached_assets/lamp.png"
-			    <style width="500" height="350" viewBox="0 0 500 350"
-                            <!-- Desk lamp illustration -->
-                            <rect x="50" y="180" width="200" height="20" rx="10" fill="#8B4513"/>
-                            <rect x="140" y="120" width="20" height="60" fill="#333"/>
-                            <rect x="120" y="110" width="60" height="10" fill="#333"/>
-                            <circle cx="150" cy="90" r="25" fill="#F5F5DC"/>
-                            <circle cx="150" cy="90" r="20" fill="#FFF8DC"/>
-                            <!-- Light beam -->
-                            <path d="M125 90 L100 150 L200 150 L175 90 Z" fill="#FFFACD" opacity="0.7"/>
-                            <!-- Adjustable arm -->
-                            <rect x="135" y="85" width="30" height="5" rx="2.5" fill="#333"/>
-                            <circle cx="135" cy="87.5" r="3" fill="#666"/>
-                            <rect x="100" y="80" width="35" height="5" rx="2.5" fill="#333"/>
-                            <circle cx="100" cy="82.5" r="3" fill="#666"/>
-                        </svg>
+                    <div class="contact-info-section">
+                        <h2 style="margin-bottom: 1.5rem; font-size: 1.5rem; color: #111;">Get In Touch</h2>
+                        
+                        <div class="info-card">
+                            <div class="icon-box"><i data-feather="phone"></i></div>
+                            <div class="info-content">
+                                <h3>Call Us</h3>
+                                <p><a href="tel:+18156775807">(815) 677-5807</a></p>
+                                <p><a href="tel:+18154401394">(815) 440-1394</a></p>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <div class="icon-box"><i data-feather="mail"></i></div>
+                            <div class="info-content">
+                                <h3>Email Us</h3>
+                                <p><a href="mailto:Riskas.finances@gmail.com">Riskas.finances@gmail.com</a></p>
+                                <p style="font-size: 0.85rem; color: #999; margin-top: 4px;">We usually reply within 24 hours.</p>
+                            </div>
+                        </div>
+
+                        <div class="info-card">
+                            <div class="icon-box"><i data-feather="map-pin"></i></div>
+                            <div class="info-content">
+                                <h3>Visit Us</h3>
+                                <p>614 Crawford Ave<br>Dixon IL, 61021</p>
+                                <p style="margin-top: 5px; color: #FF6B35; font-weight: 500;">Mon-Fri: 9 AM - 5 PM</p>
+                            </div>
+                        </div>
+
                     </div>
+
+                    <div class="contact-form-section">
+                        <div class="contact-form-card">
+                            <h2 style="margin-bottom: 1.5rem; color: #111;">Send a Message</h2>
+                            
+                            <div id="form-success" style="display: none; background: #dcfce7; color: #166534; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                                Thanks! We received your message and will contact you soon.
+                            </div>
+
+                            <form id="contact-form" action="https://formspree.io/f/xvgvwydp" method="POST">
+                                <div class="form-group">
+                                    <label for="name">Full Name</label>
+                                    <input type="text" id="name" name="name" class="form-control" placeholder="Your Name" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" name="email" class="form-control" placeholder="name@example.com" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="subject">Subject</label>
+                                    <select id="subject" name="subject" class="form-control">
+                                        <option value="General Inquiry">General Question</option>
+                                        <option value="Tax Preparation">Tax Preparation</option>
+                                        <option value="Bookkeeping">Bookkeeping Services</option>
+                                        <option value="Appointment">Scheduling Issue</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="message">Message</label>
+                                    <textarea id="message" name="message" class="form-control" rows="5" placeholder="How can we help you?" required></textarea>
+                                </div>
+
+                                <button type="submit" id="submit-btn" class="submit-btn">Send Message</button>
+                            </form>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -127,5 +235,50 @@
 
     <script src="assets/js/main.js"></script>
     <script src="assets/js/animations.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
+    <script>
+        feather.replace();
+
+        // Simple Form Handler
+        const form = document.getElementById('contact-form');
+        const successMsg = document.getElementById('form-success');
+        const btn = document.getElementById('submit-btn');
+
+        if(form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                btn.disabled = true;
+                btn.innerText = 'Sending...';
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    
+                    if (response.ok) {
+                        form.reset();
+                        successMsg.style.display = 'block';
+                        btn.innerText = 'Message Sent';
+                        setTimeout(() => {
+                             btn.disabled = false;
+                             btn.innerText = 'Send Message';
+                             successMsg.style.display = 'none';
+                        }, 5000);
+                    } else {
+                        alert('Oops! There was a problem submitting your form');
+                        btn.disabled = false;
+                        btn.innerText = 'Send Message';
+                    }
+                } catch (error) {
+                    btn.disabled = false;
+                    btn.innerText = 'Send Message';
+                    alert('Oops! There was a problem submitting your form');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
