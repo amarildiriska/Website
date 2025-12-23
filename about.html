@@ -9,10 +9,71 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.css">
+    
+    <style>
+        /* Specific Styles for About Page Enhancements */
+        .value-card {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .value-card:hover {
+            transform: translateY(-5px);
+        }
+        .value-icon {
+            color: #FF6B35;
+            margin-bottom: 1rem;
+            width: 48px;
+            height: 48px;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background-color: #333;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        .cta-btn {
+            display: inline-block;
+            background-color: #FF6B35;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1.5rem;
+        }
+        .cta-btn:hover {
+            background-color: #e55a2b;
+        }
+
+        /* Responsive Fixes */
+        .about-content, .expertise-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin-top: 2rem;
+        }
+        .about-image img, .expertise-image img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .about-content, .expertise-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation Header -->
-  <header class="header">
+    <header class="header">
     <nav class="nav">
       <a class="nav-brand" href="index.html" aria-label="Riska's Finance Home">
         <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo">
@@ -31,48 +92,39 @@
       </button>
     </nav>
   </header>
+
     <main>
-        <!-- Who Are We Section -->
-        <section class="about-hero">
+        <section class="about-hero" style="padding: 4rem 0;">
             <div class="container">
-                <h1 class="page-title">Who Are We</h1>
+                <h1 class="page-title" style="text-align:center; margin-bottom: 2rem; font-size: 2.5rem;">Who We Are</h1>
                 <div class="about-content">
                     <div class="about-text">
-                        <p>
+                        <h3 style="color: #FF6B35; margin-bottom: 1rem;">Dedicated to Your Growth</h3>
+                        <p style="margin-bottom: 1.5rem; line-height: 1.6; color: #555;">
                             At Riska's Finance, our team of seasoned accounting and auditing professionals is dedicated to delivering precise financial solutions tailored to your business needs. With a steadfast commitment to excellence, we provide insights that help drive informed decision-making and strategic growth.
                         </p>
-                        <p>
-                            Our expertise spans across various industries, and we pride ourselves on building lasting relationships with our clients. We understand that every business is unique, which is why we take the time to understand your specific challenges and goals.
+                        <p style="line-height: 1.6; color: #555;">
+                            Our expertise spans across various industries, and we pride ourselves on building lasting relationships with our clients. We understand that every business is unique, which is why we take the time to understand your specific challenges and goals right here in Dixon.
                         </p>
                     </div>
                     <div class="about-image">
-                        <img src="attached_assets/imgg-od3-esff7o7i.png"
-			    <style width="500" height="300" viewBox="0 0 500 300"
-                            <!-- Stack of documents illustration -->
-                            <rect x="50" y="100" width="200" height="80" rx="8" fill="#F5F5F5" stroke="#CCC"/>
-                            <rect x="55" y="95" width="200" height="80" rx="8" fill="#FFF" stroke="#CCC"/>
-                            <rect x="60" y="90" width="200" height="80" rx="8" fill="#FFF" stroke="#333"/>
-                            <rect x="65" y="85" width="200" height="80" rx="8" fill="#FFF" stroke="#333"/>
-                            <rect x="70" y="80" width="200" height="80" rx="8" fill="#FFF" stroke="#333"/>
-                            <!-- Lines representing text -->
-                            <line x1="80" y1="100" x2="240" y2="100" stroke="#333" stroke-width="2"/>
-                            <line x1="80" y1="110" x2="200" y2="110" stroke="#333" stroke-width="2"/>
-                            <line x1="80" y1="120" x2="220" y2="120" stroke="#333" stroke-width="2"/>
-                            <line x1="80" y1="130" x2="180" y2="130" stroke="#333" stroke-width="2"/>
-                            <line x1="80" y1="140" x2="240" y2="140" stroke="#333" stroke-width="2"/>
+                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800" alt="Accounting Team Working">
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Core Values Section -->
-        <section class="core-values">
+        <section class="core-values" style="background-color: #f9fafb; padding: 4rem 0;">
             <div class="container">
-                <h2 class="section-title">Our Core Values</h2>
-                <p class="section-subtitle">These principles guide everything we do and how we serve our clients</p>
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h2 class="section-title">Our Core Values</h2>
+                    <p class="section-subtitle" style="color: #666;">These principles guide everything we do.</p>
+                </div>
                 
-                <div class="values-grid">
+                <div class="values-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    
                     <article class="value-card">
+                        <i data-feather="award" class="value-icon"></i>
                         <h3 class="value-title">Excellence</h3>
                         <p class="value-description">
                             We strive for perfection in every aspect of our service delivery, ensuring accuracy and attention to detail.
@@ -80,6 +132,7 @@
                     </article>
                     
                     <article class="value-card">
+                        <i data-feather="shield" class="value-icon"></i>
                         <h3 class="value-title">Integrity</h3>
                         <p class="value-description">
                             We conduct our business with the highest ethical standards and maintain complete transparency with our clients.
@@ -87,73 +140,50 @@
                     </article>
                     
                     <article class="value-card">
+                        <i data-feather="users" class="value-icon"></i>
                         <h3 class="value-title">Partnership</h3>
                         <p class="value-description">
                             We build long-term relationships with our clients, working together to achieve their financial goals.
                         </p>
                     </article>
+
                 </div>
             </div>
         </section>
 
-        <!-- Our Expertise Section -->
-        <section class="expertise">
+        <section class="expertise" style="padding: 4rem 0;">
             <div class="container">
-                <h2 class="section-title">Our Expertise</h2>
-                <p class="section-subtitle">With years of combined experience, our team brings deep knowledge across multiple areas of finance and accounting</p>
+                <h2 class="section-title" style="text-align:center; margin-bottom: 2rem;">Our Expertise</h2>
                 
                 <div class="expertise-content">
                     <div class="expertise-image">
-                        <img src="https://asset.skoiy.com/9b80a6f781ff336f/7gjwst0jm3cz.jpg?w=970&q=90"
-			    <style width="600" height="450" viewBox="0 0 600 450"
-                            <!-- Modern office interior with shelves -->
-                            <rect x="50" y="50" width="300" height="200" rx="10" fill="#F8F9FA" stroke="#333" stroke-width="2"/>
-                            <!-- Shelving units -->
-                            <rect x="60" y="60" width="80" height="120" fill="#8B4513"/>
-                            <rect x="65" y="65" width="70" height="15" fill="#FFF"/>
-                            <rect x="65" y="85" width="70" height="15" fill="#FFF"/>
-                            <rect x="65" y="105" width="70" height="15" fill="#FFF"/>
-                            <rect x="65" y="125" width="70" height="15" fill="#FFF"/>
-                            <rect x="65" y="145" width="70" height="15" fill="#FFF"/>
-                            <rect x="65" y="165" width="70" height="15" fill="#FFF"/>
-                            
-                            <rect x="260" y="60" width="80" height="120" fill="#8B4513"/>
-                            <rect x="265" y="65" width="70" height="15" fill="#FFF"/>
-                            <rect x="265" y="85" width="70" height="15" fill="#FFF"/>
-                            <rect x="265" y="105" width="70" height="15" fill="#FFF"/>
-                            <rect x="265" y="125" width="70" height="15" fill="#FFF"/>
-                            <rect x="265" y="145" width="70" height="15" fill="#FFF"/>
-                            <rect x="265" y="165" width="70" height="15" fill="#FFF"/>
-                            
-                            <!-- Desk and chairs -->
-                            <rect x="150" y="150" width="100" height="60" rx="5" fill="#D2691E"/>
-                            <rect x="140" y="200" width="40" height="30" rx="5" fill="#A9A9A9"/>
-                            <rect x="220" y="200" width="40" height="30" rx="5" fill="#A9A9A9"/>
-                            
-                            <!-- Decorative plant -->
-                            <circle cx="300" cy="200" r="15" fill="#228B22"/>
-                            <rect x="295" y="210" width="10" height="20" fill="#8B4513"/>
-                        </svg>
+                        <img src="https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&fit=crop&q=80&w=800" alt="Financial Analysis">
                     </div>
                     
                     <div class="expertise-list">
-                        <div class="expertise-item">
-                            <h3 class="expertise-title">Certified Professionals</h3>
-                            <p class="expertise-description">
+                        <div class="expertise-item" style="margin-bottom: 2rem;">
+                            <h3 class="expertise-title" style="display:flex; align-items:center; gap: 10px;">
+                                <i data-feather="check-circle" style="color:#FF6B35; width:20px;"></i> Certified Professionals
+                            </h3>
+                            <p class="expertise-description" style="margin-left: 30px; color: #666;">
                                 Our team consists of certified accountants and financial advisors with extensive industry experience.
                             </p>
                         </div>
                         
-                        <div class="expertise-item">
-                            <h3 class="expertise-title">Continuous Learning</h3>
-                            <p class="expertise-description">
+                        <div class="expertise-item" style="margin-bottom: 2rem;">
+                            <h3 class="expertise-title" style="display:flex; align-items:center; gap: 10px;">
+                                <i data-feather="trending-up" style="color:#FF6B35; width:20px;"></i> Continuous Learning
+                            </h3>
+                            <p class="expertise-description" style="margin-left: 30px; color: #666;">
                                 We stay updated with the latest regulations, technologies, and best practices in the financial industry.
                             </p>
                         </div>
                         
                         <div class="expertise-item">
-                            <h3 class="expertise-title">Client-Focused Approach</h3>
-                            <p class="expertise-description">
+                            <h3 class="expertise-title" style="display:flex; align-items:center; gap: 10px;">
+                                <i data-feather="heart" style="color:#FF6B35; width:20px;"></i> Client-Focused Approach
+                            </h3>
+                            <p class="expertise-description" style="margin-left: 30px; color: #666;">
                                 Every solution we provide is tailored to meet the unique needs and goals of our clients.
                             </p>
                         </div>
@@ -161,9 +191,17 @@
                 </div>
             </div>
         </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2>Ready to secure your financial future?</h2>
+                <p style="margin-top: 1rem; opacity: 0.9;">Let's sit down and discuss how we can help you grow.</p>
+                <a href="https://calendly.com/riskas-finances" target="_blank" class="cta-button">Schedule an Appointment</a>
+            </div>
+        </section>
+
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -179,5 +217,10 @@
 
     <script src="assets/js/main.js"></script>
     <script src="assets/js/animations.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
+    <script>
+        feather.replace();
+    </script>
 </body>
 </html>
