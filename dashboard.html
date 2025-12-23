@@ -9,10 +9,142 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.css">
+    
+    <style>
+        /* Dashboard Specific Styles */
+        .dashboard-hero {
+            background-color: #f9fafb;
+            padding: 3rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        /* Summary Cards */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .summary-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .icon-income { background: #dcfce7; color: #16a34a; }
+        .icon-expense { background: #fee2e2; color: #dc2626; }
+        .icon-balance { background: #e0f2fe; color: #0284c7; }
+        
+        .card-info h3 { margin: 0; font-size: 0.9rem; color: #6b7280; font-weight: 500; }
+        .card-info p { margin: 5px 0 0; font-size: 1.5rem; font-weight: 700; color: #111; }
+
+        /* Health Bar */
+        .health-bar-container {
+            margin-top: 2rem;
+            background: #e5e7eb;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            display: flex;
+        }
+        .bar-income { background: #16a34a; height: 100%; transition: width 0.5s; }
+        .bar-expense { background: #dc2626; height: 100%; transition: width 0.5s; }
+
+        /* Tracker Section */
+        .tracker-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr; /* More space for list */
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        /* Form Styling */
+        .tracker-form-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+        
+        .form-group { margin-bottom: 1rem; }
+        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #374151; }
+        .form-input, .form-select {
+            width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1rem;
+        }
+        
+        .add-btn {
+            width: 100%; background: #FF6B35; color: white; border: none; padding: 12px;
+            border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 1rem; transition: background 0.2s;
+        }
+        .add-btn:hover { background: #e55a2b; }
+
+        /* Transaction List */
+        .transactions-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .transaction-item:last-child { border-bottom: none; }
+        
+        .t-info h4 { margin: 0 0 4px; font-size: 1rem; color: #111; }
+        .t-info span { font-size: 0.85rem; color: #999; display: block; }
+        .t-cat-badge { 
+            display: inline-block; font-size: 0.75rem; padding: 2px 8px; 
+            border-radius: 12px; background: #f3f4f6; color: #666; margin-top: 4px; 
+        }
+        
+        .t-amount { font-weight: 600; font-size: 1rem; }
+        .plus { color: #16a34a; }
+        .minus { color: #dc2626; }
+        
+        .delete-btn {
+            background: none; border: none; color: #9ca3af; cursor: pointer; margin-left: 10px;
+        }
+        .delete-btn:hover { color: #dc2626; }
+
+        .btn-toolbar { display: flex; gap: 10px; }
+        .btn-tool {
+            display:flex; align-items:center; gap:8px; 
+            background:white; border:1px solid #e5e7eb; padding:8px 16px; 
+            border-radius:6px; cursor:pointer; font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .btn-tool:hover { border-color: #FF6B35; color: #FF6B35; }
+
+        @media (max-width: 768px) {
+            .tracker-layout { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
-   <!-- Navigation Header -->
-  <header class="header">
+    <header class="header">
     <nav class="nav">
       <a class="nav-brand" href="index.html" aria-label="Riska's Finance Home">
         <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo">
@@ -33,117 +165,119 @@
   </header>
 
     <main>
-        <!-- Dashboard Hero Section -->
         <section class="dashboard-hero">
             <div class="container">
-                <div class="dashboard-layout">
-                    <div class="dashboard-info">
-                        <h1 class="dashboard-title">Your Financial Dashboard</h1>
-                        <p class="dashboard-description">
-                            Welcome to Riska's Finance Expense Tracker, the ultimate tool for tracking your income and expenses with ease. Our 
-                            program is designed to simplify your financial management, helping you stay on top of your budget, 
-                            monitor cash flow, and make smarter financial decisions.
-			</p>
-<a href="https://amarildiriska.github.io/Riska-Finance/" target="_blank" class="cta-button">Go to Smart Finance</a>
-			</p>
-                        <div class="dashboard-visual-info">
-        <svg width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-			
-            <!-- Financial growth chart -->
-            <rect x="20" y="160" width="260" height="2" fill="#E5E5E5"/>
-            <rect x="20" y="20" width="2" height="140" fill="#E5E5E5"/>
-                                
-                                <!-- Bar chart -->
-                                <rect x="40" y="120" width="20" height="40" fill="#FF6B35"/>
-            <rect x="70" y="100" width="20" height="60" fill="#FF6B35"/>
-            <rect x="100" y="80" width="20" height="80" fill="#FF6B35"/>
-            <rect x="130" y="90" width="20" height="70" fill="#FF6B35"/>
-            <rect x="160" y="70" width="20" height="90" fill="#FF6B35"/>
-            <rect x="190" y="50" width="20" height="110" fill="#FF6B35"/>
-            <rect x="220" y="40" width="20" height="120" fill="#FF6B35"/>
-                                
-                                <!-- Trend line -->
-                                 <path d="M50 140 L80 120 L110 90 L140 100 L170 75 L200 55 L230 45" stroke="#28A745" stroke-width="3" fill="none"/>
-                                
-                                <!-- Data points -->
-                                 <circle cx="50" cy="140" r="4" fill="#28A745"/>
-            <circle cx="80" cy="120" r="4" fill="#28A745"/>
-            <circle cx="110" cy="90" r="4" fill="#28A745"/>
-            <circle cx="140" cy="100" r="4" fill="#28A745"/>
-            <circle cx="170" cy="75" r="4" fill="#28A745"/>
-            <circle cx="200" cy="55" r="4" fill="#28A745"/>
-            <circle cx="230" cy="45" r="4" fill="#28A745"/>
-                                
-                                <!-- Coins illustration -->
-                                 <g transform="translate(250, 80)">
-                <circle cx="0" cy="20" r="12" fill="#D4AF37"/>
-                <circle cx="8" cy="15" r="12" fill="#D4AF37"/>
-                <circle cx="16" cy="10" r="12" fill="#D4AF37"/>
-                <circle cx="24" cy="5" r="12" fill="#D4AF37"/>
-                <circle cx="32" cy="0" r="12" fill="#D4AF37"/>
-                <text x="0" y="25" font-family="Arial" font-size="8" fill="#B8860B" text-anchor="middle">$</text>
-                <text x="8" y="20" font-family="Arial" font-size="8" fill="#B8860B" text-anchor="middle">$</text>
-                <text x="16" y="15" font-family="Arial" font-size="8" fill="#B8860B" text-anchor="middle">$</text>
-                <text x="24" y="10" font-family="Arial" font-size="8" fill="#B8860B" text-anchor="middle">$</text>
-                <text x="32" y="5" font-family="Arial" font-size="8" fill="#B8860B" text-anchor="middle">$</text>
-                                </g>
-                            </svg>
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+                    <div>
+                        <h1 class="dashboard-title" style="margin-bottom: 0.5rem;">Your Financial Dashboard</h1>
+                        <p style="color: #6b7280;">Track expenses and export data for tax season.</p>
+                    </div>
+                    <div class="btn-toolbar">
+                        <button class="btn-tool" onclick="exportToCSV()">
+                            <i data-feather="download"></i> Export Excel
+                        </button>
+                        <button class="btn-tool" onclick="window.print()">
+                            <i data-feather="printer"></i> Print
+                        </button>
+                    </div>
+                </div>
+
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <div class="card-info">
+                            <h3>Current Balance</h3>
+                            <p id="balance-display">$0.00</p>
+                        </div>
+                        <div class="card-icon icon-balance">
+                            <i data-feather="dollar-sign"></i>
                         </div>
                     </div>
                     
-                    <div class="dashboard-tracker">
-                        <div class="tracker-container">
-                            <div class="tracker-header">
-                                <h2>Riska's Finance</h2>
-                                <p>Your simple income and expense tracker</p>
-                            </div>
-                            
-                            <form class="tracker-form" id="expense-form">
-                                <div class="form-row">
-                                    <input type="text" id="description" placeholder="Enter description" class="form-input" required>
-                                    <input type="number" id="amount" placeholder="Enter amount" class="form-input" step="0.01" required>
-                                    <select id="type" class="form-select">
-                                        <option value="income">Income</option>
-                                        <option value="expense">Expense</option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="add-transaction-btn">Add Transaction</button>
-                            </form>
-                            
-                            <div class="transactions-section">
-                                <h3>Transactions</h3>
-                                <div class="transactions-list" id="transactions-list">
-                                    <!-- Transactions will be added here dynamically -->
-                                </div>
-                            </div>
-                            
-                            <div class="report-summary">
-                                <h3>Report Summary</h3>
-                                <div class="summary-grid">
-                                    <div class="summary-item income">
-                                        <span>Total Income</span>
-                                        <span id="total-income">$0.00</span>
-                                    </div>
-                                    <div class="summary-item expense">
-                                        <span>Total Expenses</span>
-                                        <span id="total-expenses">$0.00</span>
-                                    </div>
-                                    <div class="summary-item balance">
-                                        <span>Net Balance</span>
-                                        <span id="net-balance">$0.00</span>
-                                    </div>
-				    <script src="assets/js/dashboard.js"></script>
-                                </div>
-                                <button class="print-report-btn" id="print-report">Print Report</button>
-                            </div>
+                    <div class="summary-card">
+                        <div class="card-info">
+                            <h3>Total Income</h3>
+                            <p id="income-display" style="color: #16a34a;">$0.00</p>
+                        </div>
+                        <div class="card-icon icon-income">
+                            <i data-feather="trending-up"></i>
                         </div>
                     </div>
+                    
+                    <div class="summary-card">
+                        <div class="card-info">
+                            <h3>Total Expenses</h3>
+                            <p id="expense-display" style="color: #dc2626;">$0.00</p>
+                        </div>
+                        <div class="card-icon icon-expense">
+                            <i data-feather="trending-down"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="health-bar-container" title="Income vs Expense Ratio">
+                    <div id="bar-income" class="bar-income" style="width: 50%"></div>
+                    <div id="bar-expense" class="bar-expense" style="width: 50%"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tracker-section" style="padding: 2rem 0; background-color: white;">
+            <div class="container">
+                <div class="tracker-layout">
+                    
+                    <div class="tracker-form-card">
+                        <h2 style="margin-bottom: 1.5rem;">Add Transaction</h2>
+                        <form id="transaction-form">
+                            <div class="form-group">
+                                <label class="form-label">Description</label>
+                                <input type="text" id="text" class="form-input" placeholder="Ex: Client Payment, Office Rent" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Category</label>
+                                <select id="category" class="form-select">
+                                    <option value="General">General</option>
+                                    <option value="Sales">Sales / Income</option>
+                                    <option value="Rent">Rent / Mortgage</option>
+                                    <option value="Utilities">Utilities</option>
+                                    <option value="Supplies">Office Supplies</option>
+                                    <option value="Travel">Travel & Auto</option>
+                                    <option value="Marketing">Advertising</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Amount ($)</label>
+                                <input type="number" id="amount" class="form-input" placeholder="0.00" step="0.01" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Type</label>
+                                <select id="type" class="form-select">
+                                    <option value="income">Income (+)</option>
+                                    <option value="expense">Expense (-)</option>
+                                </select>
+                            </div>
+                            
+                            <button type="submit" class="add-btn">Add Transaction</button>
+                        </form>
+                    </div>
+
+                    <div class="transactions-card">
+                        <h2 style="margin-bottom: 1.5rem; display:flex; justify-content:space-between; align-items:center;">
+                            Transaction History 
+                            <span style="font-size:0.9rem; font-weight:400; color:#999;" id="count-display">0 items</span>
+                        </h2>
+                        <div id="list" class="transactions-list">
+                            <p style="text-align:center; color:#ccc; margin-top:2rem;" id="empty-msg">No transactions recorded yet.</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -158,8 +292,185 @@
     </footer>
 
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/dashboard.js"></script>
     <script src="assets/js/animations.js"></script>
-    <script src="assets/js/script.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
+    
+    <script>
+        feather.replace();
+
+        // State & DOM Elements
+        const balanceEl = document.getElementById('balance-display');
+        const incomeEl = document.getElementById('income-display');
+        const expenseEl = document.getElementById('expense-display');
+        const list = document.getElementById('list');
+        const form = document.getElementById('transaction-form');
+        const textCtrl = document.getElementById('text');
+        const amountCtrl = document.getElementById('amount');
+        const typeCtrl = document.getElementById('type');
+        const catCtrl = document.getElementById('category');
+        const emptyMsg = document.getElementById('empty-msg');
+        const countDisplay = document.getElementById('count-display');
+        const barIncome = document.getElementById('bar-income');
+        const barExpense = document.getElementById('bar-expense');
+
+        // Check for LocalStorage data
+        let transactions = JSON.parse(localStorage.getItem('riska_transactions')) || [];
+
+        // Add Transaction
+        function addTransaction(e) {
+            e.preventDefault();
+
+            if (textCtrl.value.trim() === '' || amountCtrl.value.trim() === '') {
+                alert('Please add a description and amount');
+                return;
+            }
+
+            const isIncome = typeCtrl.value === 'income';
+            const amountVal = +amountCtrl.value;
+
+            const transaction = {
+                id: generateID(),
+                text: textCtrl.value,
+                amount: isIncome ? amountVal : -amountVal, 
+                type: typeCtrl.value,
+                category: catCtrl.value, // New Field
+                date: new Date().toLocaleDateString()
+            };
+
+            transactions.push(transaction);
+            addTransactionDOM(transaction);
+            updateValues();
+            updateLocalStorage();
+
+            textCtrl.value = '';
+            amountCtrl.value = '';
+        }
+
+        // Generate ID
+        function generateID() {
+            return Math.floor(Math.random() * 100000000);
+        }
+
+        // Add to DOM
+        function addTransactionDOM(transaction) {
+            if(emptyMsg) emptyMsg.style.display = 'none';
+
+            const sign = transaction.amount < 0 ? '-' : '+';
+            const cssClass = transaction.amount < 0 ? 'minus' : 'plus';
+            const absAmount = Math.abs(transaction.amount).toFixed(2);
+            
+            // Icon based on category
+            let iconName = 'dollar-sign';
+            if (transaction.category === 'Sales') iconName = 'trending-up';
+            if (transaction.category === 'Rent') iconName = 'home';
+            if (transaction.category === 'Utilities') iconName = 'zap';
+            if (transaction.category === 'Supplies') iconName = 'package';
+            if (transaction.category === 'Travel') iconName = 'truck';
+
+            const item = document.createElement('div');
+            item.classList.add('transaction-item');
+
+            item.innerHTML = `
+                <div style="display:flex; gap:12px; align-items:center;">
+                    <div style="background:#f3f4f6; padding:8px; border-radius:50%; color:#666;">
+                        <i data-feather="${iconName}" style="width:16px; height:16px;"></i>
+                    </div>
+                    <div class="t-info">
+                        <h4>${transaction.text}</h4>
+                        <span class="t-cat-badge">${transaction.category}</span>
+                        <span style="font-size:0.8rem; margin-top:2px;">${transaction.date}</span>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center;">
+                    <span class="t-amount ${cssClass}">${sign}$${absAmount}</span>
+                    <button class="delete-btn" onclick="removeTransaction(${transaction.id})">
+                        <i data-feather="x-circle" style="width:18px;"></i>
+                    </button>
+                </div>
+            `;
+
+            list.prepend(item); // Add to top of list
+            feather.replace(); 
+        }
+
+        // Update Balance, Income, Expense & Progress Bar
+        function updateValues() {
+            const amounts = transactions.map(t => t.amount);
+            const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
+            
+            const income = amounts.filter(item => item > 0).reduce((acc, item) => (acc += item), 0);
+            const expense = (amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) * -1);
+
+            balanceEl.innerText = `$${total}`;
+            incomeEl.innerText = `$${income.toFixed(2)}`;
+            expenseEl.innerText = `$${expense.toFixed(2)}`;
+            
+            countDisplay.innerText = `${transactions.length} items`;
+
+            // Update Health Bar
+            const totalFlow = income + expense;
+            if(totalFlow === 0) {
+                barIncome.style.width = '50%';
+                barExpense.style.width = '50%';
+            } else {
+                const incPct = (income / totalFlow) * 100;
+                const expPct = (expense / totalFlow) * 100;
+                barIncome.style.width = `${incPct}%`;
+                barExpense.style.width = `${expPct}%`;
+            }
+        }
+
+        // Remove Transaction
+        function removeTransaction(id) {
+            transactions = transactions.filter(t => t.id !== id);
+            updateLocalStorage();
+            init();
+        }
+
+        // Update Local Storage
+        function updateLocalStorage() {
+            localStorage.setItem('riska_transactions', JSON.stringify(transactions));
+        }
+
+        // Export to Excel / CSV
+        function exportToCSV() {
+            if(transactions.length === 0) {
+                alert("No transactions to export.");
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Date,Description,Category,Type,Amount\n"; // Header
+
+            transactions.forEach(t => {
+                const row = `${t.date},"${t.text}",${t.category},${t.type},${t.amount}`;
+                csvContent += row + "\r\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "riskas_finance_report.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Init App
+        function init() {
+            list.innerHTML = '';
+            if(transactions.length === 0) {
+                list.appendChild(emptyMsg);
+                emptyMsg.style.display = 'block';
+            } else {
+                transactions.forEach(addTransactionDOM);
+            }
+            updateValues();
+        }
+
+        form.addEventListener('submit', addTransaction);
+        init();
+    </script>
 </body>
 </html>
