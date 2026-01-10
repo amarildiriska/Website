@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S3WPM2ECG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-7S3WPM2ECG');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.80">
+    <title>Riska's Fixed Assets - Professional Asset Management</title>
+    
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.css">
+    
+    <style>
+        /* --- CUSTOM STYLES FOR SOFTWARE PAGE --- */
+        
+        /* The Professional Blue Background */
+        .software-hero {
+            background-color: #0B1B32; /* Deep Navy */
+            color: white;
+            padding: 6rem 0 5rem;
+            text-align: center;
+            position: relative;
+            /* Ensure content sits above the particles */
+            z-index: 1; 
+        }
+
+        /* Container for the particle animation */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            /* Places it behind the content but in front of the bg color */
+            z-index: -1; 
+        }
+
+        .software-hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .software-badge {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .software-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .software-hero p {
+            font-size: 1.25rem;
+            color: #d0d6e0;
+            max-width: 750px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
+        }
+
+        /* The specific Orange Button */
+        .btn-software {
+            background-color: #E85D04; 
+            color: white;
+            padding: 14px 36px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 4px 14px rgba(232, 93, 4, 0.3);
+        }
+        
+        .btn-software:hover {
+            background-color: #ff6a00;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(232, 93, 4, 0.4);
+        }
+
+        .software-mockup {
+            margin-top: 4rem;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            max-width: 100%;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Feature Cards Styling */
+        .feature-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .feature-box {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid #eef0f3;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .icon-square {
+            width: 56px;
+            height: 56px;
+            background: #FFF0E6; /* Light orange tint */
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: #E85D04;
+        }
+
+        /* Top Border Accents */
+        .accent-orange { border-top: 4px solid #E85D04; }
+        .accent-navy { border-top: 4px solid #0B1B32; }
+
+        /* Pricing Card */
+        .pricing-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 3.5rem;
+            text-align: center;
+            border-top: 6px solid #0B1B32;
+            position: relative;
+        }
+
+        .best-value-pill {
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0B1B32;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Checkmark List Styling */
+        .check-list {
+            text-align: left;
+            margin: 2rem 0;
+            list-style: none;
+            padding: 0;
+        }
+
+        .check-list li {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+            color: #4a5568;
+            font-size: 1rem;
+        }
+
+        .check-list li::before {
+            content: "✔"; 
+            position: absolute;
+            left: 0;
+            color: #E85D04; /* Orange checkmarks */
+            font-weight: 800;
+        }
+
+        @media (max-width: 768px) {
+            .software-hero h1 { font-size: 2.25rem; }
+            .software-hero { padding: 4rem 0; }
+            .feature-list-cols { grid-template-columns: 1fr !important; }
+        }
+    </style>
+</head>
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a class="nav-brand" href="index.html" aria-label="Riska's Finance Home">
+        <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo">
+        <span class="brand-text">Riska's Finance</span>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
+        <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+        <li class="nav-item"><a href="steps.html" class="nav-link">Steps to Financial Success</a></li>
+        <li class="nav-item"><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li class="nav-item"><a href="tax-filing.html" class="nav-link">File Taxes</a></li>
+        <li class="nav-item"><a href="fixedassets.html" class="nav-link active" style="color: #E85D04;">Fixed Assets</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+    <main>
+        <section class="software-hero">
+            <div id="particles-js"></div>
+
+            <div class="container software-hero-content">
+                <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                    <div class="software-badge">
+                        <i data-feather="monitor" style="width:16px;"></i> Windows Version 2026.1 Available
+                    </div>
+                    <div class="software-badge" style="background: rgba(0,0,0,0.2); border-color: rgba(255,255,255,0.1); color: #8899a6;">
+                        <i data-feather="loader" style="width:16px;"></i> Mac Coming Soon
+                    </div>
+                </div>
+
+                <h1>Professional Asset<br>Management for CPAs</h1>
+                <p>The comprehensive solution for depreciation, tax compliance, and IRS form generation. Built by accountants, for accountants.</p>
+                
+                <a href="https://riskafiance.github.io/RiskaFixedAsset/" class="btn-software" target="_blank" rel="noopener noreferrer">Learn More</a>
+                
+                <div style="padding: 0 1rem;">
+                    <img src="attached_assets/software.png" alt="Riska's Fixed Assets Dashboard Software Interface" class="software-mockup">
+                </div>
+            </div>
+        </section>
+
+        <section style="padding: 6rem 0; background-color: #f8f9fa;">
+            <div class="container">
+                <div style="text-align: center; margin-bottom: 4rem;">
+                    <h2 class="section-title">Why Choose Riska's Fixed Assets?</h2>
+                    <p style="color: #666; font-size: 1.1rem;">We combine enterprise-grade calculations with a user-friendly interface.</p>
+                </div>
+
+                <div class="feature-grid-3">
+                    <div class="feature-box">
+                        <div class="icon-square"><i data-feather="users"></i></div>
+                        <h3>Multi-Client Ready</h3>
+                        <p style="color:#666; line-height: 1.6;">Create separate .rfa files for unlimited clients. Features isolated databases and a "Recent Files" menu for quick switching.</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="icon-square"><i data-feather="grid"></i></div>
+                        <h3>12 Depreciation Methods</h3>
+                        <p style="color:#666; line-height: 1.6;">Includes MACRS (200, 150, SL), ACRS, Straight-Line, AMT, ACE, and Book. Supports 50 State-specific depreciation books.</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="icon-square"><i data-feather="shield"></i></div>
+                        <h3>Audit Defense</h3>
+                        <p style="color:#666; line-height: 1.6;">Year-End Close Wizard locks prior periods to prevent historical data changes. Full audit trail tracks every creation and update.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section style="padding: 6rem 0; background-color: white;">
+            <div class="container">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <span style="background:#E0E7FF; color:#0B1B32; padding:6px 16px; border-radius:20px; font-size:0.8rem; font-weight:700; letter-spacing: 0.05em;">COMPLIANCE FIRST</span>
+                </div>
+                <div style="text-align: center; margin-bottom: 4rem;">
+                    <h2 class="section-title">Automated IRS Logic</h2>
+                    <p style="color: #666; font-size: 1.1rem;">Stop worrying about manual calculations and rule checks. We handle the heavy lifting.</p>
+                </div>
+
+                <div class="feature-grid-3">
+                    <div class="feature-box accent-orange">
+                        <div class="icon-square"><i data-feather="tool"></i></div>
+                        <h3>Mid-Quarter Auto-Fix</h3>
+                        <p style="color:#666; line-height: 1.6;">The system automatically detects if Q4 additions exceed 40% and adjusts conventions instantly to ensure compliance.</p>
+                    </div>
+                    <div class="feature-box accent-navy">
+                        <div class="icon-square"><i data-feather="percent"></i></div>
+                        <h3>Section 179 Logic</h3>
+                        <p style="color:#666; line-height: 1.6;">Automatic phase-out calculations and eligibility checking based on asset life and method. Includes bonus depreciation toggle.</p>
+                    </div>
+                    <div class="feature-box accent-orange">
+                        <div class="icon-square"><i data-feather="file-text"></i></div>
+                        <h3>Tax Forms Ready</h3>
+                        <p style="color:#666; line-height: 1.6;">Generate IRS Form 4562 (Depreciation & Amortization) and Form 4797 (Sales of Business Property) instantly.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section style="padding: 6rem 0; background-color: #f8f9fa;">
+            <div class="container">
+                <h2 class="section-title" style="text-align: center; margin-bottom: 4rem;">Complete Feature List</h2>
+                
+                <div class="feature-list-cols" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1000px; margin: 0 auto;">
+                    
+                    <div style="background: white; padding: 2rem; border-radius: 12px; border: 1px solid #eee;">
+                        <h3 style="color: #0B1B32; margin-bottom: 1.5rem; display:flex; align-items:center; gap:10px;">
+                            <i data-feather="pie-chart" style="color:#E85D04;"></i> Reporting
+                        </h3>
+                        <ul class="check-list">
+                            <li>Fixed Asset Summary & Detail Reports (PDF)</li>
+                            <li>Depreciation Schedules & Projections</li>
+                            <li>Journal Entry Reports (Monthly/Annual)</li>
+                            <li>Category & Location Summaries</li>
+                            <li>Multi-Book Comparison Reports</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: white; padding: 2rem; border-radius: 12px; border: 1px solid #eee;">
+                        <h3 style="color: #0B1B32; margin-bottom: 1.5rem; display:flex; align-items:center; gap:10px;">
+                            <i data-feather="sliders" style="color:#E85D04;"></i> Tools & Usability
+                        </h3>
+                        <ul class="check-list">
+                            <li>CSV Import/Export capabilities</li>
+                            <li>Asset Photo Management & Warranty Tracking</li>
+                            <li>Tax Projection Dashboard (10-Year Forecast)</li>
+                            <li>Dark Mode & Customizable Columns</li>
+                            <li>Professional Tkinter GUI</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" style="padding: 6rem 0; background-color: white;">
+            <div class="container">
+                <div style="text-align: center; margin-bottom: 4rem;">
+                    <h2 class="section-title">Simple, Transparent Pricing</h2>
+                    <p style="color: #666; font-size: 1.1rem;">One license, unlimited clients.</p>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="best-value-pill">Best Value</div>
+                    <h3 style="color: #0B1B32; margin-bottom: 0.5rem; font-size: 1.25rem;">Annual License</h3>
+                    <div style="font-size: 4rem; font-weight: 800; color: #0B1B32; margin-bottom: 0.5rem; letter-spacing: -2px;">
+                        $199 <span style="font-size: 1.1rem; color: #8899a6; font-weight: 400; letter-spacing: normal;">/ year</span>
+                    </div>
+                    
+                    <hr style="border: 0; border-top: 1px solid #eee; margin: 2rem 0;">
+
+                    <ul class="check-list" style="margin-bottom: 2.5rem;">
+                        <li>Unlimited Clients & Assets</li>
+                        <li>Federal & State Tax Updates</li>
+                        <li>All 12 Depreciation Methods</li>
+                        <li>Priority Email Support</li>
+                    </ul>
+                    <a href="https://riskafiance.github.io/RiskaFixedAsset/purchase.html" target="_blank" rel="noopener noreferrer" class="btn-software" style="width: 100%; display: block; text-align: center;">Buy License Now</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-copyright">© 2025 Riska's Finance. All rights reserved.</p>
+                <div class="footer-contact">
+                    <p><strong>Address:</strong> 614 Crawford Ave, Dixon IL, 61021</p>
+                    <p><strong>Phone:</strong> +1 (815) 677-5807</p>
+                    <p><strong>Email:</strong> Riskas.finances@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/animations.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>feather.replace();</script>
+    
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Initialize the particle animation with thicker, clearer settings
+        particlesJS('particles-js', {
+          "particles": {
+            "number": {
+              "value": 60,
+              "density": {
+                "enable": true,
+                "value_area": 800
+              }
+            },
+            "color": {
+              "value": "#ffffff"
+            },
+            "shape": {
+              "type": "circle",
+            },
+            "opacity": {
+              "value": 0.5,
+              "random": true,
+            },
+            "size": {
+              "value": 6,
+              "random": true,
+            },
+            "line_linked": {
+              "enable": true,
+              "distance": 150,
+              "color": "#ffffff",
+              "opacity": 0.4,
+              "width": 2
+            },
+            "move": {
+              "enable": true,
+              "speed": 1,
+              "direction": "none",
+              "random": false,
+              "straight": false,
+              "out_mode": "out",
+              "bounce": false,
+            }
+          },
+          "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+              "onhover": {
+                "enable": true,
+                "mode": "grab"
+              },
+              "onclick": {
+                "enable": true,
+                "mode": "push"
+              },
+              "resize": true
+            },
+            "modes": {
+              "grab": {
+                "distance": 140,
+                "line_linked": {
+                  "opacity": 0.5
+                }
+              }
+            }
+          },
+          "retina_detect": true
+        });
+    </script>
+</body>
+</html>
