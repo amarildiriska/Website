@@ -95,7 +95,7 @@
                                 <circle cx="40" cy="30" r="15" fill="#FFF" stroke="#333" stroke-width="1"/>
                                 <path d="M35 25 L40 30 L45 20" stroke="#FF6B35" stroke-width="2" fill="none"/>
                                 <rect x="25" y="45" width="30" height="8" rx="4" fill="#333"/>
-                  
+                   
                         </div>
                         <h3 class="service-title">Building Your Financial Future</h3>
                         <p class="service-description">
@@ -123,12 +123,40 @@
             </div>
         </section>
 
+        <section style="background-color: #0f172a; color: white; padding: 60px 0; font-family: 'Inter', sans-serif;">
+          <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; flex-wrap: wrap; gap: 40px;">
+            
+            <div style="flex: 1; min-width: 300px;">
+              <span style="background-color: #e65100; color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">New Release</span>
+              
+              <h2 style="font-size: 36px; font-weight: 700; margin: 20px 0 15px 0;">Professional Asset Management for CPAs</h2>
+              
+              <p style="font-size: 18px; line-height: 1.6; color: #cbd5e1; margin-bottom: 30px;">
+                We've packaged our internal depreciation engine into a powerful desktop application. 
+                Handle MACRS, AMT, and State books with audit-ready compliance.
+              </p>
+              
+              <div style="display: flex; gap: 15px;">
+                <a href="fixedassets.html" style="background-color: #f97316; color: white; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; transition: background 0.2s;">
+                  View Features
+                </a>
+               
+                </a>
+              </div>
+            </div>
+
+            <div style="flex: 1; min-width: 300px;">
+              <img src="attached_assets/software.png" alt="Riska's Fixed Assets Software Interface" style="width: 100%; border-radius: 8px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);">
+            </div>
+
+          </div>
+        </section>
         <section class="financial-news" style="padding: 4rem 0; background-color: #f8f9fa;">
             <div class="container">
                 <h2 class="section-title" style="margin-bottom: 2rem;">Financial Insights & Market News</h2>
                  
                 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start;">
-                     
+                      
                     <div class="news-feed-container" style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); height: 600px;">
                         <div class="tradingview-widget-container">
                             <div class="tradingview-widget-container__widget"></div>
@@ -148,7 +176,7 @@
                         </div>
 
                     <div class="tax-resources" style="display: flex; flex-direction: column; gap: 1.5rem;">
-                         
+                          
                         <article class="resource-card" style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 4px solid #FF6B35;">
                             <h3 style="margin-top:0; font-size: 1.1rem; color: #333;">🏛️ Official IRS Newsroom</h3>
                             <p style="font-size: 0.9rem; color: #666; line-height: 1.5;">Stay updated with the latest official announcements, tax inflation adjustments, and filing season deadlines directly from the IRS.</p>
@@ -193,11 +221,11 @@
                 </div>
 
                 <div class="calculator-card" style="max-width: 800px; margin: 0 auto; background: #f8f9fa; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                     
+                      
                     <div class="calc-inputs">
                         <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Annual Taxable Income ($)</label>
                         <input type="number" id="incomeInput" placeholder="e.g. 75000" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; margin-bottom: 1.5rem;">
-                         
+                          
                         <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Filing Status</label>
                         <select id="statusInput" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; margin-bottom: 1.5rem; background: white;">
                             <option value="single">Single Filer</option>
@@ -219,7 +247,7 @@
                             <span style="display: block; font-size: 0.9rem; color: #666; margin-bottom: 5px;">Estimated Federal Tax</span>
                             <span id="totalTaxDisplay" style="display: block; font-size: 2rem; font-weight: 700; color: #333;">$0.00</span>
                         </div>
-                         
+                          
                         <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
                             <span style="color: #666;">Top Marginal Bracket:</span>
                             <span id="bracketDisplay" style="font-weight: 600; color: #FF6B35;">0%</span>
@@ -247,7 +275,7 @@
                     if (isNaN(dependents) || dependents < 0) {
                         dependents = 0;
                     }
-                     
+                      
                     if (!income || income < 0) {
                         alert("Please enter a valid income amount.");
                         return;
@@ -296,7 +324,7 @@
                     for (let i = 0; i < brackets.length; i++) {
                         const bracket = brackets[i];
                         const spread = bracket.limit - previousLimit;
-                         
+                          
                         if (income > bracket.limit) {
                             tax += spread * bracket.rate;
                             previousLimit = bracket.limit;
@@ -323,7 +351,7 @@
                     // Update UI
                     document.getElementById('totalTaxDisplay').innerText = '$' + tax.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
                     document.getElementById('bracketDisplay').innerText = (topBracket * 100).toFixed(0) + '%';
-                     
+                      
                     let effectiveRate = 0;
                     if (income > 0) {
                         effectiveRate = (tax / income) * 100;
