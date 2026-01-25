@@ -6,7 +6,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-7S3WPM2ECG');
     </script>
 
@@ -18,42 +17,199 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.css">
+    
+    <style>
+        /* --- PRINT / PDF STYLING --- */
+        .print-header { display: none; }
+
+        @media print {
+            @page { margin: 0.75in; size: letter; }
+            body { 
+                background: white; 
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Cleaner, professional font */
+                color: #333; 
+                margin: 0;
+                line-height: 1.5;
+            }
+
+            /* HIDE WEBSITE UI ELEMENTS */
+            .header, .hero, .welcome, .services, .financial-news, 
+            .schedule, .press-coverage, .footer, .calc-inputs, 
+            .software-promo, button { 
+                display: none !important; 
+            }
+
+            .financial-tools { 
+                padding: 0 !important; 
+                background: white !important; 
+                margin: 0 !important;
+            }
+            .section-title, .financial-tools p { display: none; }
+
+            /* --- PROFESSIONAL STATEMENT HEADER --- */
+            .print-header {
+                display: flex !important;
+                justify-content: space-between;
+                align-items: flex-start;
+                border-bottom: 3px solid #333; /* Thicker, bolder line */
+                padding-bottom: 25px;
+                margin-bottom: 40px;
+                width: 100%;
+            }
+
+            .print-header-left { 
+                text-align: left; 
+            }
+            .print-header-right { 
+                text-align: right; 
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            
+            .print-logo { 
+                height: 50px; 
+                margin-bottom: 15px; 
+                display: block;
+            }
+            
+            .company-name {
+                font-size: 14pt;
+                font-weight: 700;
+                color: #000;
+                margin: 0;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .company-details {
+                font-size: 10pt;
+                color: #555;
+                margin-top: 5px;
+            }
+
+            .doc-title { 
+                font-size: 24pt; 
+                font-weight: 300; /* Light, elegant weight */
+                text-transform: uppercase; 
+                letter-spacing: 2px; 
+                margin: 0; 
+                color: #000;
+            }
+            .doc-meta { 
+                font-size: 9pt; 
+                color: #777; 
+                margin-top: 8px; 
+            }
+
+            /* --- STATEMENT BODY --- */
+            .calculator-card {
+                box-shadow: none !important;
+                border: none !important;
+                background: transparent !important;
+                display: block !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            
+            .calc-results {
+                border: none !important;
+                padding: 0 !important;
+                background: transparent !important;
+            }
+
+            /* Data Rows */
+            .result-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 0;
+                border-bottom: 1px solid #e0e0e0; /* Subtle divider */
+                font-size: 11pt;
+            }
+            
+            /* Labels */
+            .result-row span:first-child {
+                color: #444;
+                font-weight: 500;
+            }
+            
+            /* Values */
+            .result-row span:last-child {
+                color: #000;
+                font-weight: 600;
+                font-family: 'Courier New', Courier, monospace; /* Monospace aligns numbers nicely */
+                font-size: 12pt;
+            }
+
+            /* The "Total" Box */
+            .result-row.main-total {
+                margin-top: 30px;
+                border-top: 2px solid #000;
+                border-bottom: 4px double #000; /* Classic Accounting Double Underline */
+                padding: 20px 0;
+                background-color: #f9f9f9; /* Slight highlight for the total */
+                -webkit-print-color-adjust: exact; /* Ensure color prints */
+            }
+
+            .result-row.main-total span:first-child {
+                font-size: 14pt;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+            
+            .result-row.main-total span:last-child {
+                font-size: 18pt;
+                font-weight: 700;
+            }
+
+            .disclaimer {
+                margin-top: 60px;
+                font-size: 8pt;
+                color: #888;
+                text-align: center;
+                border-top: 1px solid #eee;
+                padding-top: 15px;
+                font-style: italic;
+            }
+        }
+    </style>
 </head>
 <body>
-      <header class="header">
-    <nav class="nav">
-      <a class="nav-brand" href="index.html" aria-label="Riska's Finance Home">
-        <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo">
-        <span class="brand-text">Riska's Finance</span>
-      </a>
-      <ul class="nav-menu" id="nav-menu">
-        <li class="nav-item"><a href="index.html" class="nav-link active">Home</a></li>
-        <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
-        <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-        <li class="nav-item"><a href="steps.html" class="nav-link">Steps to Financial Success</a></li>
-        <li class="nav-item"><a href="dashboard.html" class="nav-link">Dashboard</a></li>
-        <li class="nav-item"><a href="tax-filing.html" class="nav-link">File Taxes</a></li>
-        <li class="nav-item"><a href="fixedassets.html" class="nav-link">Fixed Assets</a></li>
-      </ul>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-menu">
-        <span></span><span></span><span></span>
-      </button>
-    </nav>
-  </header>
+
+    <header class="header">
+        <nav class="nav">
+            <a class="nav-brand" href="index.html" aria-label="Riska's Finance Home">
+                <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo">
+                <span class="brand-text">Riska's Finance</span>
+            </a>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link active">Home</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                <li class="nav-item"><a href="steps.html" class="nav-link">Steps to Financial Success</a></li>
+                <li class="nav-item"><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+                <li class="nav-item"><a href="tax-filing.html" class="nav-link">File Taxes</a></li>
+                <li class="nav-item"><a href="fixedassets.html" class="nav-link">Fixed Assets</a></li>
+            </ul>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-menu">
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+    </header>
 
     <main>
         <section class="hero" style="background: url('attached_assets/backround.png') no-repeat center center/cover; position: relative; height: 50vh; color: white;">
             <div class="hero-content">
                 <h1 class="hero-title">Riska's Finance</h1>
-                </div>
+            </div>
         </section>
 
         <section class="welcome">
             <div class="container">
                 <div class="welcome-content">
-        
-        <a href="#schedule" class="hero-cta-button">Schedule an Appointment</a>
-         </p>
+                    <a href="#schedule" class="hero-cta-button">Schedule an Appointment</a>
                     <p class="welcome-text">
                         Welcome to <strong>Riska's Finance</strong>! We provide personalized Accounting, Bookkeeping, Business & Individual Tax Services, and Payroll Services 
                         tailored to your needs. Our goal is to build lasting relationships while helping you achieve your financial goals with confidence. Come visit us, and 
@@ -69,17 +225,7 @@
                 <div class="services-grid">
                     <article class="service-card">
                         <div class="service-icon">
-            <img src="attached_assets/book.png" 
-                            <style width="120" height="90" viewBox="0 0 80 60" 
-                                <rect x="10" y="10" width="60" height="40" rx="4" fill="#F5F5F5" stroke="#CCC"/>
-                                <rect x="15" y="5" width="60" height="40" rx="4" fill="#FFF" stroke="#CCC"/>
-                                <rect x="20" y="0" width="60" height="40" rx="4" fill="#FFF" stroke="#333"/>
-                                <line x1="25" y1="10" x2="65" y2="10" stroke="#333" stroke-width="1"/>
-                                <line x1="25" y1="15" x2="55" y2="15" stroke="#333" stroke-width="1"/>
-                                <line x1="25" y1="20" x2="70" y2="20" stroke="#333" stroke-width="1"/>
-                                <line x1="25" y1="25" x2="50" y2="25" stroke="#333" stroke-width="1"/>
-                                <line x1="25" y1="30" x2="65" y2="30" stroke="#333" stroke-width="1"/>
-                            
+                            <img src="attached_assets/book.png" alt="Bookkeeping" style="max-width: 100px;">
                         </div>
                         <h3 class="service-title">Accounting and Bookkeeping</h3>
                         <p class="service-description">
@@ -89,13 +235,7 @@
 
                     <article class="service-card">
                         <div class="service-icon">
-                            <img src="attached_assets/lamp.png"
-                <style width="120" height="90" viewBox="0 0 120 90"
-                                <circle cx="40" cy="30" r="25" fill="#F5F5F5" stroke="#333" stroke-width="2"/>
-                                <circle cx="40" cy="30" r="15" fill="#FFF" stroke="#333" stroke-width="1"/>
-                                <path d="M35 25 L40 30 L45 20" stroke="#FF6B35" stroke-width="2" fill="none"/>
-                                <rect x="25" y="45" width="30" height="8" rx="4" fill="#333"/>
-                   
+                            <img src="attached_assets/lamp.png" alt="Investments" style="max-width: 100px;">
                         </div>
                         <h3 class="service-title">Building Your Financial Future</h3>
                         <p class="service-description">
@@ -105,14 +245,7 @@
 
                     <article class="service-card">
                         <div class="service-icon">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMOJJ6UiJPVBDJV-sQ6UdRSDcLvnGhxnVD7mo98UXLlH1-rXhY"
-                <style width="120" height="90" viewBox="0 0 120 90"
-                                <rect x="15" y="15" width="50" height="30" rx="4" fill="#FFF" stroke="#333" stroke-width="2"/>
-                                <path d="M20 25 L35 25 M20 30 L45 30 M20 35 L40 35" stroke="#333" stroke-width="1"/>
-                                <circle cx="55" cy="20" r="8" fill="#FF6B35"/>
-                                <path d="M50 20 L55 25 L60 15" stroke="#FFF" stroke-width="2" fill="none"/>
-                                <rect x="45" y="35" width="25" height="3" rx="1.5" fill="#333"/>
-                            
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMOJJ6UiJPVBDJV-sQ6UdRSDcLvnGhxnVD7mo98UXLlH1-rXhY" alt="Tax Prep" style="max-width: 100px;">
                         </div>
                         <h3 class="service-title">Tax Planning and Tax Preparation</h3>
                         <p class="service-description">
@@ -123,40 +256,31 @@
             </div>
         </section>
 
-        <section style="background-color: #0f172a; color: white; padding: 60px 0; font-family: 'Inter', sans-serif;">
-          <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; flex-wrap: wrap; gap: 40px;">
-            
-            <div style="flex: 1; min-width: 300px;">
-              <span style="background-color: #e65100; color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">New Release</span>
-              
-              <h2 style="font-size: 36px; font-weight: 700; margin: 20px 0 15px 0;">Professional Asset Management</h2>
-              
-              <p style="font-size: 18px; line-height: 1.6; color: #cbd5e1; margin-bottom: 30px;">
-                We've packaged our internal depreciation engine into a powerful desktop application. 
-                Handle MACRS, AMT, and State books with audit-ready compliance.
-              </p>
-              
-              <div style="display: flex; gap: 15px;">
-                <a href="fixedassets.html" style="background-color: #f97316; color: white; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; transition: background 0.2s;">
-                  View Features
-                </a>
-               
-                </a>
-              </div>
+        <section class="software-promo" style="background-color: #0f172a; color: white; padding: 60px 0; font-family: 'Inter', sans-serif;">
+            <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; flex-wrap: wrap; gap: 40px;">
+                <div style="flex: 1; min-width: 300px;">
+                    <span style="background-color: #e65100; color: white; padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">New Release</span>
+                    <h2 style="font-size: 36px; font-weight: 700; margin: 20px 0 15px 0;">Professional Asset Management</h2>
+                    <p style="font-size: 18px; line-height: 1.6; color: #cbd5e1; margin-bottom: 30px;">
+                        We've packaged our internal depreciation engine into a powerful desktop application. 
+                        Handle MACRS, AMT, and State books with audit-ready compliance.
+                    </p>
+                    <div style="display: flex; gap: 15px;">
+                        <a href="fixedassets.html" style="background-color: #f97316; color: white; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; transition: background 0.2s;">
+                            View Features
+                        </a>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 300px;">
+                    <img src="attached_assets/software.png" alt="Riska's Fixed Assets Software Interface" style="width: 100%; border-radius: 8px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);">
+                </div>
             </div>
-
-            <div style="flex: 1; min-width: 300px;">
-              <img src="attached_assets/software.png" alt="Riska's Fixed Assets Software Interface" style="width: 100%; border-radius: 8px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);">
-            </div>
-
-          </div>
         </section>
+
         <section class="financial-news" style="padding: 4rem 0; background-color: #f8f9fa;">
             <div class="container">
                 <h2 class="section-title" style="margin-bottom: 2rem;">Financial Insights & Market News</h2>
-                 
                 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start;">
-                      
                     <div class="news-feed-container" style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); height: 600px;">
                         <div class="tradingview-widget-container">
                             <div class="tradingview-widget-container__widget"></div>
@@ -173,93 +297,119 @@
                             }
                             </script>
                         </div>
-                        </div>
+                    </div>
 
                     <div class="tax-resources" style="display: flex; flex-direction: column; gap: 1.5rem;">
-                          
                         <article class="resource-card" style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 4px solid #FF6B35;">
                             <h3 style="margin-top:0; font-size: 1.1rem; color: #333;">🏛️ Official IRS Newsroom</h3>
                             <p style="font-size: 0.9rem; color: #666; line-height: 1.5;">Stay updated with the latest official announcements, tax inflation adjustments, and filing season deadlines directly from the IRS.</p>
                             <a href="https://www.irs.gov/newsroom" target="_blank" style="color: #FF6B35; text-decoration: none; font-weight: 600; font-size: 0.9rem;">Read IRS Updates &rarr;</a>
                         </article>
-
                         <article class="resource-card" style="background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 4px solid #333;">
                             <h3 style="margin-top:0; font-size: 1.1rem; color: #333;">📊 Tax Policy & Data</h3>
                             <p style="font-size: 0.9rem; color: #666; line-height: 1.5;">Understand how tax policies affect your business and investments with independent analysis and data.</p>
                             <a href="https://taxfoundation.org/" target="_blank" style="color: #333; text-decoration: none; font-weight: 600; font-size: 0.9rem;">View Tax Data &rarr;</a>
                         </article>
-
                         <article class="resource-card" style="background: #333; color: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
                             <h3 style="margin-top:0; font-size: 1.1rem; color: white;">Need clarification?</h3>
                             <p style="font-size: 0.9rem; color: #ccc; line-height: 1.5;">Tax laws change every year. Don't guess—let us explain how these news updates apply to your specific situation.</p>
                             <a href="#schedule" style="display: inline-block; margin-top: 10px; background: #FF6B35; color: white; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 0.85rem;">Book a Consultation</a>
                         </article>
-
                     </div>
                 </div>
             </div>
-             
             <style>
                 @media (max-width: 768px) {
-                    .financial-news > .container > div {
-                        grid-template-columns: 1fr !important; /* Stack columns on mobile */
-                    }
-                    .news-feed-container {
-                        height: 500px !important;
-                    }
+                    .financial-news > .container > div { grid-template-columns: 1fr !important; }
+                    .news-feed-container { height: 500px !important; }
                 }
             </style>
         </section>
+
         <section class="financial-tools" style="padding: 4rem 0; background-color: white;">
+            
+            <div class="print-header">
+                <div class="print-header-left">
+                    <img src="attached_assets/Capture1.png" alt="Riska's Finance" class="print-logo">
+                    <div class="company-name">Riska's Finance LLP</div>
+                    <div class="company-details">614 Crawford Ave, Dixon IL, 61021</div>
+                    <div class="company-details">+1 (815) 677-5807</div>
+                </div>
+                <div class="print-header-right">
+                    <h1 class="doc-title">2025 Tax Estimate</h1>
+                    <div class="doc-meta">DATE: <span id="printDate"></span></div>
+                    <div class="doc-meta">REF: WEB-EST-2025</div>
+                </div>
+            </div>
+
             <div class="container">
                 <div style="text-align: center; margin-bottom: 3rem;">
                     <h2 class="section-title">2025 Tax Estimator</h2>
                     <p style="color: #666; max-width: 600px; margin: 0 auto;">
-                        Curious about your tax bracket? Use our estimator to see your projected Federal Tax liability and effective tax rate. 
+                        Calculate your 2025 liability. We automatically apply the updated <strong>2025 Standard Deductions</strong> ($15,750 Single, $31,500 Married, $23,625 Head).
                         <em>(For planning purposes only. Contact us for precise calculations.)</em>
                     </p>
                 </div>
 
-                <div class="calculator-card" style="max-width: 800px; margin: 0 auto; background: #f8f9fa; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                      
+                <div class="calculator-card" style="max-width: 900px; margin: 0 auto; background: #f8f9fa; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    
                     <div class="calc-inputs">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Annual Taxable Income ($)</label>
-                        <input type="number" id="incomeInput" placeholder="e.g. 75000" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; margin-bottom: 1.5rem;">
-                          
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Total Annual Gross Income ($)</label>
+                        <input type="number" id="incomeInput" placeholder="Total Income (W2, 1099, etc)" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; margin-bottom: 1.5rem;">
+                        
                         <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Filing Status</label>
-                        <select id="statusInput" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; margin-bottom: 1.5rem; background: white;">
+                        <select id="statusInput" onchange="toggleItemizedHint()" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; margin-bottom: 1.5rem; background: white;">
                             <option value="single">Single Filer</option>
                             <option value="married">Married Filing Jointly</option>
                             <option value="head">Head of Household</option>
                         </select>
+
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Itemized Deductions ($) <span style="font-weight: 400; font-size: 0.8rem; color: #666;">(Optional)</span></label>
+                        <input type="number" id="itemizedInput" placeholder="Only if higher than standard" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; margin-bottom: 0.5rem;">
+                        <p id="deductionHint" style="font-size: 0.75rem; color: #d9480f; margin-bottom: 1.5rem; font-style: italic;">Standard Deduction applied: $15,750</p>
 
                         <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333;">Number of Dependents</label>
                         <input type="number" id="dependentsInput" placeholder="0" min="0" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; margin-bottom: 0.5rem;">
                         <p style="font-size: 0.8rem; color: #666; margin-bottom: 2rem; font-style: italic;">*Estimates a $2,000 credit per qualifying dependent.</p>
 
                         <button onclick="calculateTax()" style="width: 100%; background-color: #FF6B35; color: white; border: none; padding: 14px; font-size: 1rem; font-weight: 600; border-radius: 6px; cursor: pointer; transition: background 0.3s;">
-                            Calculate My Estimate
+                            Calculate Estimate
                         </button>
                     </div>
 
-                    <div class="calc-results" style="background: white; border-radius: 8px; padding: 1.5rem; border: 1px solid #eee;">
-                        <div style="margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
-                            <span style="display: block; font-size: 0.9rem; color: #666; margin-bottom: 5px;">Estimated Federal Tax</span>
-                            <span id="totalTaxDisplay" style="display: block; font-size: 2rem; font-weight: 700; color: #333;">$0.00</span>
+                    <div class="calc-results" style="background: white; border-radius: 8px; padding: 1.5rem; border: 1px solid #eee; display: flex; flex-direction: column; justify-content: center;">
+                        
+                        <div class="result-row">
+                            <span style="color: #666;">Total Annual Gross Income:</span>
+                            <span id="grossIncomeDisplay" style="font-weight: 600;">$0</span>
                         </div>
-                          
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+
+                        <div class="result-row">
+                            <span style="color: #666;">Taxable Income:</span>
+                            <span id="taxableIncomeDisplay" style="font-weight: 600;">$0</span>
+                        </div>
+                        
+                        <div class="result-row">
                             <span style="color: #666;">Top Marginal Bracket:</span>
                             <span id="bracketDisplay" style="font-weight: 600; color: #FF6B35;">0%</span>
                         </div>
 
-                        <div style="display: flex; justify-content: space-between;">
+                        <div class="result-row">
                             <span style="color: #666;">Effective Tax Rate:</span>
                             <span id="effectiveRateDisplay" style="font-weight: 600; color: #333;">0%</span>
                         </div>
+                        
+                        <div class="result-row main-total" style="display: block; border-bottom: 1px solid #eee; padding-bottom: 1rem; margin-bottom: 1rem;">
+                            <span style="display: block; font-size: 0.9rem; color: #666; margin-bottom: 5px;">Estimated Federal Tax</span>
+                            <span id="totalTaxDisplay" style="display: block; font-size: 2.5rem; font-weight: 700; color: #333;">$0.00</span>
+                        </div>
 
-                        <div style="margin-top: 1.5rem; font-size: 0.8rem; color: #999; font-style: italic; line-height: 1.4;">
-                            *Calculations based on 2025 IRS projected brackets. Does not include state taxes. Dependent credits are simplified estimates and are subject to income phase-outs and eligibility requirements.
+                        <button id="saveButton" onclick="window.print()" style="display: none; width: 100%; background-color: #333; color: white; border: none; padding: 10px; font-size: 0.9rem; font-weight: 600; border-radius: 6px; cursor: pointer; margin-bottom: 1rem;">
+                            <i data-feather="download" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 5px;"></i> Save Official Estimate (PDF)
+                        </button>
+
+                        <div class="disclaimer">
+                            *This estimate applies the 2025 IRS projected brackets & updated standard deductions. Does not include state taxes. Final liability should be verified by a professional.
                         </div>
                     </div>
 
@@ -267,107 +417,96 @@
             </div>
 
             <script>
-                function calculateTax() {
-                    const income = parseFloat(document.getElementById('incomeInput').value);
+                // Update Date for Print
+                document.getElementById('printDate').innerText = new Date().toLocaleDateString();
+
+                function toggleItemizedHint() {
                     const status = document.getElementById('statusInput').value;
-                    // Get dependents value, default to 0 if empty or invalid
+                    const hint = document.getElementById('deductionHint');
+                    // Updated 2025 Standard Deductions
+                    const standard = status === 'married' ? 31500 : (status === 'head' ? 23625 : 15750);
+                    hint.innerText = `Standard Deduction applied: $${standard.toLocaleString()}`;
+                }
+
+                function calculateTax() {
+                    const grossIncome = parseFloat(document.getElementById('incomeInput').value);
+                    const itemized = parseFloat(document.getElementById('itemizedInput').value) || 0;
+                    const status = document.getElementById('statusInput').value;
                     let dependents = parseInt(document.getElementById('dependentsInput').value);
-                    if (isNaN(dependents) || dependents < 0) {
-                        dependents = 0;
-                    }
-                      
-                    if (!income || income < 0) {
+                    
+                    if (isNaN(dependents) || dependents < 0) dependents = 0;
+                    
+                    if (!grossIncome || grossIncome < 0) {
                         alert("Please enter a valid income amount.");
                         return;
                     }
 
-                    // 2025 Simplified Brackets
-                    let tax = 0;
-                    let brackets = [];
+                    // 1. Determine Deduction
+                    const standardDeductions = { 
+                        'single': 15750, 
+                        'married': 31500, 
+                        'head': 23625 
+                    };
+                    const deductionToUse = Math.max(standardDeductions[status], itemized);
 
+                    // 2. Calculate Taxable Income
+                    let taxableIncome = grossIncome - deductionToUse;
+                    if (taxableIncome < 0) taxableIncome = 0;
+
+                    // 3. 2025 Tax Brackets
+                    let brackets = [];
                     if (status === 'single') {
-                        brackets = [
-                            { limit: 11925, rate: 0.10 },
-                            { limit: 48475, rate: 0.12 },
-                            { limit: 103350, rate: 0.22 },
-                            { limit: 197300, rate: 0.24 },
-                            { limit: 250525, rate: 0.32 },
-                            { limit: 626350, rate: 0.35 },
-                            { limit: Infinity, rate: 0.37 }
-                        ];
+                        brackets = [{L:11925, R:0.10}, {L:48475, R:0.12}, {L:103350, R:0.22}, {L:197300, R:0.24}, {L:250525, R:0.32}, {L:626350, R:0.35}, {L:Infinity, R:0.37}];
                     } else if (status === 'married') {
-                        brackets = [
-                            { limit: 23850, rate: 0.10 },
-                            { limit: 96950, rate: 0.12 },
-                            { limit: 206700, rate: 0.22 },
-                            { limit: 394600, rate: 0.24 },
-                            { limit: 501050, rate: 0.32 },
-                            { limit: 751600, rate: 0.35 },
-                            { limit: Infinity, rate: 0.37 }
-                        ];
+                        brackets = [{L:23850, R:0.10}, {L:96950, R:0.12}, {L:206700, R:0.22}, {L:394600, R:0.24}, {L:501050, R:0.32}, {L:751600, R:0.35}, {L:Infinity, R:0.37}];
                     } else { // Head of Household
-                         brackets = [
-                            { limit: 17000, rate: 0.10 },
-                            { limit: 64850, rate: 0.12 },
-                            { limit: 103350, rate: 0.22 },
-                            { limit: 197300, rate: 0.24 },
-                            { limit: 250525, rate: 0.32 },
-                            { limit: 626350, rate: 0.35 },
-                            { limit: Infinity, rate: 0.37 }
-                        ];
+                        brackets = [{L:17000, R:0.10}, {L:64850, R:0.12}, {L:103350, R:0.22}, {L:197300, R:0.24}, {L:250525, R:0.32}, {L:626350, R:0.35}, {L:Infinity, R:0.37}];
                     }
 
-                    // Progressive Calculation
+                    // 4. Progressive Calculation
+                    let tax = 0;
                     let previousLimit = 0;
                     let topBracket = 0;
 
                     for (let i = 0; i < brackets.length; i++) {
                         const bracket = brackets[i];
-                        const spread = bracket.limit - previousLimit;
-                          
-                        if (income > bracket.limit) {
-                            tax += spread * bracket.rate;
-                            previousLimit = bracket.limit;
+                        if (taxableIncome > bracket.L) {
+                            tax += (bracket.L - previousLimit) * bracket.R;
+                            previousLimit = bracket.L;
                         } else {
-                            tax += (income - previousLimit) * bracket.rate;
-                            topBracket = bracket.rate;
+                            tax += (taxableIncome - previousLimit) * bracket.R;
+                            topBracket = bracket.R;
                             break;
                         }
                     }
-                    if (income > brackets[brackets.length - 1].limit) {
-                         topBracket = 0.37;
-                    }
+                    if (taxableIncome > brackets[brackets.length - 2].L) topBracket = 0.37;
 
-                    // Apply Dependent Credits
-                    const creditPerDependent = 2000; // Simplified proxy for Child Tax Credit
-                    const totalDependentCredit = dependents * creditPerDependent;
-                    tax = tax - totalDependentCredit;
+                    // 5. Apply Dependent Credits
+                    const totalDependentCredit = dependents * 2000;
+                    tax = Math.max(0, tax - totalDependentCredit);
 
-                    // Ensure tax doesn't go below zero (credits are often non-refundable beyond a certain point)
-                    if (tax < 0) {
-                        tax = 0;
-                    }
-
-                    // Update UI
+                    // 6. Update UI
+                    document.getElementById('grossIncomeDisplay').innerText = '$' + grossIncome.toLocaleString('en-US');
                     document.getElementById('totalTaxDisplay').innerText = '$' + tax.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                    document.getElementById('taxableIncomeDisplay').innerText = '$' + taxableIncome.toLocaleString('en-US');
                     document.getElementById('bracketDisplay').innerText = (topBracket * 100).toFixed(0) + '%';
-                      
-                    let effectiveRate = 0;
-                    if (income > 0) {
-                        effectiveRate = (tax / income) * 100;
-                    }
+                    
+                    let effectiveRate = grossIncome > 0 ? (tax / grossIncome) * 100 : 0;
                     document.getElementById('effectiveRateDisplay').innerText = effectiveRate.toFixed(2) + '%';
+
+                    // Show the Save/Print Button
+                    document.getElementById('saveButton').style.display = 'block';
+                    if (typeof feather !== 'undefined') feather.replace();
                 }
             </script>
             
             <style>
                 @media (max-width: 768px) {
-                    .calculator-card {
-                        grid-template-columns: 1fr !important;
-                    }
+                    .calculator-card { grid-template-columns: 1fr !important; }
                 }
             </style>
         </section>
+
         <section class="schedule" id="schedule" style="padding: 4rem 0; background-color: #f1f3f5;">
             <div class="container">
                 <div style="text-align: center; margin-bottom: 3rem;">
@@ -376,22 +515,18 @@
                         Select a time below to meet with our accounting professionals.
                     </p>
                 </div>
-
                 <div class="schedule-options" style="display: flex; justify-content: space-between; gap: 2rem; margin-bottom: 3rem;">
                 </div>
-
                 <div class="calendly-inline-widget" data-url="https://calendly.com/riskas-finances?hide_landing_page_details=1&hide_gdpr_banner=1" style="min-width:320px; height:750px; width: 100%;"></div>
                 <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-                </div>
-            
+            </div>
             <style>
                 @media (max-width: 768px) {
-                    .schedule-options {
-                        flex-direction: column;
-                    }
+                    .schedule-options { flex-direction: column; }
                 }
             </style>
         </section>
+
         <section class="press-coverage">
             <div class="container">
                 <h2 class="section-title">Press Coverage</h2>
@@ -418,5 +553,9 @@
 
     <script src="assets/js/main.js"></script>
     <script src="assets/js/animations.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
+    <script>
+      feather.replace()
+    </script>
 </body>
 </html>
