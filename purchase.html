@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.85">
+    <title>Secure Checkout | Riska's Fixed Assets</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS VARIABLES (Matched to index/about) --- */
+        :root {
+            --primary-blue: #0052cc;
+            --primary-dark: #091e42;
+            
+            /* JUICY 3D ORANGE PALETTE */
+            --btn-gradient-top: #FFAB40;
+            --btn-gradient-bot: #F4511E;
+            --btn-border: #E64A19;
+            --btn-shadow: rgba(244, 81, 30, 0.4);
+            
+            --bg-light: #f7f8fa;
+            --bg-white: #ffffff;
+            
+            --text-main: #172b4d;
+            --text-sub: #5e6c84;
+            --border-light: #ebecf0;
+            
+            --container-width: 1000px;
+            --header-height: 72px;
+            
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-main);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: white;
+            height: var(--header-height);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Logo Link back to Index */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .logo img { height: 32px; width: auto; }
+        .logo span { font-size: 1.25rem; font-weight: 700; color: var(--primary-dark); }
+        .logo span b { color: var(--btn-gradient-bot); font-weight: 800; }
+
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #059669; /* Emerald Green */
+            background: #ecfdf5;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            border: 1px solid #a7f3d0;
+        }
+        .secure-badge i { margin-right: 6px; }
+
+        /* --- MAIN CONTENT --- */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+
+        .checkout-card {
+            background: white;
+            width: 100%;
+            max-width: 550px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+        }
+
+        .card-header {
+            background: radial-gradient(circle at top right, #1e3a8a 0%, #0f172a 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 4px solid var(--btn-gradient-bot); /* Orange accent line */
+        }
+
+        .card-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .card-header p {
+            margin: 8px 0 0;
+            color: #b3c7f7;
+            font-size: 0.95rem;
+        }
+
+        .card-body {
+            padding: 40px;
+        }
+
+        /* --- SUMMARY ROW --- */
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 20px;
+            border-top: 2px dashed var(--border-light);
+        }
+
+        .total-label {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .total-price {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-blue); /* Blue price for trust */
+            letter-spacing: -1px;
+        }
+
+        /* --- FEATURES BOX --- */
+        .features-box {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+            border: 1px solid var(--border-light);
+        }
+
+        .features-box strong {
+            display: block;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+
+        .features-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .features-box li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+            font-size: 0.95rem;
+            color: var(--text-sub);
+        }
+
+        .features-box li:last-child { margin-bottom: 0; }
+
+        .features-box li i {
+            color: #10b981; /* Success Green */
+            margin-right: 12px;
+            margin-top: 4px;
+        }
+
+        /* --- JUICY 3D CHECKOUT BUTTON --- */
+        .btn-checkout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 16px;
+            border-radius: 50px; /* Pill Shape */
+            
+            /* Juicy Gradient */
+            background: linear-gradient(180deg, var(--btn-gradient-top) 0%, var(--btn-gradient-bot) 100%);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            
+            /* 3D Shadows */
+            border: 1px solid var(--btn-border);
+            box-shadow: 
+                inset 0 1px 0 rgba(255,255,255,0.4),
+                inset 0 -1px 0 rgba(0,0,0,0.1),
+                0 4px 14px 0 var(--btn-shadow);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+            
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .btn-checkout:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 8px 20px 0 var(--btn-shadow);
+        }
+        
+        .btn-checkout:active {
+            transform: translateY(0);
+            background: linear-gradient(180deg, var(--btn-gradient-bot) 0%, var(--btn-gradient-bot) 100%);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* --- FOOTER TRUST --- */
+        .trust-footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .trust-footer i { color: #64748b; margin-right: 5px; }
+
+        @media (max-width: 600px) {
+            .card-body { padding: 25px; }
+            .total-price { font-size: 1.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-content">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Logo">
+                <span>Riska's <b>Fixed Assets</b></span>
+            </a>
+            
+            <div class="secure-badge">
+                <i class="fas fa-lock"></i> SSL Secure
+            </div>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="checkout-card">
+            <div class="card-header">
+                <h1>Complete Your Order</h1>
+                <p>Instant digital delivery via email</p>
+            </div>
+
+            <div class="card-body">
+                <div class="summary-row">
+                    <span>Software License (Annual)</span>
+                    <strong>$199.00</strong>
+                </div>
+                <div class="summary-row" style="color: var(--text-sub);">
+                    <span>Tax</span>
+                    <span>$0.00</span>
+                </div>
+
+                <div class="total-row">
+                    <span class="total-label">Total Due</span>
+                    <span class="total-price">$199.00</span>
+                </div>
+
+                <div class="features-box">
+                    <strong>Included in your license:</strong>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Riska's Fixed Asset Management (v1.0)</li>
+                        <li><i class="fas fa-check-circle"></i> Unlimited Client Files (.rfa)</li>
+                        <li><i class="fas fa-check-circle"></i> Federal & State Tax Compliance Updates</li>
+                        <li><i class="fas fa-check-circle"></i> Priority Email Support</li>
+                    </ul>
+                </div>
+
+                <a href="https://buy.stripe.com/bJe28r84acSO9x25qSa7C03" class="btn-checkout">
+                    Proceed to Secure Payment <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
+                </a>
+
+                <div class="trust-footer">
+                    <div>
+                        <i class="fas fa-shield-alt"></i> Payments processed securely by Stripe.
+                    </div>
+                    <div>
+                        We do not store your credit card details.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
