@@ -27,13 +27,12 @@
             @page { margin: 0.75in; size: letter; }
             body { 
                 background: white; 
-                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Cleaner, professional font */
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
                 color: #333; 
                 margin: 0;
                 line-height: 1.5;
             }
 
-            /* HIDE WEBSITE UI ELEMENTS */
             .header, .hero, .welcome, .services, .financial-news, 
             .schedule, .press-coverage, .footer, .calc-inputs, 
             .software-promo, button { 
@@ -47,12 +46,11 @@
             }
             .section-title, .financial-tools p { display: none; }
 
-            /* --- PROFESSIONAL STATEMENT HEADER --- */
             .print-header {
                 display: flex !important;
                 justify-content: space-between;
                 align-items: flex-start;
-                border-bottom: 3px solid #333; /* Thicker, bolder line */
+                border-bottom: 3px solid #333;
                 padding-bottom: 25px;
                 margin-bottom: 40px;
                 width: 100%;
@@ -91,7 +89,7 @@
 
             .doc-title { 
                 font-size: 24pt; 
-                font-weight: 300; /* Light, elegant weight */
+                font-weight: 300;
                 text-transform: uppercase; 
                 letter-spacing: 2px; 
                 margin: 0; 
@@ -103,7 +101,6 @@
                 margin-top: 8px; 
             }
 
-            /* --- STATEMENT BODY --- */
             .calculator-card {
                 box-shadow: none !important;
                 border: none !important;
@@ -120,38 +117,34 @@
                 background: transparent !important;
             }
 
-            /* Data Rows */
             .result-row {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 padding: 12px 0;
-                border-bottom: 1px solid #e0e0e0; /* Subtle divider */
+                border-bottom: 1px solid #e0e0e0;
                 font-size: 11pt;
             }
             
-            /* Labels */
             .result-row span:first-child {
                 color: #444;
                 font-weight: 500;
             }
             
-            /* Values */
             .result-row span:last-child {
                 color: #000;
                 font-weight: 600;
-                font-family: 'Courier New', Courier, monospace; /* Monospace aligns numbers nicely */
+                font-family: 'Courier New', Courier, monospace;
                 font-size: 12pt;
             }
 
-            /* The "Total" Box */
             .result-row.main-total {
                 margin-top: 30px;
                 border-top: 2px solid #000;
-                border-bottom: 4px double #000; /* Classic Accounting Double Underline */
+                border-bottom: 4px double #000;
                 padding: 20px 0;
-                background-color: #f9f9f9; /* Slight highlight for the total */
-                -webkit-print-color-adjust: exact; /* Ensure color prints */
+                background-color: #f9f9f9;
+                -webkit-print-color-adjust: exact;
             }
 
             .result-row.main-total span:first-child {
@@ -277,6 +270,39 @@
                 </div>
             </div>
         </section>
+
+        <!-- RISKA AI SECTION -->
+        <section style="background-color: #1a0a00; padding: 60px 0; font-family: 'Inter', sans-serif;">
+            <div style="max-width: 1200px; margin: 0 auto; padding: 0 40px;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
+                    <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #e07840; animation: riska-pulse 2s infinite;"></span>
+                    <span style="font-size: 12px; color: #e07840; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600;">Now Live</span>
+                </div>
+                <h2 style="font-size: 32px; font-weight: 700; color: #ffffff; margin: 0 0 12px 0;">Meet <span style="color: #e07840;">Riska AI</span></h2>
+                <p style="font-size: 16px; color: #a89080; line-height: 1.7; max-width: 560px; margin: 0 0 32px 0;">
+                    CPA &amp; EA-level tax intelligence, available 24/7. Ask questions about your taxes, business finances, or bookkeeping — powered by Riska's Finance.
+                </p>
+                <iframe
+                    src="https://ai.riskasfinance.com"
+                    width="100%"
+                    height="650"
+                    style="border: 1px solid #3a1a00; border-radius: 10px; display: block;"
+                    allow="clipboard-write"
+                    loading="lazy"
+                    title="Riska AI — Tax & Accounting Assistant">
+                </iframe>
+            </div>
+            <style>
+                @keyframes riska-pulse {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0.3; }
+                }
+                @media (max-width: 768px) {
+                    #riska-ai-section iframe { height: 500px; }
+                }
+            </style>
+        </section>
+        <!-- END RISKA AI SECTION -->
 
         <section class="financial-news" style="padding: 4rem 0; background-color: #f8f9fa;">
             <div class="container">
@@ -418,13 +444,11 @@
             </div>
 
             <script>
-                // Update Date for Print
                 document.getElementById('printDate').innerText = new Date().toLocaleDateString();
 
                 function toggleItemizedHint() {
                     const status = document.getElementById('statusInput').value;
                     const hint = document.getElementById('deductionHint');
-                    // Updated 2025 Standard Deductions
                     const standard = status === 'married' ? 31500 : (status === 'head' ? 23625 : 15750);
                     hint.innerText = `Standard Deduction applied: $${standard.toLocaleString()}`;
                 }
@@ -442,7 +466,6 @@
                         return;
                     }
 
-                    // 1. Determine Deduction
                     const standardDeductions = { 
                         'single': 15750, 
                         'married': 31500, 
@@ -450,21 +473,18 @@
                     };
                     const deductionToUse = Math.max(standardDeductions[status], itemized);
 
-                    // 2. Calculate Taxable Income
                     let taxableIncome = grossIncome - deductionToUse;
                     if (taxableIncome < 0) taxableIncome = 0;
 
-                    // 3. 2025 Tax Brackets
                     let brackets = [];
                     if (status === 'single') {
                         brackets = [{L:11925, R:0.10}, {L:48475, R:0.12}, {L:103350, R:0.22}, {L:197300, R:0.24}, {L:250525, R:0.32}, {L:626350, R:0.35}, {L:Infinity, R:0.37}];
                     } else if (status === 'married') {
                         brackets = [{L:23850, R:0.10}, {L:96950, R:0.12}, {L:206700, R:0.22}, {L:394600, R:0.24}, {L:501050, R:0.32}, {L:751600, R:0.35}, {L:Infinity, R:0.37}];
-                    } else { // Head of Household
+                    } else {
                         brackets = [{L:17000, R:0.10}, {L:64850, R:0.12}, {L:103350, R:0.22}, {L:197300, R:0.24}, {L:250525, R:0.32}, {L:626350, R:0.35}, {L:Infinity, R:0.37}];
                     }
 
-                    // 4. Progressive Calculation
                     let tax = 0;
                     let previousLimit = 0;
                     let topBracket = 0;
@@ -482,11 +502,9 @@
                     }
                     if (taxableIncome > brackets[brackets.length - 2].L) topBracket = 0.37;
 
-                    // 5. Apply Dependent Credits
                     const totalDependentCredit = dependents * 2000;
                     tax = Math.max(0, tax - totalDependentCredit);
 
-                    // 6. Update UI
                     document.getElementById('grossIncomeDisplay').innerText = '$' + grossIncome.toLocaleString('en-US');
                     document.getElementById('totalTaxDisplay').innerText = '$' + tax.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
                     document.getElementById('taxableIncomeDisplay').innerText = '$' + taxableIncome.toLocaleString('en-US');
@@ -495,7 +513,6 @@
                     let effectiveRate = grossIncome > 0 ? (tax / grossIncome) * 100 : 0;
                     document.getElementById('effectiveRateDisplay').innerText = effectiveRate.toFixed(2) + '%';
 
-                    // Show the Save/Print Button
                     document.getElementById('saveButton').style.display = 'block';
                     if (typeof feather !== 'undefined') feather.replace();
                 }
@@ -558,5 +575,22 @@
     <script>
       feather.replace()
     </script>
+
+    <!-- RISKA AI FLOATING BUBBLE -->
+    <div id="riska-bubble-tooltip" style="position:fixed; bottom:88px; right:20px; background:#fff; color:#1a0a00; font-size:13px; font-family:'Inter',sans-serif; font-weight:600; padding:7px 14px; border-radius:20px; box-shadow:0 2px 10px rgba(0,0,0,0.2); white-space:nowrap; z-index:9999; display:none; pointer-events:none;">Ask Riska AI ✦</div>
+    <button
+        onclick="window.open('https://ai.riskasfinance.com','_blank')"
+        onmouseenter="document.getElementById('riska-bubble-tooltip').style.display='block'"
+        onmouseleave="document.getElementById('riska-bubble-tooltip').style.display='none'"
+        aria-label="Open Riska AI"
+        style="position:fixed; bottom:20px; right:20px; width:54px; height:54px; border-radius:50%; background:#c05020; border:none; cursor:pointer; z-index:9999; box-shadow:0 4px 16px rgba(180,60,10,0.45); display:flex; align-items:center; justify-content:center; transition:transform 0.15s, box-shadow 0.15s;"
+        onmouseover="this.style.transform='scale(1.08)'; this.style.boxShadow='0 6px 20px rgba(180,60,10,0.55)';"
+        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 16px rgba(180,60,10,0.45)';">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+        </svg>
+    </button>
+    <!-- END RISKA AI FLOATING BUBBLE -->
+
 </body>
 </html>
