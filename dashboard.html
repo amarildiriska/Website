@@ -130,14 +130,27 @@
         }
         .delete-btn:hover { color: #dc2626; }
 
-        .btn-toolbar { display: flex; gap: 10px; }
+        .btn-toolbar { display: flex; gap: 10px; flex-wrap: wrap; }
         .btn-tool {
             display:flex; align-items:center; gap:8px; 
             background:white; border:1px solid #e5e7eb; padding:8px 16px; 
             border-radius:6px; cursor:pointer; font-size: 0.9rem;
             transition: all 0.2s;
+            text-decoration: none;
+            color: inherit;
         }
         .btn-tool:hover { border-color: #FF6B35; color: #FF6B35; }
+
+        /* Fixed Assets CTA Button — filled/accented to stand out */
+        .btn-tool-cta {
+            display:flex; align-items:center; gap:8px;
+            background: #FF6B35; color: white; border: 1px solid #FF6B35;
+            padding: 8px 16px; border-radius: 6px; cursor: pointer;
+            font-size: 0.9rem; font-weight: 600;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn-tool-cta:hover { background: #e55a2b; border-color: #e55a2b; color: white; }
 
         @media (max-width: 768px) {
             .tracker-layout { grid-template-columns: 1fr; }
@@ -175,6 +188,10 @@
                         <p style="color: #6b7280;">Track expenses and export data for tax season.</p>
                     </div>
                     <div class="btn-toolbar">
+                        <!-- Fixed Assets Software CTA -->
+                        <a href="https://app.riskasfinance.com/" target="_blank" rel="noopener noreferrer" class="btn-tool-cta">
+                            <i data-feather="layers"></i> Go to Flowtab Software
+                        </a>
                         <button class="btn-tool" onclick="exportToCSV()">
                             <i data-feather="download"></i> Export Excel
                         </button>
