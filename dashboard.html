@@ -50,6 +50,37 @@
             font-size: 0.9rem;
             margin-bottom: 2rem;
         }
+        
+        /* New Login Inputs */
+        .login-input {
+            width: 100%;
+            padding: 13px 16px;
+            margin-bottom: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .login-input:focus {
+            outline: none;
+            border-color: #FF6B35;
+        }
+        .login-submit-btn {
+            width: 100%;
+            background: #111;
+            color: white;
+            border: none;
+            padding: 13px 20px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: inherit;
+        }
+        .login-submit-btn:hover { background: #333; }
 
         .google-btn {
             display: flex;
@@ -477,26 +508,31 @@
 </head>
 <body>
 
-<!-- ============================================================
-     LOGIN GATE
-============================================================ -->
 <div id="login-gate" class="visible">
     <div class="login-box">
         <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="login-logo">
         <h2>Staff Portal</h2>
-        <p class="login-sub">Sign in with your Gmail account to access the dashboard.</p>
+        <p class="login-sub">Sign in to access the dashboard.</p>
 
-        <button class="google-btn" onclick="signInWithGoogle()">
-            <!-- Google G logo -->
-            <svg width="20" height="20" viewBox="0 0 48 48">
-                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                <path fill="none" d="M0 0h48v48H0z"/>
-            </svg>
-            Continue with Google
-        </button>
+        <input type="email" id="login-email" class="login-input" placeholder="Email address" oninput="checkIfOwner(this.value)">
+
+        <div id="password-login-section">
+            <input type="password" id="login-password" class="login-input" placeholder="Password">
+            <button class="login-submit-btn" onclick="signInWithEmail()">Sign In</button>
+        </div>
+
+        <div id="google-login-section" style="display:none;">
+            <button class="google-btn" onclick="signInWithGoogle()">
+                <svg width="20" height="20" viewBox="0 0 48 48">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    <path fill="none" d="M0 0h48v48H0z"/>
+                </svg>
+                Continue with Google
+            </button>
+        </div>
 
         <div class="login-loading" id="login-loading">
             <div class="spinner"></div>
@@ -504,14 +540,10 @@
         </div>
 
         <div class="login-error" id="login-error"></div>
-
         <p class="login-divider">Access is restricted to approved Riska's Finance staff only.</p>
     </div>
 </div>
 
-<!-- ============================================================
-     MAIN CONTENT
-============================================================ -->
 <div id="main-content">
 
     <div class="user-bar">
@@ -603,7 +635,6 @@
                     </button>
                 </div>
 
-                <!-- TAB: TRACKER -->
                 <div id="tab-tracker" class="tab-panel active">
                     <div class="tracker-layout">
                         <div class="tracker-form-card">
@@ -652,7 +683,6 @@
                     </div>
                 </div>
 
-                <!-- TAB: CMS -->
                 <div id="tab-cms" class="tab-panel">
                     <div class="cms-layout">
                         <div class="cms-card">
@@ -703,15 +733,13 @@
                     </div>
                 </div>
 
-                <!-- TAB: ADMIN (owners only) -->
                 <div id="tab-admin" class="tab-panel">
                     <div class="admin-panel">
                         <h3><i data-feather="shield" style="width:16px;"></i> Access Control</h3>
                         <p>Only people on this list can sign into the Staff Portal. Add or remove Gmail addresses below. You and Arbri always have access and cannot be removed.</p>
 
                         <div class="approved-list" id="approved-list">
-                            <!-- rendered by JS -->
-                        </div>
+                            </div>
 
                         <div class="add-email-row">
                             <input type="email" id="new-email-input" class="add-email-input" placeholder="newstaff@gmail.com">
@@ -740,29 +768,9 @@
 
 <div id="toast"></div>
 
-<!-- ============================================================
-     FIREBASE SETUP INSTRUCTIONS
-     ============================================================
-     STEP 1: Go to https://console.firebase.google.com
-             Open your existing project → Project Settings (gear icon)
-             Scroll to "Your apps" → select your Web app (or create one)
-             Copy the firebaseConfig object shown there.
-
-     STEP 2: Replace the placeholder firebaseConfig below with your real one.
-
-     STEP 3: In Firebase Console → Authentication → Sign-in method
-             Enable "Google" as a provider and save.
-
-     STEP 4: In Firebase Console → Authentication → Settings → Authorized domains
-             Make sure riskasfinance.com is listed (it usually is by default).
-
-     STEP 5: ✅ Upload this file. Done!
-============================================================ -->
-
-<!-- Firebase SDK -->
 <script type="module">
 import { initializeApp }                          from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as fbSignOut }
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as fbSignOut, signInWithEmailAndPassword }
                                                   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 /* ──────────────────────────────────────────────────────────────
@@ -809,6 +817,21 @@ function saveExtraEmails(list) {
 /* ── Expose functions to non-module scope ── */
 window._fbSignOut = () => fbSignOut(auth);
 
+// Shows/hides the Google login based on typed email
+window.checkIfOwner = function(email) {
+    const val = email.toLowerCase().trim();
+    const pwSection = document.getElementById('password-login-section');
+    const googleSection = document.getElementById('google-login-section');
+
+    if (OWNER_EMAILS.includes(val)) {
+        pwSection.style.display = 'none';
+        googleSection.style.display = 'block';
+    } else {
+        pwSection.style.display = 'block';
+        googleSection.style.display = 'none';
+    }
+};
+
 window.signInWithGoogle = async function() {
     document.getElementById('login-error').style.display   = 'none';
     document.getElementById('login-loading').classList.add('visible');
@@ -817,6 +840,26 @@ window.signInWithGoogle = async function() {
     } catch(err) {
         document.getElementById('login-loading').classList.remove('visible');
         showLoginError('Sign-in was cancelled or failed. Please try again.');
+    }
+};
+
+window.signInWithEmail = async function() {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+
+    if(!email || !password) {
+        showLoginError('Please enter both your email and password.');
+        return;
+    }
+
+    document.getElementById('login-error').style.display = 'none';
+    document.getElementById('login-loading').classList.add('visible');
+
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+    } catch(err) {
+        document.getElementById('login-loading').classList.remove('visible');
+        showLoginError('Invalid email or password. Please try again.');
     }
 };
 
