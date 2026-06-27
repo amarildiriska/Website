@@ -670,6 +670,59 @@
         .file-btn-rm:hover { background: #fee2e2; }
         .file-btn svg { width: 12px; height: 12px; }
 
+
+        /* ── Post Attachments ── */
+        .attach-zone {
+            border: 1.5px dashed var(--line);
+            border-radius: 8px;
+            padding: 0.9rem 1rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.2s, background 0.2s;
+            cursor: pointer;
+            text-align: center;
+        }
+        .attach-zone:hover { border-color: var(--accent); background: #fff8f5; }
+        .attach-zone-label {
+            display: flex; align-items: center; justify-content: center;
+            gap: 8px; font-size: 0.83rem; color: var(--slate);
+            font-weight: 500; pointer-events: none;
+        }
+        .attach-zone-label svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+        .attach-preview {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            margin-top: 0.6rem;
+        }
+        .attach-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--mist); border: 1px solid var(--line);
+            border-radius: 6px; padding: 4px 10px;
+            font-size: 0.75rem; color: var(--ink-3); max-width: 200px;
+        }
+        .attach-chip span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .attach-chip-rm {
+            background: none; border: none; cursor: pointer;
+            color: var(--slate); font-size: 0.9rem; padding: 0;
+            line-height: 1; flex-shrink: 0;
+        }
+        .attach-chip-rm:hover { color: var(--red); }
+
+        /* Attachments on published post cards */
+        .post-attachments {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            margin-top: 0.75rem; padding-top: 0.75rem;
+            border-top: 1px solid var(--line);
+        }
+        .post-attach-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--mist); border: 1px solid var(--line);
+            border-radius: 6px; padding: 5px 12px;
+            font-size: 0.75rem; font-weight: 500; color: var(--ink);
+            text-decoration: none; transition: all 0.15s;
+        }
+        .post-attach-link:hover { border-color: var(--accent); color: var(--accent); }
+        .post-attach-link svg { width: 12px; height: 12px; flex-shrink: 0; }
+
         @media (max-width: 1024px) {
             .two-col, .newsroom-layout, .access-layout { grid-template-columns: 1fr; }
             .compose-card { position: static; }
@@ -771,10 +824,6 @@
         <button class="nav-item" onclick="showPanel('newsroom', this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             Newsroom
-        </button>
-        <button class="nav-item" onclick="showPanel('files', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-            Files
         </button>
 
         <div class="sidebar-section-label">Settings</div>
@@ -927,6 +976,15 @@
 
                             <label class="cf-label">Content</label>
                             <textarea id="post-body" class="cf-textarea" placeholder="Write your update here…"></textarea>
+
+                            <label class="cf-label">Attachments</label>
+                            <div class="attach-zone" onclick="openAttachWidget()">
+                                <div class="attach-zone-label">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+                                    Click to attach files (PDF, Excel, Word, images…)
+                                </div>
+                            </div>
+                            <div class="attach-preview" id="attach-preview"></div>
 
                             <button class="publish-btn" onclick="publishPost()">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
@@ -1290,6 +1348,42 @@ const catClassMap  = { 'Tax Tips':'cat-tax','Company News':'cat-company','IRS Ne
 const destLabelMap = { dashboard:'Portal Only', home:'Home Page', both:'Dashboard + Home' };
 let posts = [];
 
+// Pending attachments for current compose session
+let pendingAttachments = [];
+
+function openAttachWidget() {
+    const dialog = uploadcare.openDialog(null, {
+        publicKey:  'd70e326b495b592aae72',
+        multiple:   true,
+        tabs:       'file camera url',
+        imagesOnly: false,
+    });
+    dialog.done(function(result) {
+        result.promise().then(function(info) {
+            const files = info.files || [info];
+            files.forEach(f => {
+                pendingAttachments.push({ name: f.name, cdnUrl: f.cdnUrl, mimeType: f.mimeType || '', uuid: f.uuid });
+            });
+            renderAttachPreview();
+        });
+    });
+}
+
+function renderAttachPreview() {
+    const container = document.getElementById('attach-preview');
+    if (!pendingAttachments.length) { container.innerHTML = ''; return; }
+    container.innerHTML = pendingAttachments.map((f, i) => `
+        <div class="attach-chip">
+            <span title="${f.name}">${f.name}</span>
+            <button class="attach-chip-rm" onclick="removeAttachment(${i})" title="Remove">×</button>
+        </div>`).join('');
+}
+
+function removeAttachment(index) {
+    pendingAttachments.splice(index, 1);
+    renderAttachPreview();
+}
+
 function publishPost() {
     const title    = document.getElementById('post-title').value.trim();
     const category = document.getElementById('post-category').value;
@@ -1299,6 +1393,7 @@ function publishPost() {
 
     const post = {
         id: Date.now(), title, category, body, dest,
+        attachments: [...pendingAttachments],
         author: window._currentUserName || 'Staff',
         date: new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' })
     };
@@ -1308,6 +1403,8 @@ function publishPost() {
     updateKPIs();
     document.getElementById('post-title').value = '';
     document.getElementById('post-body').value  = '';
+    pendingAttachments = [];
+    renderAttachPreview();
     showToast('Post published');
 }
 
@@ -1329,7 +1426,16 @@ function renderPosts() {
         feed.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="36" height="36"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><p>Nothing published yet.<br>Write your first post.</p></div>`;
         return;
     }
-    feed.innerHTML = posts.map(p => `
+    feed.innerHTML = posts.map(p => {
+        const attachHtml = (p.attachments && p.attachments.length) ? `
+            <div class="post-attachments">
+                ${p.attachments.map(a => `
+                    <a class="post-attach-link" href="${a.cdnUrl}" target="_blank" rel="noopener" download="${a.name}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+                        ${a.name}
+                    </a>`).join('')}
+            </div>` : '';
+        return `
         <div class="post-item">
             <div class="post-item-top">
                 <span class="cat-pill ${catClassMap[p.category]||''}">${p.category}</span>
@@ -1338,11 +1444,13 @@ function renderPosts() {
             </div>
             <h4>${p.title}</h4>
             <p>${p.body}</p>
+            ${attachHtml}
             <div class="post-item-footer">
                 <span class="post-author">Published by ${p.author}</span>
                 <button class="post-del-btn" onclick="deletePost(${p.id})">Remove</button>
             </div>
-        </div>`).join('');
+        </div>`;
+    }).join('');
 }
 
 function initPosts() {
