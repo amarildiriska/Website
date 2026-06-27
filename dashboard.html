@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.80">
-    <title>Financial Dashboard - Riska's Finance</title>
+    <title>Staff Portal - Riska's Finance</title>
     <link rel="icon" type="image/png" href="attached_assets/Capture1.png">
-    <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -18,228 +17,194 @@
 
     <style>
         /* ============================================================
+           BASE & RESET
+        ============================================================ */
+        * { box-sizing: border-box; }
+        body, html { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #334155; }
+        h1, h2, h3, h4, p { margin: 0; }
+        a { text-decoration: none; }
+
+        /* ============================================================
            LOGIN GATE
         ============================================================ */
         #login-gate {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, #f9fafb 0%, #f0f4ff 100%);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
+            display: none; position: fixed; inset: 0;
+            background: #0f172a; z-index: 9999;
+            align-items: center; justify-content: center;
         }
         #login-gate.visible { display: flex; }
-
         .login-box {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.10);
-            padding: 3rem 2.5rem;
-            width: 100%;
-            max-width: 420px;
+            background: white; border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            padding: 3rem; width: 100%; max-width: 400px;
             text-align: center;
         }
-        .login-logo {
-            width: 60px;
-            margin-bottom: 1.25rem;
-            border-radius: 12px;
-        }
-        .login-box h2 {
-            font-size: 1.5rem;
-            color: #111;
-            margin: 0 0 0.4rem;
-        }
-        .login-box .login-sub {
-            color: #6b7280;
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
-        }
+        .login-logo { width: 50px; margin-bottom: 1.5rem; border-radius: 8px; }
+        .login-box h2 { font-size: 1.5rem; color: #0f172a; margin-bottom: 0.5rem; font-weight: 600; }
+        .login-box .login-sub { color: #64748b; font-size: 0.9rem; margin-bottom: 2rem; }
         
         .login-input {
-            width: 100%;
-            padding: 13px 16px;
-            margin-bottom: 1rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            font-family: inherit;
-            box-sizing: border-box;
-            transition: border-color 0.2s;
+            width: 100%; padding: 12px 16px; margin-bottom: 1rem;
+            border: 1px solid #cbd5e1; border-radius: 8px;
+            font-size: 0.95rem; font-family: inherit; transition: border-color 0.2s;
         }
         .login-input:focus { outline: none; border-color: #FF6B35; }
         .login-submit-btn {
-            width: 100%;
-            background: #111;
-            color: white;
-            border: none;
-            padding: 13px 20px;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-            font-family: inherit;
+            width: 100%; background: #0f172a; color: white; border: none;
+            padding: 12px 20px; border-radius: 8px; font-size: 0.95rem;
+            font-weight: 500; cursor: pointer; transition: background 0.2s;
         }
-        .login-submit-btn:hover { background: #333; }
+        .login-submit-btn:hover { background: #1e293b; }
 
         .google-btn {
-            display: flex; align-items: center; justify-content: center;
-            gap: 12px; width: 100%; padding: 13px 20px;
-            background: white; border: 1.5px solid #e5e7eb;
-            border-radius: 10px; font-size: 0.95rem; font-weight: 500;
-            color: #374151; cursor: pointer; transition: all 0.2s;
-            font-family: inherit; box-sizing: border-box;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; padding: 12px 20px; background: white;
+            border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem;
+            font-weight: 500; color: #334155; cursor: pointer; transition: all 0.2s;
         }
-        .google-btn:hover { border-color: #FF6B35; box-shadow: 0 2px 8px rgba(255,107,53,0.15); color: #FF6B35; }
+        .google-btn:hover { border-color: #94a3b8; background: #f8fafc; }
         .google-btn svg { flex-shrink: 0; }
 
         .login-error {
-            color: #dc2626; font-size: 0.85rem; margin-top: 1rem; padding: 10px 14px;
-            background: #fee2e2; border-radius: 8px; display: none; text-align: left; line-height: 1.5;
+            color: #b91c1c; font-size: 0.85rem; margin-top: 1rem; padding: 10px;
+            background: #fef2f2; border-radius: 6px; display: none; text-align: left;
         }
-        .login-divider { font-size: 0.78rem; color: #9ca3af; margin-top: 1.5rem; }
+        .login-divider { font-size: 0.75rem; color: #94a3b8; margin-top: 2rem; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        .login-loading {
-            display: none; flex-direction: column; align-items: center;
-            gap: 12px; margin-top: 1.5rem; color: #6b7280; font-size: 0.88rem;
+        /* ============================================================
+           APP LAYOUT (ENTERPRISE SIDEBAR)
+        ============================================================ */
+        #main-content { display: none; height: 100vh; overflow: hidden; }
+        #main-content.visible { display: flex; }
+
+        .app-sidebar {
+            width: 260px; background: #0f172a; color: #94a3b8;
+            display: flex; flex-direction: column; flex-shrink: 0;
         }
-        .login-loading.visible { display: flex; }
-        .spinner {
-            width: 28px; height: 28px; border: 3px solid #e5e7eb;
-            border-top-color: #FF6B35; border-radius: 50%;
-            animation: spin 0.7s linear infinite;
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid #1e293b; display: flex; align-items: center; gap: 12px; }
+        .sidebar-header img { width: 32px; border-radius: 6px; }
+        .sidebar-header h1 { font-size: 1.1rem; color: white; font-weight: 600; letter-spacing: -0.02em; }
+        
+        .sidebar-nav { padding: 1.5rem 1rem; flex: 1; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+            color: #94a3b8; border-radius: 8px; margin-bottom: 4px;
+            cursor: pointer; transition: all 0.2s; font-size: 0.9rem; font-weight: 500;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .nav-item:hover { color: white; background: #1e293b; }
+        .nav-item.active { color: white; background: #FF6B35; }
+        .nav-item svg { width: 18px; height: 18px; }
 
-        /* ============================================================
-           MAIN PAGE & DASHBOARD
-        ============================================================ */
-        #main-content { display: none; }
-        #main-content.visible { display: block; }
+        .sidebar-footer { padding: 1.5rem; border-top: 1px solid #1e293b; }
+        .external-link {
+            display: flex; align-items: center; gap: 8px; color: #94a3b8;
+            font-size: 0.85rem; text-decoration: none; transition: color 0.2s;
+        }
+        .external-link:hover { color: white; }
 
-        .user-bar { background: #111; color: white; padding: 8px 0; font-size: 0.85rem; }
-        .user-bar .container { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-        .user-bar-left { display: flex; align-items: center; gap: 10px; }
-        .user-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255,255,255,0.3); }
-        .user-bar span { opacity: 0.85; }
-
-        .logout-btn { background: none; border: 1px solid rgba(255,255,255,0.3); color: white; padding: 4px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; white-space: nowrap; }
-        .logout-btn:hover { border-color: #FF6B35; color: #FF6B35; }
-
-        .dashboard-hero { background-color: #f9fafb; padding: 3rem 0; border-bottom: 1px solid #e5e7eb; }
-        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
-        .summary-card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #f3f4f6; display: flex; align-items: center; justify-content: space-between; }
+        /* Main Workspace */
+        .app-workspace { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         
-        .card-icon { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .icon-income  { background: #dcfce7; color: #16a34a; }
-        .icon-expense { background: #fee2e2; color: #dc2626; }
-        .icon-balance { background: #e0f2fe; color: #0284c7; }
-
-        .card-info h3 { margin: 0; font-size: 0.9rem; color: #6b7280; font-weight: 500; }
-        .card-info p  { margin: 5px 0 0; font-size: 1.5rem; font-weight: 700; color: #111; }
-
-        .health-bar-container { margin-top: 2rem; background: #e5e7eb; height: 10px; border-radius: 5px; overflow: hidden; display: flex; }
-        .bar-income  { background: #16a34a; height: 100%; transition: width 0.5s; }
-        .bar-expense { background: #dc2626; height: 100%; transition: width 0.5s; }
-
-        /* ============================================================
-           ADMIN PANEL
-        ============================================================ */
-        .admin-panel { background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; }
-        .admin-panel h3 { margin: 0 0 0.25rem; font-size: 1rem; color: #92400e; display: flex; align-items: center; gap: 8px; }
-        .admin-panel p { font-size: 0.85rem; color: #78350f; margin: 0 0 1rem; }
-        .approved-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1rem; }
-        .approved-item { display: flex; justify-content: space-between; align-items: center; background: white; border: 1px solid #fde68a; border-radius: 8px; padding: 8px 12px; font-size: 0.875rem; }
-        .approved-item span { color: #374151; }
-        .approved-item .owner-tag { font-size: 0.72rem; background: #FF6B35; color: white; padding: 2px 8px; border-radius: 10px; margin-left: 8px; }
-        .revoke-btn { background: none; border: 1px solid #fca5a5; color: #dc2626; padding: 3px 10px; border-radius: 6px; font-size: 0.78rem; cursor: pointer; transition: background 0.2s; }
-        .revoke-btn:hover { background: #fee2e2; }
-        .add-email-row { display: flex; gap: 8px; }
-        .add-email-input { flex: 1; padding: 9px 12px; border: 1px solid #fde68a; border-radius: 8px; font-size: 0.875rem; font-family: inherit; background: white; }
-        .add-email-input:focus { outline: none; border-color: #FF6B35; }
-        .add-email-btn { background: #FF6B35; color: white; border: none; padding: 9px 16px; border-radius: 8px; font-size: 0.875rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
-        .add-email-btn:hover { background: #e55a2b; }
-
-        /* ============================================================
-           TABS
-        ============================================================ */
-        .tab-bar { display: flex; border-bottom: 2px solid #e5e7eb; margin-bottom: 2rem; }
-        .tab-btn { background: none; border: none; padding: 12px 24px; font-size: 0.95rem; font-weight: 500; color: #6b7280; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
-        .tab-btn:hover { color: #FF6B35; }
-        .tab-btn.active { color: #FF6B35; border-bottom-color: #FF6B35; font-weight: 600; }
-        .tab-panel { display: none; }
-        .tab-panel.active { display: block; }
-
-        /* ============================================================
-           TRACKER & FORMS
-        ============================================================ */
-        .tracker-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; }
-        .tracker-form-card, .transactions-card, .cms-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .transactions-card { max-height: 600px; overflow-y: auto; }
+        .app-header {
+            background: white; height: 70px; border-bottom: 1px solid #e2e8f0;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 2rem; flex-shrink: 0;
+        }
+        .header-title { font-size: 1.1rem; font-weight: 600; color: #0f172a; }
         
-        .form-group { margin-bottom: 1rem; }
-        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #374151; font-size: 0.9rem; }
-        .form-input, .form-select, .form-textarea { width: 100%; padding: 11px 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 0.95rem; font-family: inherit; box-sizing: border-box; transition: border-color 0.2s; }
-        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #FF6B35; }
-        .form-textarea { resize: vertical; min-height: 120px; }
-        
-        .add-btn, .publish-btn { width: 100%; background: #FF6B35; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 1rem; transition: background 0.2s; font-size: 0.95rem; }
-        .add-btn:hover, .publish-btn:hover { background: #e55a2b; }
-        .publish-btn:disabled { background: #9ca3af; cursor: not-allowed; }
+        .user-profile { display: flex; align-items: center; gap: 1rem; }
+        .user-info { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 500; }
+        .user-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+        .logout-btn {
+            background: none; border: 1px solid #e2e8f0; color: #64748b;
+            padding: 6px 12px; border-radius: 6px; cursor: pointer;
+            font-size: 0.8rem; font-weight: 500; transition: all 0.2s;
+        }
+        .logout-btn:hover { border-color: #cbd5e1; color: #0f172a; background: #f8fafc; }
 
-        .transaction-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #f3f4f6; }
-        .transaction-item:last-child { border-bottom: none; }
-        .t-info h4 { margin: 0 0 4px; font-size: 1rem; color: #111; }
-        .t-info span { font-size: 0.85rem; color: #999; display: block; }
-        .t-cat-badge { display: inline-block; font-size: 0.75rem; padding: 2px 8px; border-radius: 12px; background: #f3f4f6; color: #666; margin-top: 4px; }
-        .t-amount { font-weight: 600; font-size: 1rem; }
-        .plus  { color: #16a34a; }
-        .minus { color: #dc2626; }
-        .delete-btn { background: none; border: none; color: #9ca3af; cursor: pointer; margin-left: 10px; display: flex; align-items: center; }
-        .delete-btn:hover { color: #dc2626; }
-
-        .btn-toolbar { display: flex; gap: 10px; flex-wrap: wrap; }
-        .btn-tool { display: flex; align-items: center; gap: 8px; background: white; border: 1px solid #e5e7eb; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; text-decoration: none; color: inherit; }
-        .btn-tool:hover { border-color: #FF6B35; color: #FF6B35; }
-        .btn-tool-cta { display: flex; align-items: center; gap: 8px; background: #FF6B35; color: white; border: 1px solid #FF6B35; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.2s; text-decoration: none; }
-        .btn-tool-cta:hover { background: #e55a2b; border-color: #e55a2b; color: white; }
+        .app-body { padding: 2rem; overflow-y: auto; flex: 1; }
 
         /* ============================================================
-           CMS
+           TAB PANELS
         ============================================================ */
-        .cms-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 2rem; }
-        .post-feed { display: flex; flex-direction: column; gap: 1rem; max-height: 600px; overflow-y: auto; padding-right: 5px; }
-        .post-card { background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1.25rem 1.5rem; transition: box-shadow 0.2s; }
-        .post-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .post-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 0.6rem; flex-wrap: wrap; }
-        .post-cat-badge { font-size: 0.72rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.04em; }
+        .tab-panel { display: none; max-width: 1200px; margin: 0 auto; }
+        .tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ============================================================
+           CMS LAYOUT (ENTERPRISE)
+        ============================================================ */
+        .cms-grid { display: grid; grid-template-columns: 350px 1fr; gap: 2rem; align-items: start; }
+        
+        .card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .card-title { font-size: 1rem; font-weight: 600; color: #0f172a; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 8px; }
+
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #475569; font-size: 0.85rem; }
+        .form-input, .form-select, .form-textarea {
+            width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px;
+            font-size: 0.9rem; font-family: inherit; transition: border-color 0.2s; background: #f8fafc;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #FF6B35; background: white; }
+        .form-textarea { resize: vertical; min-height: 150px; }
+
+        .publish-btn {
+            width: 100%; background: #FF6B35; color: white; border: none;
+            padding: 12px; border-radius: 6px; font-weight: 600; font-size: 0.9rem;
+            cursor: pointer; transition: background 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        .publish-btn:hover { background: #e55a2b; }
+        .publish-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+
+        /* Feed */
+        .post-feed { display: flex; flex-direction: column; gap: 1rem; }
+        .post-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; transition: box-shadow 0.2s; }
+        .post-card:hover { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .post-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 0.75rem; flex-wrap: wrap; }
+        .post-cat-badge { font-size: 0.7rem; font-weight: 600; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
         
         .cat-tax      { background:#fef3c7; color:#92400e; }
         .cat-company  { background:#dbeafe; color:#1e40af; }
         .cat-irs      { background:#fce7f3; color:#9d174d; }
         .cat-reminder { background:#d1fae5; color:#065f46; }
-        .cat-general  { background:#f3f4f6; color:#374151; }
 
-        .post-dest-badge { font-size: 0.72rem; padding: 3px 10px; border-radius: 20px; background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
-        .post-date { font-size: 0.78rem; color: #9ca3af; margin-left: auto; }
-        .post-card h3 { margin: 0 0 0.4rem; font-size: 1rem; color: #111; }
-        .post-card p  { margin: 0; font-size: 0.875rem; color: #6b7280; line-height: 1.6; }
-        .post-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 0.75rem; }
-        .post-del-btn { background: none; border: 1px solid #fecaca; color: #dc2626; padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; }
-        .post-del-btn:hover { background: #fee2e2; }
-        .empty-feed { text-align: center; padding: 3rem 1rem; color: #d1d5db; }
-        .empty-feed p { font-size: 0.95rem; }
+        .post-dest-badge { font-size: 0.7rem; padding: 4px 10px; border-radius: 4px; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+        .post-date { font-size: 0.8rem; color: #64748b; margin-left: auto; }
+        .post-card h3 { font-size: 1.1rem; color: #0f172a; margin-bottom: 0.5rem; font-weight: 600; }
+        .post-card p  { margin: 0; font-size: 0.9rem; color: #475569; line-height: 1.6; }
         
-        .download-btn { display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; color: #374151; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; text-decoration: none; border: 1px solid #e5e7eb; transition: background 0.2s; margin-top: 1rem; }
-        .download-btn:hover { background: #e5e7eb; color: #111; }
+        .download-btn { display: inline-flex; align-items: center; gap: 6px; background: #f8fafc; color: #334155; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; border: 1px solid #e2e8f0; margin-top: 1rem; font-weight: 500; }
+        .download-btn:hover { background: #e2e8f0; }
+
+        .post-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #f1f5f9; }
+        .post-author { color: #64748b; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; }
+        .post-del-btn { background: none; border: none; color: #ef4444; font-size: 0.8rem; font-weight: 500; cursor: pointer; padding: 4px 8px; border-radius: 4px; }
+        .post-del-btn:hover { background: #fef2f2; }
+
+        .empty-feed { text-align: center; padding: 4rem 1rem; color: #94a3b8; }
+        .empty-feed p { font-size: 0.95rem; margin-top: 1rem; }
+
+        /* ============================================================
+           ADMIN PANEL
+        ============================================================ */
+        .admin-layout { max-width: 600px; }
+        .approved-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+        .approved-item { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 14px; font-size: 0.85rem; }
+        .approved-item span { color: #334155; font-weight: 500; }
+        .owner-tag { font-size: 0.7rem; background: #0f172a; color: white; padding: 2px 6px; border-radius: 4px; margin-left: 8px; font-weight: 600; }
+        .revoke-btn { background: none; border: 1px solid #fca5a5; color: #ef4444; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
+        .revoke-btn:hover { background: #fef2f2; }
+        
+        .add-email-row { display: flex; gap: 10px; }
+        .add-email-btn { background: #0f172a; color: white; border: none; padding: 0 20px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; cursor: pointer; white-space: nowrap; }
+        .add-email-btn:hover { background: #1e293b; }
 
         /* Toast */
-        #toast { position: fixed; bottom: 2rem; right: 2rem; background: #111; color: white; padding: 12px 20px; border-radius: 8px; font-size: 0.9rem; display: none; z-index: 9998; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        #toast { position: fixed; bottom: 2rem; right: 2rem; background: #0f172a; color: white; padding: 12px 24px; border-radius: 8px; font-size: 0.9rem; font-weight: 500; display: none; z-index: 9998; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
         #toast.show { display: block; animation: fadeInUp 0.3s ease; }
         @keyframes fadeInUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
-        @media (max-width: 768px) { .tracker-layout, .cms-layout { grid-template-columns: 1fr; } .add-email-row { flex-direction: column; } }
+        @media (max-width: 900px) { .cms-grid { grid-template-columns: 1fr; } .app-sidebar { width: 200px; } }
     </style>
 </head>
 <body>
@@ -247,182 +212,159 @@
 <div id="login-gate" class="visible">
     <div class="login-box">
         <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="login-logo">
-        <h2>Staff Portal</h2>
-        <p class="login-sub">Sign in to access the dashboard.</p>
-        <input type="email" id="login-email" class="login-input" placeholder="Email address" oninput="checkIfOwner(this.value)">
+        <h2>Corporate Portal</h2>
+        <p class="login-sub">Sign in to access the secure workspace.</p>
+        
+        <input type="email" id="login-email" class="login-input" placeholder="Work Email Address" oninput="checkIfOwner(this.value)">
+        
         <div id="password-login-section">
             <input type="password" id="login-password" class="login-input" placeholder="Password">
-            <button class="login-submit-btn" onclick="signInWithEmail()">Sign In</button>
+            <button class="login-submit-btn" onclick="signInWithEmail()">Secure Sign In</button>
         </div>
+        
         <div id="google-login-section" style="display:none;">
             <button class="google-btn" onclick="signInWithGoogle()">
-                <svg width="20" height="20" viewBox="0 0 48 48">
+                <svg width="18" height="18" viewBox="0 0 48 48">
                     <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
                     <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
                     <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
                     <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
                     <path fill="none" d="M0 0h48v48H0z"/>
                 </svg>
-                Continue with Google
+                Continue with Administrator Google
             </button>
         </div>
-        <div class="login-loading" id="login-loading"><div class="spinner"></div><span>Signing you in…</span></div>
+
+        <div class="login-loading" id="login-loading"><div class="spinner"></div></div>
         <div class="login-error" id="login-error"></div>
-        <p class="login-divider">Access is restricted to approved Riska's Finance staff only.</p>
+        <p class="login-divider">Authorized Personnel Only</p>
     </div>
 </div>
 
 <div id="main-content">
-    <div class="user-bar">
-        <div class="container">
-            <div class="user-bar-left">
-                <img id="user-avatar" src="" alt="" class="user-avatar" style="display:none;">
-                <span>Signed in as <strong id="user-label"></strong></span>
-            </div>
-            <button class="logout-btn" onclick="signOut()">Sign Out</button>
+    
+    <aside class="app-sidebar">
+        <div class="sidebar-header">
+            <img src="attached_assets/Capture1.png" alt="Logo">
+            <h1>Riska's Finance</h1>
         </div>
-    </div>
-    <header class="header">
-        <nav class="nav">
-            <a class="nav-brand" href="index.html" aria-label="Riska's Finance Home">
-                <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo">
-                <span class="brand-text">Riska's Finance</span>
-            </a>
-            <ul class="nav-menu" id="nav-menu">
-                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
-                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-                <li class="nav-item"><a href="steps.html" class="nav-link">Steps to Financial Success</a></li>
-                <li class="nav-item"><a href="dashboard.html" class="nav-link active">Dashboard</a></li>
-                <li class="nav-item"><a href="tax-filing.html" class="nav-link">File Taxes</a></li>
-                <li class="nav-item"><a href="fixedassets.html" class="nav-link">Fixed Assets</a></li>
-            </ul>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-item active" onclick="switchTab('cms', this)">
+                <i data-feather="file-text"></i> Communications
+            </div>
+            <div class="nav-item" id="admin-nav-btn" style="display:none;" onclick="switchTab('admin', this)">
+                <i data-feather="shield"></i> Access Control
+            </div>
         </nav>
-    </header>
 
-    <main>
-        <section class="dashboard-hero">
-            <div class="container">
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
-                    <div>
-                        <h1 style="margin-bottom:0.5rem;">Your Financial Dashboard</h1>
-                        <p style="color:#6b7280;">Track expenses, publish news, and export data for tax season.</p>
-                    </div>
-                    <div class="btn-toolbar">
-                        <a href="https://app.riskasfinance.com/" target="_blank" class="btn-tool-cta"><i data-feather="layers"></i> Go to Flowtab Software</a>
-                        <button class="btn-tool" onclick="exportToCSV()"><i data-feather="download"></i> Export Excel</button>
-                        <button class="btn-tool" onclick="window.print()"><i data-feather="printer"></i> Print</button>
-                    </div>
-                </div>
-                <div class="summary-grid">
-                    <div class="summary-card"><div class="card-info"><h3>Current Balance</h3><p id="balance-display">$0.00</p></div><div class="card-icon icon-balance"><i data-feather="dollar-sign"></i></div></div>
-                    <div class="summary-card"><div class="card-info"><h3>Total Income</h3><p id="income-display" style="color:#16a34a;">$0.00</p></div><div class="card-icon icon-income"><i data-feather="trending-up"></i></div></div>
-                    <div class="summary-card"><div class="card-info"><h3>Total Expenses</h3><p id="expense-display" style="color:#dc2626;">$0.00</p></div><div class="card-icon icon-expense"><i data-feather="trending-down"></i></div></div>
-                </div>
-                <div class="health-bar-container" title="Income vs Expense Ratio">
-                    <div id="bar-income" class="bar-income" style="width:50%"></div>
-                    <div id="bar-expense" class="bar-expense" style="width:50%"></div>
-                </div>
-            </div>
-        </section>
-
-        <section style="padding:2rem 0; background:white;">
-            <div class="container">
-                <div class="tab-bar">
-                    <button class="tab-btn active" onclick="switchTab('tracker', this)"><i data-feather="activity"></i> Transaction Tracker</button>
-                    <button class="tab-btn" onclick="switchTab('cms', this)"><i data-feather="edit-3"></i> Publish a Post</button>
-                    <button class="tab-btn" id="admin-tab-btn" onclick="switchTab('admin', this)" style="display:none;"><i data-feather="users"></i> Manage Access</button>
-                </div>
-
-                <div id="tab-tracker" class="tab-panel active">
-                    <div class="tracker-layout">
-                        <div class="tracker-form-card">
-                            <h2 style="margin-bottom:1.5rem;">Add Transaction</h2>
-                            <form id="transaction-form">
-                                <div class="form-group"><label class="form-label">Description</label><input type="text" id="text" class="form-input" placeholder="Ex: Client Payment" required></div>
-                                <div class="form-group"><label class="form-label">Category</label><select id="category" class="form-select"><option value="General">General</option><option value="Sales">Sales / Income</option><option value="Rent">Rent / Mortgage</option><option value="Utilities">Utilities</option><option value="Supplies">Office Supplies</option><option value="Travel">Travel & Auto</option><option value="Marketing">Advertising</option></select></div>
-                                <div class="form-group"><label class="form-label">Amount ($)</label><input type="number" id="amount" class="form-input" placeholder="0.00" step="0.01" required></div>
-                                <div class="form-group"><label class="form-label">Type</label><select id="type" class="form-select"><option value="income">Income (+)</option><option value="expense">Expense (-)</option></select></div>
-                                <button type="submit" class="add-btn">Add Transaction</button>
-                            </form>
-                        </div>
-                        <div class="transactions-card">
-                            <h2 style="margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:center;">Transaction History<span style="font-size:0.9rem; font-weight:400; color:#999;" id="count-display">0 items</span></h2>
-                            <div id="list" class="transactions-list"><p style="text-align:center; color:#ccc; margin-top:2rem;" id="empty-msg">No transactions recorded yet.</p></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="tab-cms" class="tab-panel">
-                    <div class="cms-layout">
-                        <div class="cms-card">
-                            <h2 style="margin-bottom:1.5rem;">Write a Post</h2>
-                            <div class="form-group"><label class="form-label">Title</label><input type="text" id="post-title" class="form-input" placeholder="Ex: 2026 Tax Deadline Reminder"></div>
-                            <div class="form-group">
-                                <label class="form-label">Category</label>
-                                <select id="post-category" class="form-select">
-                                    <option value="Tax Tips">Tax Tips & Deadlines</option>
-                                    <option value="Company News">Company News & Updates</option>
-                                    <option value="IRS News">IRS / Regulatory News</option>
-                                    <option value="Client Reminder">Client Reminder</option>
-                                </select>
-                            </div>
-                            <div class="form-group"><label class="form-label">Body</label><textarea id="post-body" class="form-textarea" placeholder="Write your post here..."></textarea></div>
-                            
-                            <div class="form-group">
-                                <label class="form-label" style="display:block; margin-bottom:8px;">Attach Document (Optional)</label>
-                                <input type="hidden" role="uploadcare-uploader" id="post-file-url" />
-                            </div>
-
-                            <div class="form-group" style="margin-top: 1rem;">
-                                <label class="form-label">Publish to</label>
-                                <select id="post-dest" class="form-select">
-                                    <option value="dashboard">Dashboard Only</option>
-                                    <option value="home">Home Page Only</option>
-                                    <option value="both">Both (Dashboard + Home Page)</option>
-                                </select>
-                            </div>
-                            <button class="publish-btn" onclick="publishPost()">
-                                <i data-feather="send" style="width:16px; vertical-align:middle; margin-right:6px;"></i> Publish Post
-                            </button>
-                        </div>
-                        <div>
-                            <h2 style="margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:center;">Published Posts<span style="font-size:0.9rem; font-weight:400; color:#999;" id="post-count">0 posts</span></h2>
-                            <div id="post-feed" class="post-feed">
-                                <div class="empty-feed"><i data-feather="file-text" style="width:40px; height:40px; margin-bottom:1rem; opacity:0.3;"></i><p>Loading posts...</p></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="tab-admin" class="tab-panel">
-                    <div class="admin-panel">
-                        <h3><i data-feather="shield" style="width:16px;"></i> Access Control</h3>
-                        <p>Only people on this list can sign into the Staff Portal. Add or remove Gmail addresses below. You and Arbri always have access and cannot be removed.</p>
-                        <div class="approved-list" id="approved-list"></div>
-                        <div class="add-email-row">
-                            <input type="email" id="new-email-input" class="add-email-input" placeholder="newstaff@gmail.com">
-                            <button class="add-email-btn" onclick="addApprovedEmail()">Grant Access</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <p class="footer-copyright">© 2026 Riska's Finance LLC. All rights reserved.</p>
-                <div class="footer-contact">
-                    <p><strong>Address:</strong> 614 Crawford Ave, Dixon IL, 61021</p>
-                    <p><strong>Phone:</strong> +1 (815) 677-5807</p>
-                    <p><strong>Email:</strong> admin@riskasfinance.com</p>
-                </div>
-            </div>
+        <div class="sidebar-footer">
+            <a href="index.html" class="external-link">
+                <i data-feather="external-link" style="width:14px;"></i> Return to Public Site
+            </a>
         </div>
-    </footer>
+    </aside>
+
+    <div class="app-workspace">
+        
+        <header class="app-header">
+            <div class="header-title" id="page-title">Communications Hub</div>
+            <div class="user-profile">
+                <div class="user-info">
+                    <img id="user-avatar" src="" alt="Avatar" class="user-avatar" style="display:none;">
+                    <span id="user-label"></span>
+                </div>
+                <button class="logout-btn" onclick="signOut()">Sign Out</button>
+            </div>
+        </header>
+
+        <main class="app-body">
+            
+            <div id="tab-cms" class="tab-panel active">
+                <div class="cms-grid">
+                    
+                    <div class="card">
+                        <div class="card-title"><i data-feather="edit-3"></i> Create Announcement</div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Headline</label>
+                            <input type="text" id="post-title" class="form-input" placeholder="Enter headline...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Classification</label>
+                            <select id="post-category" class="form-select">
+                                <option value="Tax Tips">Tax Tips & Guidelines</option>
+                                <option value="Company News">Company Updates</option>
+                                <option value="IRS News">IRS / Regulatory News</option>
+                                <option value="Client Reminder">Client Reminder</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Message Content</label>
+                            <textarea id="post-body" class="form-textarea" placeholder="Draft your message here..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Attach Document (Optional)</label>
+                            <input type="hidden" role="uploadcare-uploader" id="post-file-url" />
+                        </div>
+
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label class="form-label">Visibility</label>
+                            <select id="post-dest" class="form-select">
+                                <option value="both">Public + Internal Dashboard</option>
+                                <option value="home">Public Homepage Only</option>
+                                <option value="dashboard">Internal Dashboard Only</option>
+                            </select>
+                        </div>
+                        
+                        <button class="publish-btn" onclick="publishPost()">
+                            <i data-feather="send" style="width:16px;"></i> Broadcast Post
+                        </button>
+                    </div>
+                    
+                    <div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                            <h2 style="font-size:1.1rem; color:#0f172a;">Live Dispatches</h2>
+                            <span style="font-size:0.85rem; color:#64748b;" id="post-count">0 items</span>
+                        </div>
+                        
+                        <div id="post-feed" class="post-feed">
+                            <div class="empty-feed">
+                                <i data-feather="radio" style="width:32px; height:32px; margin-bottom:1rem; opacity:0.3;"></i>
+                                <p>Establishing secure link to database...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="tab-admin" class="tab-panel">
+                <div class="card admin-layout">
+                    <div class="card-title"><i data-feather="lock"></i> Identity & Access Management</div>
+                    <p style="font-size:0.85rem; color:#475569; margin-bottom:1.5rem; line-height:1.5;">
+                        Control portal access for personnel. Authorized emails below are permitted to authenticate. System Administrators (Amarildi & Arbri) have immutable access.
+                    </p>
+                    
+                    <div class="approved-list" id="approved-list"></div>
+                    
+                    <div style="margin-top: 2rem; border-top: 1px solid #f1f5f9; padding-top: 1.5rem;">
+                        <label class="form-label">Provision New User</label>
+                        <div class="add-email-row">
+                            <input type="email" id="new-email-input" class="form-input" style="margin:0;" placeholder="employee@riskasfinance.com">
+                            <button class="add-email-btn" onclick="addApprovedEmail()">Authorize</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
 </div>
+
 <div id="toast"></div>
 
 <script type="module">
@@ -457,7 +399,9 @@ function saveExtraEmails(list) {
     localStorage.setItem('rf_approved_emails', JSON.stringify(extra));
 }
 
+// Global UI functions
 window._fbSignOut = () => fbSignOut(auth);
+
 window.checkIfOwner = function(email) {
     const val = email.toLowerCase().trim();
     const pwSection = document.getElementById('password-login-section');
@@ -465,40 +409,41 @@ window.checkIfOwner = function(email) {
     if (OWNER_EMAILS.includes(val)) { pwSection.style.display = 'none'; googleSection.style.display = 'block'; } 
     else { pwSection.style.display = 'block'; googleSection.style.display = 'none'; }
 };
+
 window.signInWithGoogle = async function() {
     document.getElementById('login-error').style.display = 'none';
     document.getElementById('login-loading').classList.add('visible');
     try { await signInWithPopup(auth, provider); } 
-    catch(err) { document.getElementById('login-loading').classList.remove('visible'); showLoginError('Sign-in failed.'); }
+    catch(err) { document.getElementById('login-loading').classList.remove('visible'); showLoginError('Authentication failed.'); }
 };
+
 window.signInWithEmail = async function() {
     const email = document.getElementById('login-email').value.trim();
     const password = document.getElementById('login-password').value;
-    if(!email || !password) { showLoginError('Please enter both your email and password.'); return; }
+    if(!email || !password) { showLoginError('Credentials required.'); return; }
     document.getElementById('login-error').style.display = 'none';
     document.getElementById('login-loading').classList.add('visible');
     try { await signInWithEmailAndPassword(auth, email, password); } 
     catch(err) { document.getElementById('login-loading').classList.remove('visible'); showLoginError('Invalid credentials.'); }
 };
 
+// FIRESTORE CMS LOGIC
 let posts = [];
 const catClassMap  = { 'Tax Tips':'cat-tax', 'Company News':'cat-company', 'IRS News':'cat-irs', 'Client Reminder':'cat-reminder' };
-const destLabelMap = { dashboard:'Dashboard', home:'Home Page', both:'Dashboard + Home' };
+const destLabelMap = { dashboard:'Internal', home:'Public', both:'Public & Internal' };
 
 window.publishPost = async function() {
     const title = document.getElementById('post-title').value.trim();
     const category = document.getElementById('post-category').value;
     const body = document.getElementById('post-body').value.trim();
     const dest = document.getElementById('post-dest').value;
-    
-    // Uploadcare automatically places the file link inside this hidden input
     const uploadedFileUrl = document.getElementById('post-file-url').value; 
     
-    if (!title || !body) { alert('Please fill in the title and body.'); return; }
+    if (!title || !body) { alert('Headline and message content are required.'); return; }
 
     const publishBtn = document.querySelector('.publish-btn');
     publishBtn.disabled = true;
-    publishBtn.innerText = 'Publishing...';
+    publishBtn.innerText = 'Broadcasting...';
 
     try {
         await addDoc(collection(db, "posts"), {
@@ -507,38 +452,35 @@ window.publishPost = async function() {
             body: body,
             dest: dest,
             author: window._currentUserName || 'Staff',
-            date: new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'}),
+            date: new Date().toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'}),
             createdAt: Date.now(),
-            fileUrl: uploadedFileUrl || null // Saves the direct download link if attached
+            fileUrl: uploadedFileUrl || null
         });
         
-        // Reset form
         document.getElementById('post-title').value = '';
         document.getElementById('post-body').value = '';
-        
-        // Reset uploadcare widget visually
         const widget = uploadcare.Widget('[role=uploadcare-uploader]');
         widget.value(null);
 
-        showToast(`Published to ${destLabelMap[dest]}`);
+        showToast('Broadcast successful');
     } catch (e) {
         console.error("Error adding document: ", e);
-        alert("Error publishing post. Check if Firestore is enabled in your console.");
+        alert("Database connection error.");
     }
     
     publishBtn.disabled = false;
-    publishBtn.innerHTML = `<i data-feather="send" style="width:16px; vertical-align:middle; margin-right:6px;"></i> Publish Post`;
+    publishBtn.innerHTML = `<i data-feather="send" style="width:16px;"></i> Broadcast Post`;
     feather.replace();
 };
 
 window.deletePost = async function(id) {
-    if(confirm("Are you sure you want to delete this live post?")) {
+    if(confirm("Permanently delete this record?")) {
         try {
             await deleteDoc(doc(db, "posts", id));
-            showToast('Post deleted permanently');
+            showToast('Record destroyed');
         } catch (e) {
             console.error("Error deleting document: ", e);
-            alert("Error deleting post.");
+            alert("Deletion failed.");
         }
     }
 };
@@ -546,10 +488,10 @@ window.deletePost = async function(id) {
 function renderPosts() {
     const feed = document.getElementById('post-feed');
     const countEl = document.getElementById('post-count');
-    countEl.textContent = `${posts.length} post${posts.length!==1?'s':''}`;
+    countEl.textContent = `${posts.length} record${posts.length!==1?'s':''}`;
     
     if (!posts.length) {
-        feed.innerHTML = `<div class="empty-feed"><i data-feather="file-text" style="width:40px;height:40px;margin-bottom:1rem;opacity:0.3;"></i><p>No posts published to the database yet.<br>Write your first one!</p></div>`;
+        feed.innerHTML = `<div class="empty-feed"><i data-feather="inbox" style="width:40px;height:40px;margin-bottom:1rem;opacity:0.3;"></i><p>Archive empty. Awaiting new dispatches.</p></div>`;
         feather.replace(); return;
     }
     
@@ -562,10 +504,10 @@ function renderPosts() {
             </div>
             <h3>${p.title}</h3>
             <p>${p.body}</p>
-            ${p.fileUrl ? `<a href="${p.fileUrl}" target="_blank" rel="noopener noreferrer" class="download-btn"><i data-feather="paperclip" style="width:14px;height:14px;"></i> View Attachment</a>` : ''}
+            ${p.fileUrl ? `<a href="${p.fileUrl}" target="_blank" rel="noopener noreferrer" class="download-btn"><i data-feather="paperclip" style="width:14px;height:14px;"></i> View Attached Document</a>` : ''}
             <div class="post-actions">
-                <small style="color:#9ca3af;margin-right:auto;font-size:0.78rem;">by ${p.author}</small>
-                <button class="post-del-btn" onclick="deletePost('${p.id}')">Delete</button>
+                <div class="post-author"><i data-feather="user" style="width:12px;"></i> ${p.author}</div>
+                <button class="post-del-btn" onclick="deletePost('${p.id}')">Revoke</button>
             </div>
         </div>`).join('');
         
@@ -579,7 +521,7 @@ onAuthStateChanged(auth, (user) => {
 
         if (!approved.includes(email)) {
             fbSignOut(auth);
-            showLoginError(`<strong>${email}</strong> does not have access. Please contact Amarildi or Arbri.`);
+            showLoginError(`Unauthorized Identity: ${email}`);
             document.getElementById('login-loading').classList.remove('visible');
             return;
         }
@@ -592,13 +534,12 @@ onAuthStateChanged(auth, (user) => {
         document.getElementById('user-label').textContent = user.displayName || email;
         const avatar = document.getElementById('user-avatar');
         if (user.photoURL) { avatar.src = user.photoURL; avatar.style.display = 'inline-block'; }
-        if (OWNER_EMAILS.map(e=>e.toLowerCase()).includes(email)) { document.getElementById('admin-tab-btn').style.display = 'flex'; }
+        if (OWNER_EMAILS.map(e=>e.toLowerCase()).includes(email)) { document.getElementById('admin-nav-btn').style.display = 'flex'; }
 
         window._currentUserEmail = email; window._currentUserName  = user.displayName || email;
         window._approvedEmails   = getApprovedEmails; window._saveExtraEmails  = saveExtraEmails;
 
         feather.replace();
-        initTracker();
         renderAdminList();
         
         const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
@@ -625,12 +566,21 @@ function showLoginError(msg) {
 feather.replace();
 
 function signOut() { if (window._fbSignOut) window._fbSignOut(); }
+
 function switchTab(name, btn) {
+    // Switch Panels
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
-    btn.classList.add('active'); feather.replace();
+    
+    // Switch Nav Highlights
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    // Update Header
+    const titles = { 'cms': 'Communications Hub', 'admin': 'Identity & Access' };
+    document.getElementById('page-title').innerText = titles[name];
 }
+
 function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
@@ -645,64 +595,24 @@ function renderAdminList() {
     if (!el) return;
     el.innerHTML = list.map(email => {
         const isOwner = owners.map(e=>e.toLowerCase()).includes(email.toLowerCase());
-        return `<div class="approved-item"><span>${email}${isOwner ? '<span class="owner-tag">Owner</span>' : ''}</span>${!isOwner ? `<button class="revoke-btn" onclick="revokeEmail('${email}')">Remove</button>` : '<span style="font-size:0.78rem; color:#9ca3af;">Cannot remove</span>'}</div>`;
+        return `<div class="approved-item"><span>${email}${isOwner ? '<span class="owner-tag">Admin</span>' : ''}</span>${!isOwner ? `<button class="revoke-btn" onclick="revokeEmail('${email}')">Revoke</button>` : ''}</div>`;
     }).join('');
 }
+
 function addApprovedEmail() {
     const input = document.getElementById('new-email-input'); const email = input.value.trim().toLowerCase();
-    if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+    if (!email || !email.includes('@')) { alert('Valid email required.'); return; }
     if (!window._approvedEmails) return;
     const current = window._approvedEmails();
-    if (current.map(e=>e.toLowerCase()).includes(email)) { alert('That email already has access.'); return; }
-    window._saveExtraEmails([...current, email]); input.value = ''; renderAdminList(); showToast(`Access granted to ${email}`);
+    if (current.map(e=>e.toLowerCase()).includes(email)) { alert('Identity already provisioned.'); return; }
+    window._saveExtraEmails([...current, email]); input.value = ''; renderAdminList(); showToast(`Identity provisioned: ${email}`);
 }
+
 function revokeEmail(email) {
     if (!window._approvedEmails) return;
     window._saveExtraEmails(window._approvedEmails().filter(e => e.toLowerCase() !== email.toLowerCase()));
-    renderAdminList(); showToast(`Access removed for ${email}`);
+    renderAdminList(); showToast(`Access revoked: ${email}`);
 }
-
-const balanceEl = document.getElementById('balance-display'); const incomeEl = document.getElementById('income-display'); const expenseEl = document.getElementById('expense-display'); const list = document.getElementById('list'); const form = document.getElementById('transaction-form'); const textCtrl = document.getElementById('text'); const amountCtrl = document.getElementById('amount'); const typeCtrl = document.getElementById('type'); const catCtrl = document.getElementById('category'); const emptyMsg = document.getElementById('empty-msg'); const countDisplay = document.getElementById('count-display'); const barIncome = document.getElementById('bar-income'); const barExpense = document.getElementById('bar-expense');
-let transactions = JSON.parse(localStorage.getItem('riska_transactions')) || [];
-
-function addTransaction(e) {
-    e.preventDefault();
-    if (!textCtrl.value.trim() || !amountCtrl.value.trim()) return;
-    const isIncome = typeCtrl.value === 'income';
-    const t = { id: Math.floor(Math.random() * 100000000), text: textCtrl.value, amount: isIncome ? +amountCtrl.value : -(+amountCtrl.value), type: typeCtrl.value, category: catCtrl.value, date: new Date().toLocaleDateString() };
-    transactions.push(t); addTransactionDOM(t); updateValues();
-    localStorage.setItem('riska_transactions', JSON.stringify(transactions));
-    textCtrl.value = ''; amountCtrl.value = ''; showToast('Transaction added');
-}
-function addTransactionDOM(t) {
-    if (emptyMsg) emptyMsg.style.display = 'none';
-    const sign = t.amount < 0 ? '-' : '+'; const cls = t.amount < 0 ? 'minus' : 'plus'; const abs = Math.abs(t.amount).toFixed(2);
-    const icons = { Sales:'trending-up', Rent:'home', Utilities:'zap', Supplies:'package', Travel:'truck' }; const icon = icons[t.category] || 'dollar-sign';
-    const item = document.createElement('div'); item.classList.add('transaction-item');
-    item.innerHTML = `<div style="display:flex; gap:12px; align-items:center;"><div style="background:#f3f4f6; padding:8px; border-radius:50%; color:#666;"><i data-feather="${icon}" style="width:16px; height:16px;"></i></div><div class="t-info"><h4>${t.text}</h4><span class="t-cat-badge">${t.category}</span><span style="font-size:0.8rem; margin-top:2px;">${t.date}</span></div></div><div style="display:flex; align-items:center;"><span class="t-amount ${cls}">${sign}$${abs}</span><button class="delete-btn" onclick="removeTransaction(${t.id})"><i data-feather="x-circle" style="width:18px;"></i></button></div>`;
-    list.prepend(item); feather.replace();
-}
-function updateValues() {
-    const amounts = transactions.map(t => t.amount); const total = amounts.reduce((a,v) => a+v, 0).toFixed(2); const income = amounts.filter(v=>v>0).reduce((a,v)=>a+v,0); const expense = amounts.filter(v=>v<0).reduce((a,v)=>a+v,0) * -1;
-    balanceEl.innerText = `$${total}`; incomeEl.innerText = `$${income.toFixed(2)}`; expenseEl.innerText = `$${expense.toFixed(2)}`; countDisplay.innerText = `${transactions.length} items`;
-    const total2 = income + expense; barIncome.style.width = total2 ? `${(income/total2)*100}%` : '50%'; barExpense.style.width = total2 ? `${(expense/total2)*100}%` : '50%';
-}
-function removeTransaction(id) {
-    transactions = transactions.filter(t => t.id !== id); localStorage.setItem('riska_transactions', JSON.stringify(transactions)); initTracker(); showToast('Transaction removed');
-}
-function exportToCSV() {
-    if (!transactions.length) { alert('No transactions to export.'); return; }
-    let csv = 'data:text/csv;charset=utf-8,Date,Description,Category,Type,Amount\n';
-    transactions.forEach(t => { csv += `${t.date},"${t.text}",${t.category},${t.type},${t.amount}\r\n`; });
-    const a = document.createElement('a'); a.href = encodeURI(csv); a.download = 'riskas_finance_report.csv';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-}
-function initTracker() {
-    list.innerHTML = '';
-    if (!transactions.length) { list.appendChild(emptyMsg); emptyMsg.style.display = 'block'; } else transactions.forEach(addTransactionDOM);
-    updateValues();
-}
-form.addEventListener('submit', addTransaction);
 </script>
 </body>
 </html>
