@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
 
+    <!-- Uploadcare Script -->
     <script>
         UPLOADCARE_PUBLIC_KEY = 'd70e326b495b592aae72'; 
     </script>
@@ -36,7 +37,7 @@
         .login-box {
             background: white; border-radius: 12px;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-            padding: 3rem; width: 100%; max-width: 400px;
+            padding: 3rem; width: 90%; max-width: 400px;
             text-align: center;
         }
         .login-logo { width: 50px; margin-bottom: 1.5rem; border-radius: 8px; }
@@ -80,10 +81,12 @@
         .app-sidebar {
             width: 260px; background: #0f172a; color: #94a3b8;
             display: flex; flex-direction: column; flex-shrink: 0;
+            transition: transform 0.3s ease; z-index: 50;
         }
-        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid #1e293b; display: flex; align-items: center; gap: 12px; }
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid #1e293b; display: flex; align-items: center; justify-content: space-between; }
+        .sidebar-header-left { display: flex; align-items: center; gap: 12px; }
         .sidebar-header img { width: 32px; border-radius: 6px; }
-        .sidebar-header h1 { font-size: 1.1rem; color: white; font-weight: 600; letter-spacing: -0.02em; }
+        .sidebar-header h1 { font-size: 1.1rem; color: white; font-weight: 600; letter-spacing: -0.02em; margin: 0; }
         
         .sidebar-nav { padding: 1.5rem 1rem; flex: 1; }
         .nav-item {
@@ -102,14 +105,21 @@
         }
         .external-link:hover { color: white; }
 
+        /* Mobile specific sidebar elements */
+        .mobile-close-btn { display: none; background: none; border: none; color: #94a3b8; cursor: pointer; padding: 4px; }
+        .mobile-close-btn:hover { color: white; }
+        .sidebar-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 40; }
+
         /* Main Workspace */
-        .app-workspace { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .app-workspace { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
         
         .app-header {
             background: white; height: 70px; border-bottom: 1px solid #e2e8f0;
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 2rem; flex-shrink: 0;
         }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+        .mobile-menu-btn { display: none; background: none; border: none; color: #0f172a; cursor: pointer; padding: 0; }
         .header-title { font-size: 1.1rem; font-weight: 600; color: #0f172a; }
         
         .user-profile { display: flex; align-items: center; gap: 1rem; }
@@ -143,7 +153,7 @@
         .form-label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #475569; font-size: 0.85rem; }
         .form-input, .form-select, .form-textarea {
             width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px;
-            font-size: 0.9rem; font-family: inherit; transition: border-color 0.2s; background: #f8fafc;
+            font-size: 0.9rem; font-family: inherit; transition: border-color 0.2s; background: #f8fafc; box-sizing: border-box;
         }
         .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #FF6B35; background: white; }
         .form-textarea { resize: vertical; min-height: 150px; }
@@ -204,11 +214,34 @@
         #toast.show { display: block; animation: fadeInUp 0.3s ease; }
         @keyframes fadeInUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
-        @media (max-width: 900px) { .cms-grid { grid-template-columns: 1fr; } .app-sidebar { width: 200px; } }
+        /* ============================================================
+           MOBILE RESPONSIVENESS
+        ============================================================ */
+        @media (max-width: 900px) { 
+            .cms-grid { grid-template-columns: 1fr; } 
+            
+            /* Sidebar hidden off-screen by default on mobile */
+            .app-sidebar { 
+                position: fixed; top: 0; left: 0; bottom: 0; 
+                transform: translateX(-100%); width: 280px; 
+            }
+            .app-sidebar.open { transform: translateX(0); }
+            
+            /* Show Mobile Buttons & Backdrops */
+            .mobile-menu-btn, .mobile-close-btn { display: block; }
+            .sidebar-backdrop.open { display: block; }
+
+            .app-header { padding: 0 1rem; }
+            .app-body { padding: 1rem; }
+            .user-info span { display: none; } /* Hide name on small screens */
+            .add-email-row { flex-direction: column; }
+            .add-email-btn { padding: 12px; }
+        }
     </style>
 </head>
 <body>
 
+<!-- LOGIN GATE -->
 <div id="login-gate" class="visible">
     <div class="login-box">
         <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="login-logo">
@@ -241,12 +274,23 @@
     </div>
 </div>
 
+<!-- ENTERPRISE WORKSPACE -->
 <div id="main-content">
     
-    <aside class="app-sidebar">
+    <!-- Mobile Sidebar Backdrop -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="toggleSidebar()"></div>
+
+    <!-- Left Sidebar -->
+    <aside class="app-sidebar" id="app-sidebar">
         <div class="sidebar-header">
-            <img src="attached_assets/Capture1.png" alt="Logo">
-            <h1>Riska's Finance</h1>
+            <div class="sidebar-header-left">
+                <img src="attached_assets/Capture1.png" alt="Logo">
+                <h1>Riska's Finance</h1>
+            </div>
+            <!-- 🔥 NEW: Mobile Close Button requested by user -->
+            <button class="mobile-close-btn" onclick="toggleSidebar()">
+                <i data-feather="x" style="width:20px; height:20px;"></i>
+            </button>
         </div>
         
         <nav class="sidebar-nav">
@@ -265,10 +309,19 @@
         </div>
     </aside>
 
+    <!-- Main Content Area -->
     <div class="app-workspace">
         
+        <!-- Top Header -->
         <header class="app-header">
-            <div class="header-title" id="page-title">Communications Hub</div>
+            <div class="header-left">
+                <!-- 🔥 NEW: Mobile Hamburger Menu -->
+                <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                    <i data-feather="menu" style="width:24px; height:24px;"></i>
+                </button>
+                <div class="header-title" id="page-title">Communications Hub</div>
+            </div>
+
             <div class="user-profile">
                 <div class="user-info">
                     <img id="user-avatar" src="" alt="Avatar" class="user-avatar" style="display:none;">
@@ -278,11 +331,14 @@
             </div>
         </header>
 
+        <!-- Body / Tabs -->
         <main class="app-body">
             
+            <!-- TAB: CMS / Communications -->
             <div id="tab-cms" class="tab-panel active">
                 <div class="cms-grid">
                     
+                    <!-- Composer Left Panel -->
                     <div class="card">
                         <div class="card-title"><i data-feather="edit-3"></i> Create Announcement</div>
                         
@@ -306,6 +362,7 @@
                             <textarea id="post-body" class="form-textarea" placeholder="Draft your message here..."></textarea>
                         </div>
                         
+                        <!-- Uploadcare direct laptop upload widget -->
                         <div class="form-group">
                             <label class="form-label">Attach Document (Optional)</label>
                             <input type="hidden" role="uploadcare-uploader" id="post-file-url" />
@@ -325,6 +382,7 @@
                         </button>
                     </div>
                     
+                    <!-- Live Feed Right Panel -->
                     <div>
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
                             <h2 style="font-size:1.1rem; color:#0f172a;">Live Dispatches</h2>
@@ -342,6 +400,7 @@
                 </div>
             </div>
 
+            <!-- TAB: ADMIN -->
             <div id="tab-admin" class="tab-panel">
                 <div class="card admin-layout">
                     <div class="card-title"><i data-feather="lock"></i> Identity & Access Management</div>
@@ -367,6 +426,7 @@
 
 <div id="toast"></div>
 
+<!-- FIREBASE SDK & APP LOGIC -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as fbSignOut, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -562,8 +622,15 @@ function showLoginError(msg) {
 }
 </script>
 
+<!-- UI LOGIC -->
 <script>
 feather.replace();
+
+// 🔥 NEW: Toggle Sidebar function for mobile
+function toggleSidebar() {
+    document.getElementById('app-sidebar').classList.toggle('open');
+    document.getElementById('sidebar-backdrop').classList.toggle('open');
+}
 
 function signOut() { if (window._fbSignOut) window._fbSignOut(); }
 
@@ -579,6 +646,12 @@ function switchTab(name, btn) {
     // Update Header
     const titles = { 'cms': 'Communications Hub', 'admin': 'Identity & Access' };
     document.getElementById('page-title').innerText = titles[name];
+
+    // 🔥 NEW: Automatically close sidebar on mobile after making a selection
+    if (window.innerWidth <= 900) {
+        document.getElementById('app-sidebar').classList.remove('open');
+        document.getElementById('sidebar-backdrop').classList.remove('open');
+    }
 }
 
 function showToast(msg) {
@@ -616,5 +689,3 @@ function revokeEmail(email) {
 </script>
 </body>
 </html>
-
-```
