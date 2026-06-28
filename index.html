@@ -344,6 +344,15 @@
                         </article>
                     </div>
                 </div>
+
+                <!-- 🔥 NEW: PUBLIC NEWS FEED INTEGRATION FROM DASHBOARD -->
+                <div style="margin-top: 4rem;">
+                    <h3 style="font-size: 1.5rem; color: #333; margin-bottom: 1.5rem; border-bottom: 2px solid #FF6B35; padding-bottom: 0.5rem; display: inline-block;">Firm Announcements & Tax Updates</h3>
+                    <div id="public-news-feed">
+                        <p style="color: #666;">Loading latest news...</p>
+                    </div>
+                </div>
+
             </div>
             <style>
                 @media (max-width: 768px) {
@@ -592,5 +601,64 @@
     </button>
     <!-- END RISKA AI FLOATING BUBBLE -->
 
+    <!-- 🔥 NEW: PUBLIC NEWS FEED SCRIPT FROM FIREBASE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey:            "AIzaSyAUsHaf3_npOkomivpF9fVT6xtSD0E0xFU",
+            authDomain:        "riskasfinance-4b13a.firebaseapp.com",
+            projectId:         "riskasfinance-4b13a",
+            storageBucket:     "riskasfinance-4b13a.firebasestorage.app",
+            messagingSenderId: "502736076948",
+            appId:             "1:502736076948:web:9d6bc637d4f25e8c653481",
+            measurementId:     "G-300CNKNFSL"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const feed = document.getElementById('public-news-feed');
+        
+        const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+        
+        onSnapshot(q, (snapshot) => {
+            let posts = [];
+            
+            snapshot.forEach((doc) => {
+                let data = doc.data();
+                // SECURITY FILTER: Only keep posts meant for the public!
+                if (data.dest === 'home' || data.dest === 'both') {
+                    posts.push({ id: doc.id, ...data });
+                }
+            });
+        
+            if (posts.length === 0) {
+                feed.innerHTML = `<p style="color: #6b7280; text-align: center; padding: 2rem 0; background: white; border-radius: 8px; border: 1px dashed #e5e7eb;">No recent updates right now. Check back soon!</p>`;
+                return;
+            }
+        
+            feed.innerHTML = posts.map(p => `
+                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #f3f4f6; padding-bottom: 1rem;">
+                        <span style="background: #FF6B35; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">
+                            ${p.category}
+                        </span>
+                        <span style="color: #9ca3af; font-size: 0.85rem;">${p.date}</span>
+                    </div>
+                    <h3 style="margin: 0 0 0.75rem 0; font-size: 1.25rem; color: #111;">${p.title}</h3>
+                    <p style="margin: 0 0 1.5rem 0; color: #4b5563; line-height: 1.6;">${p.body}</p>
+                    ${p.fileUrl ? `<a href="${p.fileUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 6px; background: #f8fafc; color: #334155; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; text-decoration: none; border: 1px solid #e2e8f0; margin-bottom: 1rem; font-weight: 500; transition: background 0.2s;" onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f8fafc'"><i data-feather="paperclip" style="width:14px;height:14px;"></i> View Attached Document</a>` : ''}
+                    <div style="font-size: 0.85rem; color: #9ca3af;">
+                        Posted by <strong>${p.author}</strong>
+                    </div>
+                </div>
+            `).join('');
+            
+            if (typeof feather !== 'undefined') {
+                feather.replace();
+            }
+        });
+    </script>
 </body>
 </html>
