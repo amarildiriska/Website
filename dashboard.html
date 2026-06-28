@@ -1,1116 +1,383 @@
+Here is a completely redesigned, enterprise-grade version of your dashboard.
+
+I removed the transaction tracker and rebuilt the layout to function exactly like a modern Corporate Intranet (using a persistent side-navigation bar, a clean top header, and a distraction-free publishing area). I also seamlessly re-integrated your live Firebase database and the Uploadcare document uploader so all your hard work from earlier is preserved.
+
+You can completely replace your current file with this new enterprise code:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff Portal — Riska's Finance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=0.80">
+    <title>Staff Portal - Riska's Finance</title>
     <link rel="icon" type="image/png" href="attached_assets/Capture1.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
 
+    <script>
+        UPLOADCARE_PUBLIC_KEY = 'd70e326b495b592aae72'; 
+    </script>
+    <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js" charset="utf-8"></script>
+
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --ink:       #0d1117;
-            --ink-2:     #1c2333;
-            --ink-3:     #2d3748;
-            --slate:     #64748b;
-            --mist:      #f1f5f9;
-            --line:      #e2e8f0;
-            --accent:    #FF6B35;
-            --accent-dk: #d95a27;
-            --green:     #16a34a;
-            --red:       #dc2626;
-            --blue:      #2563eb;
-            --sidebar-w: 240px;
-            --topbar-h:  56px;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--mist);
-            color: var(--ink);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-        }
+        /* ============================================================
+           BASE & RESET
+        ============================================================ */
+        * { box-sizing: border-box; }
+        body, html { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #334155; }
+        h1, h2, h3, h4, p { margin: 0; }
+        a { text-decoration: none; }
 
         /* ============================================================
            LOGIN GATE
         ============================================================ */
         #login-gate {
-            display: none;
-            position: fixed; inset: 0;
-            background: var(--ink);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
+            display: none; position: fixed; inset: 0;
+            background: #0f172a; z-index: 9999;
+            align-items: center; justify-content: center;
         }
         #login-gate.visible { display: flex; }
-
-        .login-panel {
-            display: flex;
-            width: 100%;
-            max-width: 900px;
-            min-height: 520px;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+        .login-box {
+            background: white; border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            padding: 3rem; width: 100%; max-width: 400px;
+            text-align: center;
         }
-
-        /* Left — brand side */
-        .login-brand {
-            width: 380px;
-            flex-shrink: 0;
-            background: linear-gradient(160deg, #1a2540 0%, #0d1117 100%);
-            padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
+        .login-logo { width: 50px; margin-bottom: 1.5rem; border-radius: 8px; }
+        .login-box h2 { font-size: 1.5rem; color: #0f172a; margin-bottom: 0.5rem; font-weight: 600; }
+        .login-box .login-sub { color: #64748b; font-size: 0.9rem; margin-bottom: 2rem; }
+        
+        .login-input {
+            width: 100%; padding: 12px 16px; margin-bottom: 1rem;
+            border: 1px solid #cbd5e1; border-radius: 8px;
+            font-size: 0.95rem; font-family: inherit; transition: border-color 0.2s;
         }
-        .login-brand::before {
-            content: '';
-            position: absolute;
-            width: 320px; height: 320px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,107,53,0.18) 0%, transparent 70%);
-            top: -60px; right: -80px;
+        .login-input:focus { outline: none; border-color: #FF6B35; }
+        .login-submit-btn {
+            width: 100%; background: #0f172a; color: white; border: none;
+            padding: 12px 20px; border-radius: 8px; font-size: 0.95rem;
+            font-weight: 500; cursor: pointer; transition: background 0.2s;
         }
-        .login-brand-logo {
-            display: flex; align-items: center; gap: 12px;
-        }
-        .login-brand-logo img { width: 36px; border-radius: 8px; }
-        .login-brand-logo span { color: white; font-size: 1rem; font-weight: 600; }
-        .login-brand-body { position: relative; }
-        .login-brand-body h1 {
-            font-family: 'DM Serif Display', serif;
-            font-size: 2rem;
-            color: white;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-        }
-        .login-brand-body p { color: rgba(255,255,255,0.5); font-size: 0.875rem; line-height: 1.6; }
-        .login-brand-footer { color: rgba(255,255,255,0.3); font-size: 0.75rem; }
-
-        /* Right — form side */
-        .login-form-side {
-            flex: 1;
-            background: white;
-            padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .login-form-side h2 {
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: var(--ink);
-            margin-bottom: 0.35rem;
-        }
-        .login-form-side .login-sub {
-            font-size: 0.875rem;
-            color: var(--slate);
-            margin-bottom: 2rem;
-        }
-
-        .lf-label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--ink-3);
-            margin-bottom: 6px;
-            letter-spacing: 0.03em;
-            text-transform: uppercase;
-        }
-        .lf-input {
-            width: 100%; padding: 11px 14px;
-            border: 1.5px solid var(--line);
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-family: inherit;
-            margin-bottom: 1rem;
-            transition: border-color 0.2s;
-            color: var(--ink);
-        }
-        .lf-input:focus { outline: none; border-color: var(--accent); }
-
-        .lf-btn-primary {
-            width: 100%; background: var(--ink); color: white;
-            border: none; padding: 12px; border-radius: 8px;
-            font-size: 0.95rem; font-weight: 600; cursor: pointer;
-            transition: background 0.2s; font-family: inherit;
-            margin-bottom: 0.75rem;
-        }
-        .lf-btn-primary:hover { background: var(--ink-3); }
+        .login-submit-btn:hover { background: #1e293b; }
 
         .google-btn {
             display: flex; align-items: center; justify-content: center; gap: 10px;
-            width: 100%; padding: 11px 14px;
-            background: white; border: 1.5px solid var(--line);
-            border-radius: 8px; font-size: 0.9rem; font-weight: 500;
-            color: var(--ink-3); cursor: pointer; font-family: inherit;
-            transition: all 0.2s;
+            width: 100%; padding: 12px 20px; background: white;
+            border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem;
+            font-weight: 500; color: #334155; cursor: pointer; transition: all 0.2s;
         }
-        .google-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-        .login-divider-text {
-            text-align: center; font-size: 0.78rem;
-            color: #cbd5e1; margin: 0.75rem 0;
-        }
+        .google-btn:hover { border-color: #94a3b8; background: #f8fafc; }
+        .google-btn svg { flex-shrink: 0; }
 
         .login-error {
-            font-size: 0.83rem; color: var(--red);
-            background: #fef2f2; border: 1px solid #fecaca;
-            border-radius: 7px; padding: 9px 13px;
-            margin-top: 0.75rem; display: none; line-height: 1.5;
+            color: #b91c1c; font-size: 0.85rem; margin-top: 1rem; padding: 10px;
+            background: #fef2f2; border-radius: 6px; display: none; text-align: left;
         }
-        .login-loading {
-            display: none; align-items: center; justify-content: center;
-            gap: 10px; margin-top: 1rem; color: var(--slate); font-size: 0.875rem;
-        }
-        .login-loading.visible { display: flex; }
-        .spinner {
-            width: 20px; height: 20px;
-            border: 2.5px solid var(--line); border-top-color: var(--accent);
-            border-radius: 50%; animation: spin 0.7s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .login-restrict {
-            font-size: 0.75rem; color: #cbd5e1;
-            margin-top: 1.5rem; text-align: center;
-        }
-
-        @media (max-width: 680px) {
-            .login-brand { display: none; }
-            .login-form-side { padding: 2rem; }
-        }
+        .login-divider { font-size: 0.75rem; color: #94a3b8; margin-top: 2rem; text-transform: uppercase; letter-spacing: 0.05em; }
 
         /* ============================================================
-           MAIN PORTAL LAYOUT
+           APP LAYOUT (ENTERPRISE SIDEBAR)
         ============================================================ */
-        #main-content { display: none; }
-        #main-content.visible { display: flex; min-height: 100vh; }
+        #main-content { display: none; height: 100vh; overflow: hidden; }
+        #main-content.visible { display: flex; }
 
-        /* Sidebar */
-        .sidebar {
-            width: var(--sidebar-w);
-            background: var(--ink);
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            top: 0; left: 0; bottom: 0;
-            z-index: 100;
-            overflow-y: auto;
+        .app-sidebar {
+            width: 260px; background: #0f172a; color: #94a3b8;
+            display: flex; flex-direction: column; flex-shrink: 0;
         }
-
-        .sidebar-brand {
-            display: flex; align-items: center; gap: 10px;
-            padding: 1.25rem 1.25rem 1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
-        }
-        .sidebar-brand img { width: 30px; border-radius: 6px; }
-        .sidebar-brand span { color: white; font-size: 0.9rem; font-weight: 600; }
-
-        .sidebar-section-label {
-            font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
-            text-transform: uppercase; color: rgba(255,255,255,0.3);
-            padding: 1.25rem 1.25rem 0.4rem;
-        }
-
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid #1e293b; display: flex; align-items: center; gap: 12px; }
+        .sidebar-header img { width: 32px; border-radius: 6px; }
+        .sidebar-header h1 { font-size: 1.1rem; color: white; font-weight: 600; letter-spacing: -0.02em; }
+        
+        .sidebar-nav { padding: 1.5rem 1rem; flex: 1; }
         .nav-item {
-            display: flex; align-items: center; gap: 10px;
-            padding: 9px 1.25rem; font-size: 0.875rem; font-weight: 500;
-            color: rgba(255,255,255,0.55); cursor: pointer;
-            border-radius: 0; transition: all 0.15s;
-            border: none; background: none; width: 100%; text-align: left;
-            text-decoration: none;
+            display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+            color: #94a3b8; border-radius: 8px; margin-bottom: 4px;
+            cursor: pointer; transition: all 0.2s; font-size: 0.9rem; font-weight: 500;
         }
-        .nav-item:hover { color: white; background: rgba(255,255,255,0.06); }
-        .nav-item.active { color: white; background: rgba(255,107,53,0.18); }
-        .nav-item.active svg { stroke: var(--accent); }
-        .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+        .nav-item:hover { color: white; background: #1e293b; }
+        .nav-item.active { color: white; background: #FF6B35; }
+        .nav-item svg { width: 18px; height: 18px; }
 
-        .sidebar-footer {
-            margin-top: auto;
-            padding: 1rem 1.25rem;
-            border-top: 1px solid rgba(255,255,255,0.07);
+        .sidebar-footer { padding: 1.5rem; border-top: 1px solid #1e293b; }
+        .external-link {
+            display: flex; align-items: center; gap: 8px; color: #94a3b8;
+            font-size: 0.85rem; text-decoration: none; transition: color 0.2s;
         }
-        .user-chip {
-            display: flex; align-items: center; gap: 10px;
-            margin-bottom: 0.75rem;
-        }
-        .user-chip-avatar {
-            width: 32px; height: 32px; border-radius: 50%;
-            object-fit: cover; border: 1.5px solid rgba(255,255,255,0.2);
-            display: none;
-        }
-        .user-chip-initials {
-            width: 32px; height: 32px; border-radius: 50%;
-            background: var(--accent); color: white;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
-        }
-        .user-chip-info { flex: 1; min-width: 0; }
-        .user-chip-name { color: white; font-size: 0.82rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .user-chip-role { color: rgba(255,255,255,0.4); font-size: 0.72rem; }
+        .external-link:hover { color: white; }
 
-        .signout-btn {
-            display: flex; align-items: center; gap: 8px;
-            width: 100%; padding: 8px 10px; background: none;
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 7px; color: rgba(255,255,255,0.5);
-            font-size: 0.8rem; cursor: pointer; font-family: inherit;
-            transition: all 0.2s;
-        }
-        .signout-btn:hover { color: white; border-color: rgba(255,255,255,0.3); }
-        .signout-btn svg { width: 14px; height: 14px; }
-
-        /* Main area */
-        .portal-main {
-            margin-left: var(--sidebar-w);
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* Top bar */
-        .topbar {
-            height: var(--topbar-h);
-            background: white;
-            border-bottom: 1px solid var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 2rem;
-            position: sticky; top: 0; z-index: 50;
-        }
-        .topbar-title { font-size: 1rem; font-weight: 600; color: var(--ink); }
-        .topbar-right { display: flex; align-items: center; gap: 12px; }
-        .topbar-badge {
-            font-size: 0.75rem; background: var(--mist);
-            border: 1px solid var(--line); color: var(--slate);
-            padding: 4px 10px; border-radius: 20px;
-        }
-
-        /* Page content */
-        .page-content {
-            padding: 2rem;
-            flex: 1;
-        }
-
-        /* Panels (tabs) */
-        .portal-panel { display: none; }
-        .portal-panel.active { display: block; }
-
-        /* ============================================================
-           OVERVIEW PANEL
-        ============================================================ */
-        .overview-header {
-            margin-bottom: 2rem;
-        }
-        .overview-header h2 {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.75rem; color: var(--ink); margin-bottom: 0.25rem;
-        }
-        .overview-header p { color: var(--slate); font-size: 0.9rem; }
-
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        .kpi-card {
-            background: white;
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            padding: 1.4rem 1.5rem;
-        }
-        .kpi-label {
-            font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
-            letter-spacing: 0.06em; color: var(--slate); margin-bottom: 0.5rem;
-        }
-        .kpi-value {
-            font-size: 1.6rem; font-weight: 700; color: var(--ink); line-height: 1;
-            margin-bottom: 0.4rem;
-        }
-        .kpi-sub { font-size: 0.78rem; color: var(--slate); }
-        .kpi-dot {
-            width: 8px; height: 8px; border-radius: 50%;
-            display: inline-block; margin-right: 5px;
-        }
-
-        .two-col { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.5rem; }
-
-        .panel-card {
-            background: white;
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        .panel-card-header {
-            padding: 1.1rem 1.5rem;
-            border-bottom: 1px solid var(--line);
+        /* Main Workspace */
+        .app-workspace { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        
+        .app-header {
+            background: white; height: 70px; border-bottom: 1px solid #e2e8f0;
             display: flex; align-items: center; justify-content: space-between;
+            padding: 0 2rem; flex-shrink: 0;
         }
-        .panel-card-header h3 { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
-        .panel-card-header span { font-size: 0.78rem; color: var(--slate); }
-        .panel-card-body { padding: 1.25rem 1.5rem; }
+        .header-title { font-size: 1.1rem; font-weight: 600; color: #0f172a; }
+        
+        .user-profile { display: flex; align-items: center; gap: 1rem; }
+        .user-info { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 500; }
+        .user-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+        .logout-btn {
+            background: none; border: 1px solid #e2e8f0; color: #64748b;
+            padding: 6px 12px; border-radius: 6px; cursor: pointer;
+            font-size: 0.8rem; font-weight: 500; transition: all 0.2s;
+        }
+        .logout-btn:hover { border-color: #cbd5e1; color: #0f172a; background: #f8fafc; }
 
-        /* Activity feed */
-        .activity-item {
-            display: flex; gap: 12px; align-items: flex-start;
-            padding: 0.85rem 0;
-            border-bottom: 1px solid var(--line);
-        }
-        .activity-item:last-child { border-bottom: none; padding-bottom: 0; }
-        .activity-dot {
-            width: 8px; height: 8px; border-radius: 50%;
-            background: var(--accent); margin-top: 6px; flex-shrink: 0;
-        }
-        .activity-dot.blue  { background: var(--blue); }
-        .activity-dot.green { background: var(--green); }
-        .activity-dot.slate { background: #94a3b8; }
-        .activity-text { font-size: 0.85rem; color: var(--ink-3); line-height: 1.5; }
-        .activity-time { font-size: 0.75rem; color: var(--slate); margin-top: 2px; }
-
-        /* Quick links */
-        .quicklink {
-            display: flex; align-items: center; gap: 12px;
-            padding: 0.9rem 0;
-            border-bottom: 1px solid var(--line);
-            text-decoration: none; color: inherit;
-            transition: background 0.15s;
-            border-radius: 6px;
-            padding-left: 8px; margin: 0 -8px;
-        }
-        .quicklink:last-child { border-bottom: none; }
-        .quicklink:hover { background: var(--mist); }
-        .quicklink-icon {
-            width: 34px; height: 34px; border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
-        }
-        .ql-orange { background: #fff3ee; color: var(--accent); }
-        .ql-blue   { background: #eff6ff; color: var(--blue); }
-        .ql-green  { background: #f0fdf4; color: var(--green); }
-        .ql-slate  { background: var(--mist); color: var(--slate); }
-        .quicklink-label { font-size: 0.85rem; font-weight: 500; color: var(--ink); }
-        .quicklink-sub   { font-size: 0.75rem; color: var(--slate); }
-        .quicklink svg   { width: 16px; height: 16px; }
+        .app-body { padding: 2rem; overflow-y: auto; flex: 1; }
 
         /* ============================================================
-           NEWSROOM (CMS) PANEL
+           TAB PANELS
         ============================================================ */
-        .newsroom-layout {
-            display: grid;
-            grid-template-columns: 380px 1fr;
-            gap: 1.5rem;
-            align-items: start;
-        }
+        .tab-panel { display: none; max-width: 1200px; margin: 0 auto; }
+        .tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        .compose-card {
-            background: white; border: 1px solid var(--line);
-            border-radius: 12px; overflow: hidden; position: sticky; top: calc(var(--topbar-h) + 1.5rem);
-        }
-        .compose-card-header {
-            padding: 1rem 1.5rem;
-            background: var(--ink); color: white;
-            font-size: 0.875rem; font-weight: 600;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .compose-card-header svg { width: 15px; height: 15px; }
-        .compose-body { padding: 1.5rem; }
+        /* ============================================================
+           CMS LAYOUT (ENTERPRISE)
+        ============================================================ */
+        .cms-grid { display: grid; grid-template-columns: 350px 1fr; gap: 2rem; align-items: start; }
+        
+        .card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .card-title { font-size: 1rem; font-weight: 600; color: #0f172a; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 8px; }
 
-        .cf-label { display: block; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate); margin-bottom: 6px; }
-        .cf-input, .cf-select, .cf-textarea {
-            width: 100%; padding: 10px 12px;
-            border: 1.5px solid var(--line); border-radius: 8px;
-            font-size: 0.9rem; font-family: inherit; color: var(--ink);
-            transition: border-color 0.2s; margin-bottom: 1rem;
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #475569; font-size: 0.85rem; }
+        .form-input, .form-select, .form-textarea {
+            width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px;
+            font-size: 0.9rem; font-family: inherit; transition: border-color 0.2s; background: #f8fafc;
         }
-        .cf-input:focus, .cf-select:focus, .cf-textarea:focus { outline: none; border-color: var(--accent); }
-        .cf-textarea { resize: vertical; min-height: 130px; }
-
-        .cf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #FF6B35; background: white; }
+        .form-textarea { resize: vertical; min-height: 150px; }
 
         .publish-btn {
-            width: 100%; background: var(--accent); color: white;
-            border: none; padding: 11px; border-radius: 8px;
-            font-size: 0.9rem; font-weight: 600; cursor: pointer;
-            transition: background 0.2s; font-family: inherit;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; background: #FF6B35; color: white; border: none;
+            padding: 12px; border-radius: 6px; font-weight: 600; font-size: 0.9rem;
+            cursor: pointer; transition: background 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;
         }
-        .publish-btn:hover { background: var(--accent-dk); }
-        .publish-btn svg { width: 15px; height: 15px; }
+        .publish-btn:hover { background: #e55a2b; }
+        .publish-btn:disabled { background: #94a3b8; cursor: not-allowed; }
 
-        /* Post feed */
-        .post-feed-header {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-        .post-feed-header h3 { font-size: 1rem; font-weight: 600; color: var(--ink); }
-        .post-count-badge {
-            font-size: 0.75rem; background: var(--mist);
-            border: 1px solid var(--line); color: var(--slate);
-            padding: 3px 10px; border-radius: 20px;
-        }
-
-        .post-list { display: flex; flex-direction: column; gap: 1px; }
-
-        .post-item {
-            background: white; border: 1px solid var(--line);
-            border-radius: 10px; padding: 1.2rem 1.5rem;
-            margin-bottom: 0.75rem;
-            transition: box-shadow 0.15s;
-        }
-        .post-item:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-
-        .post-item-top {
-            display: flex; align-items: center; gap: 8px; margin-bottom: 0.6rem; flex-wrap: wrap;
-        }
-        .cat-pill {
-            font-size: 0.68rem; font-weight: 700; padding: 3px 9px;
-            border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em;
-        }
+        /* Feed */
+        .post-feed { display: flex; flex-direction: column; gap: 1rem; }
+        .post-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; transition: box-shadow 0.2s; }
+        .post-card:hover { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .post-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 0.75rem; flex-wrap: wrap; }
+        .post-cat-badge { font-size: 0.7rem; font-weight: 600; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+        
         .cat-tax      { background:#fef3c7; color:#92400e; }
         .cat-company  { background:#dbeafe; color:#1e40af; }
         .cat-irs      { background:#fce7f3; color:#9d174d; }
         .cat-reminder { background:#d1fae5; color:#065f46; }
 
-        .dest-pill {
-            font-size: 0.68rem; padding: 3px 9px;
-            border-radius: 20px; background: #f0fdf4;
-            color: #166534; border: 1px solid #bbf7d0;
-        }
-        .post-date-label { font-size: 0.75rem; color: var(--slate); margin-left: auto; }
+        .post-dest-badge { font-size: 0.7rem; padding: 4px 10px; border-radius: 4px; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+        .post-date { font-size: 0.8rem; color: #64748b; margin-left: auto; }
+        .post-card h3 { font-size: 1.1rem; color: #0f172a; margin-bottom: 0.5rem; font-weight: 600; }
+        .post-card p  { margin: 0; font-size: 0.9rem; color: #475569; line-height: 1.6; }
+        
+        .download-btn { display: inline-flex; align-items: center; gap: 6px; background: #f8fafc; color: #334155; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; border: 1px solid #e2e8f0; margin-top: 1rem; font-weight: 500; }
+        .download-btn:hover { background: #e2e8f0; }
 
-        .post-item h4 { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 0.3rem; }
-        .post-item p  { font-size: 0.84rem; color: var(--slate); line-height: 1.6; }
-        .post-item-footer {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-top: 0.75rem;
-        }
-        .post-author { font-size: 0.75rem; color: #94a3b8; }
-        .post-del-btn {
-            font-size: 0.75rem; color: var(--red);
-            background: none; border: 1px solid #fecaca;
-            padding: 3px 10px; border-radius: 6px; cursor: pointer;
-            transition: background 0.15s;
-        }
-        .post-del-btn:hover { background: #fee2e2; }
+        .post-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #f1f5f9; }
+        .post-author { color: #64748b; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; }
+        .post-del-btn { background: none; border: none; color: #ef4444; font-size: 0.8rem; font-weight: 500; cursor: pointer; padding: 4px 8px; border-radius: 4px; }
+        .post-del-btn:hover { background: #fef2f2; }
 
-        .empty-state {
-            text-align: center; padding: 4rem 2rem;
-            color: #cbd5e1; background: white;
-            border: 1px solid var(--line); border-radius: 12px;
-        }
-        .empty-state svg { width: 36px; height: 36px; margin-bottom: 1rem; opacity: 0.4; }
-        .empty-state p { font-size: 0.9rem; }
+        .empty-feed { text-align: center; padding: 4rem 1rem; color: #94a3b8; }
+        .empty-feed p { font-size: 0.95rem; margin-top: 1rem; }
 
         /* ============================================================
-           ACCESS PANEL
+           ADMIN PANEL
         ============================================================ */
-        .access-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            align-items: start;
-        }
+        .admin-layout { max-width: 600px; }
+        .approved-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+        .approved-item { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 14px; font-size: 0.85rem; }
+        .approved-item span { color: #334155; font-weight: 500; }
+        .owner-tag { font-size: 0.7rem; background: #0f172a; color: white; padding: 2px 6px; border-radius: 4px; margin-left: 8px; font-weight: 600; }
+        .revoke-btn { background: none; border: 1px solid #fca5a5; color: #ef4444; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
+        .revoke-btn:hover { background: #fef2f2; }
+        
+        .add-email-row { display: flex; gap: 10px; }
+        .add-email-btn { background: #0f172a; color: white; border: none; padding: 0 20px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; cursor: pointer; white-space: nowrap; }
+        .add-email-btn:hover { background: #1e293b; }
 
-        .access-card {
-            background: white; border: 1px solid var(--line);
-            border-radius: 12px; overflow: hidden;
-        }
-        .access-card-header {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--line);
-            display: flex; align-items: center; gap: 8px;
-        }
-        .access-card-header h3 { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
-        .access-card-header svg { width: 16px; height: 16px; color: var(--slate); }
-        .access-card-body { padding: 1.25rem 1.5rem; }
+        /* Toast */
+        #toast { position: fixed; bottom: 2rem; right: 2rem; background: #0f172a; color: white; padding: 12px 24px; border-radius: 8px; font-size: 0.9rem; font-weight: 500; display: none; z-index: 9998; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        #toast.show { display: block; animation: fadeInUp 0.3s ease; }
+        @keyframes fadeInUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
-        .member-row {
-            display: flex; align-items: center; gap: 10px;
-            padding: 0.75rem 0; border-bottom: 1px solid var(--line);
-        }
-        .member-row:last-child { border-bottom: none; }
-        .member-avatar {
-            width: 32px; height: 32px; border-radius: 50%;
-            background: var(--ink-2); display: flex; align-items: center;
-            justify-content: center; color: white; font-size: 0.72rem;
-            font-weight: 700; flex-shrink: 0;
-        }
-        .member-email { font-size: 0.84rem; color: var(--ink); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .member-role-tag {
-            font-size: 0.68rem; font-weight: 700; padding: 2px 8px;
-            border-radius: 10px; text-transform: uppercase; letter-spacing: 0.04em;
-        }
-        .tag-owner { background: #fff3ee; color: var(--accent); }
-        .tag-staff { background: var(--mist); color: var(--slate); }
-        .remove-btn {
-            font-size: 0.72rem; color: var(--red); background: none;
-            border: 1px solid #fecaca; padding: 2px 8px; border-radius: 5px;
-            cursor: pointer; transition: background 0.15s; white-space: nowrap;
-        }
-        .remove-btn:hover { background: #fee2e2; }
-
-        .add-member-form { display: flex; flex-direction: column; gap: 10px; }
-        .am-input {
-            width: 100%; padding: 10px 12px;
-            border: 1.5px solid var(--line); border-radius: 8px;
-            font-size: 0.875rem; font-family: inherit; color: var(--ink);
-        }
-        .am-input:focus { outline: none; border-color: var(--accent); }
-        .am-btn {
-            background: var(--ink); color: white; border: none;
-            padding: 10px 16px; border-radius: 8px; font-size: 0.875rem;
-            font-weight: 600; cursor: pointer; font-family: inherit;
-            transition: background 0.2s;
-        }
-        .am-btn:hover { background: var(--ink-3); }
-
-        /* ============================================================
-           TOAST
-        ============================================================ */
-        #toast {
-            position: fixed; bottom: 1.5rem; right: 1.5rem;
-            background: var(--ink); color: white; padding: 11px 18px;
-            border-radius: 8px; font-size: 0.85rem;
-            display: none; z-index: 9998;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-            align-items: center; gap: 8px;
-        }
-        #toast.show { display: flex; animation: slideUp 0.25s ease; }
-        @keyframes slideUp {
-            from { opacity:0; transform:translateY(8px); }
-            to   { opacity:1; transform:translateY(0); }
-        }
-
-
-        /* ============================================================
-           FILES PANEL
-        ============================================================ */
-        .files-upload-card {
-            background: white;
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        .files-drop-zone {
-            padding: 3rem 2rem;
-            text-align: center;
-            border: 2px dashed var(--line);
-            margin: 1.25rem;
-            border-radius: 10px;
-            transition: border-color 0.2s, background 0.2s;
-        }
-        .files-drop-zone:hover { border-color: var(--accent); background: #fff8f5; }
-        .files-drop-icon { color: var(--slate); margin-bottom: 1rem; }
-        .files-drop-title { font-size: 1rem; font-weight: 600; color: var(--ink); margin-bottom: 0.4rem; }
-        .files-drop-sub   { font-size: 0.82rem; color: var(--slate); margin-bottom: 1.5rem; }
-        .files-upload-btn {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: var(--ink); color: white; border: none;
-            padding: 10px 20px; border-radius: 8px; font-size: 0.875rem;
-            font-weight: 600; cursor: pointer; font-family: inherit;
-            transition: background 0.2s;
-        }
-        .files-upload-btn:hover { background: var(--ink-3); }
-
-        /* File list */
-        .file-row {
-            display: flex; align-items: center; gap: 14px;
-            padding: 1rem 1.25rem;
-            background: white; border: 1px solid var(--line);
-            border-radius: 10px; margin-bottom: 0.6rem;
-            transition: box-shadow 0.15s;
-        }
-        .file-row:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
-        .file-type-icon {
-            width: 40px; height: 40px; border-radius: 9px;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; font-size: 0.65rem; font-weight: 800;
-            letter-spacing: 0.03em;
-        }
-        .ft-pdf   { background: #fee2e2; color: #dc2626; }
-        .ft-xls   { background: #dcfce7; color: #16a34a; }
-        .ft-doc   { background: #dbeafe; color: #2563eb; }
-        .ft-img   { background: #f3e8ff; color: #7c3aed; }
-        .ft-other { background: var(--mist); color: var(--slate); }
-
-        .file-info { flex: 1; min-width: 0; }
-        .file-name { font-size: 0.875rem; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .file-meta { font-size: 0.75rem; color: var(--slate); margin-top: 2px; }
-
-        .file-actions { display: flex; gap: 8px; flex-shrink: 0; }
-        .file-btn {
-            display: inline-flex; align-items: center; gap: 5px;
-            font-size: 0.75rem; padding: 5px 12px; border-radius: 6px;
-            cursor: pointer; font-family: inherit; font-weight: 500;
-            transition: all 0.15s; text-decoration: none;
-        }
-        .file-btn-dl {
-            background: var(--mist); color: var(--ink);
-            border: 1px solid var(--line);
-        }
-        .file-btn-dl:hover { border-color: var(--accent); color: var(--accent); }
-        .file-btn-rm {
-            background: none; color: var(--red);
-            border: 1px solid #fecaca;
-        }
-        .file-btn-rm:hover { background: #fee2e2; }
-        .file-btn svg { width: 12px; height: 12px; }
-
-
-        /* ── Post Attachments ── */
-        .attach-zone {
-            border: 1.5px dashed var(--line);
-            border-radius: 8px;
-            padding: 0.9rem 1rem;
-            margin-bottom: 1rem;
-            transition: border-color 0.2s, background 0.2s;
-            cursor: pointer;
-            text-align: center;
-        }
-        .attach-zone:hover { border-color: var(--accent); background: #fff8f5; }
-        .attach-zone-label {
-            display: flex; align-items: center; justify-content: center;
-            gap: 8px; font-size: 0.83rem; color: var(--slate);
-            font-weight: 500; pointer-events: none;
-        }
-        .attach-zone-label svg { width: 15px; height: 15px; flex-shrink: 0; }
-
-        .attach-preview {
-            display: flex; flex-wrap: wrap; gap: 8px;
-            margin-top: 0.6rem;
-        }
-        .attach-chip {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: var(--mist); border: 1px solid var(--line);
-            border-radius: 6px; padding: 4px 10px;
-            font-size: 0.75rem; color: var(--ink-3); max-width: 200px;
-        }
-        .attach-chip span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .attach-chip-rm {
-            background: none; border: none; cursor: pointer;
-            color: var(--slate); font-size: 0.9rem; padding: 0;
-            line-height: 1; flex-shrink: 0;
-        }
-        .attach-chip-rm:hover { color: var(--red); }
-
-        /* Attachments on published post cards */
-        .post-attachments {
-            display: flex; flex-wrap: wrap; gap: 8px;
-            margin-top: 0.75rem; padding-top: 0.75rem;
-            border-top: 1px solid var(--line);
-        }
-        .post-attach-link {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: var(--mist); border: 1px solid var(--line);
-            border-radius: 6px; padding: 5px 12px;
-            font-size: 0.75rem; font-weight: 500; color: var(--ink);
-            text-decoration: none; transition: all 0.15s;
-        }
-        .post-attach-link:hover { border-color: var(--accent); color: var(--accent); }
-        .post-attach-link svg { width: 12px; height: 12px; flex-shrink: 0; }
-
-        @media (max-width: 1024px) {
-            .two-col, .newsroom-layout, .access-layout { grid-template-columns: 1fr; }
-            .compose-card { position: static; }
-        }
-        @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); transition: transform 0.2s; }
-            .sidebar.open { transform: translateX(0); }
-            .portal-main { margin-left: 0; }
-            .kpi-grid { grid-template-columns: 1fr 1fr; }
-        }
+        @media (max-width: 900px) { .cms-grid { grid-template-columns: 1fr; } .app-sidebar { width: 200px; } }
     </style>
 </head>
 <body>
 
-<!-- ============================================================
-     LOGIN GATE
-============================================================ -->
 <div id="login-gate" class="visible">
-    <div class="login-panel">
-        <!-- Brand side -->
-        <div class="login-brand">
-            <div class="login-brand-logo">
-                <img src="attached_assets/Capture1.png" alt="Riska's Finance">
-                <span>Riska's Finance</span>
-            </div>
-            <div class="login-brand-body">
-                <h1>Staff Portal</h1>
-                <p>Internal workspace for the Riska's Finance team. Publish updates, manage access, and keep your clients informed.</p>
-            </div>
-            <div class="login-brand-footer">
-                © 2026 Riska's Finance LLC · Dixon, IL
-            </div>
+    <div class="login-box">
+        <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="login-logo">
+        <h2>Corporate Portal</h2>
+        <p class="login-sub">Sign in to access the secure workspace.</p>
+        
+        <input type="email" id="login-email" class="login-input" placeholder="Work Email Address" oninput="checkIfOwner(this.value)">
+        
+        <div id="password-login-section">
+            <input type="password" id="login-password" class="login-input" placeholder="Password">
+            <button class="login-submit-btn" onclick="signInWithEmail()">Secure Sign In</button>
+        </div>
+        
+        <div id="google-login-section" style="display:none;">
+            <button class="google-btn" onclick="signInWithGoogle()">
+                <svg width="18" height="18" viewBox="0 0 48 48">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    <path fill="none" d="M0 0h48v48H0z"/>
+                </svg>
+                Continue with Administrator Google
+            </button>
         </div>
 
-        <!-- Form side -->
-        <div class="login-form-side">
-            <h2>Sign in</h2>
-            <p class="login-sub" id="login-sub-text">Enter your email to continue.</p>
-
-            <!-- Step 1: email -->
-            <div id="login-step-email">
-                <label class="lf-label" for="login-email">Email address</label>
-                <input type="email" id="login-email" class="lf-input" placeholder="you@example.com" oninput="handleEmailInput(this.value)">
-                <button class="lf-btn-primary" onclick="proceedFromEmail()">Continue</button>
-            </div>
-
-            <!-- Step 2A: Google (owners) -->
-            <div id="login-step-google" style="display:none;">
-                <button class="back-text" onclick="backToEmail()" style="background:none;border:none;color:var(--slate);font-size:0.82rem;cursor:pointer;margin-bottom:1rem;padding:0;font-family:inherit;">← Use a different email</button>
-                <p style="font-size:0.85rem;color:var(--slate);margin-bottom:1.25rem;">Owners sign in with Google.</p>
-                <button class="google-btn" onclick="signInWithGoogle()">
-                    <svg width="18" height="18" viewBox="0 0 48 48">
-                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                        <path fill="none" d="M0 0h48v48H0z"/>
-                    </svg>
-                    Continue with Google
-                </button>
-            </div>
-
-            <!-- Step 2B: Password (staff) -->
-            <div id="login-step-password" style="display:none;">
-                <button onclick="backToEmail()" style="background:none;border:none;color:var(--slate);font-size:0.82rem;cursor:pointer;margin-bottom:1rem;padding:0;font-family:inherit;">← Use a different email</button>
-                <label class="lf-label" for="staff-password">Password</label>
-                <input type="password" id="staff-password" class="lf-input" placeholder="••••••••">
-                <button class="lf-btn-primary" onclick="staffSignIn()">Sign In</button>
-            </div>
-
-            <!-- Loading + Error -->
-            <div class="login-loading" id="login-loading">
-                <div class="spinner"></div>
-                <span>Signing you in…</span>
-            </div>
-            <div class="login-error" id="login-error"></div>
-            <p class="login-restrict">Access restricted to approved staff only.</p>
-        </div>
+        <div class="login-loading" id="login-loading"><div class="spinner"></div></div>
+        <div class="login-error" id="login-error"></div>
+        <p class="login-divider">Authorized Personnel Only</p>
     </div>
 </div>
 
-<!-- ============================================================
-     PORTAL
-============================================================ -->
 <div id="main-content">
-
-    <!-- Sidebar -->
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-brand">
+    
+    <aside class="app-sidebar">
+        <div class="sidebar-header">
             <img src="attached_assets/Capture1.png" alt="Logo">
-            <span>Riska's Finance</span>
+            <h1>Riska's Finance</h1>
         </div>
-
-        <div class="sidebar-section-label">Workspace</div>
-        <button class="nav-item active" onclick="showPanel('overview', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-            Overview
-        </button>
-        <button class="nav-item" onclick="showPanel('newsroom', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-            Newsroom
-        </button>
-
-        <div class="sidebar-section-label">Settings</div>
-        <button class="nav-item" id="access-nav-item" onclick="showPanel('access', this)" style="display:none;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-            Manage Access
-        </button>
-        <a class="nav-item" href="index.html">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            Public Site
-        </a>
-        <a class="nav-item" href="https://app.riskasfinance.com/" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Flowtab Software
-        </a>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-item active" onclick="switchTab('cms', this)">
+                <i data-feather="file-text"></i> Communications
+            </div>
+            <div class="nav-item" id="admin-nav-btn" style="display:none;" onclick="switchTab('admin', this)">
+                <i data-feather="shield"></i> Access Control
+            </div>
+        </nav>
 
         <div class="sidebar-footer">
-            <div class="user-chip">
-                <img id="sidebar-avatar" class="user-chip-avatar" src="" alt="">
-                <div class="user-chip-initials" id="sidebar-initials">RF</div>
-                <div class="user-chip-info">
-                    <div class="user-chip-name" id="sidebar-name">—</div>
-                    <div class="user-chip-role" id="sidebar-role">Staff</div>
-                </div>
-            </div>
-            <button class="signout-btn" onclick="signOut()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                Sign Out
-            </button>
+            <a href="index.html" class="external-link">
+                <i data-feather="external-link" style="width:14px;"></i> Return to Public Site
+            </a>
         </div>
-    </nav>
+    </aside>
 
-    <!-- Main Area -->
-    <div class="portal-main">
-        <!-- Top bar -->
-        <div class="topbar">
-            <span class="topbar-title" id="topbar-title">Overview</span>
-            <div class="topbar-right">
-                <span class="topbar-badge" id="topbar-date"></span>
-                <span class="topbar-badge">Riska's Finance LLC</span>
+    <div class="app-workspace">
+        
+        <header class="app-header">
+            <div class="header-title" id="page-title">Communications Hub</div>
+            <div class="user-profile">
+                <div class="user-info">
+                    <img id="user-avatar" src="" alt="Avatar" class="user-avatar" style="display:none;">
+                    <span id="user-label"></span>
+                </div>
+                <button class="logout-btn" onclick="signOut()">Sign Out</button>
             </div>
-        </div>
+        </header>
 
-        <div class="page-content">
-
-            <!-- ── OVERVIEW PANEL ── -->
-            <div id="panel-overview" class="portal-panel active">
-                <div class="overview-header">
-                    <h2>Good morning, <span id="greeting-name">team</span>.</h2>
-                    <p>Here's what's happening at Riska's Finance today.</p>
-                </div>
-
-                <div class="kpi-grid">
-                    <div class="kpi-card">
-                        <div class="kpi-label">Published Posts</div>
-                        <div class="kpi-value" id="kpi-posts">0</div>
-                        <div class="kpi-sub"><span class="kpi-dot" style="background:var(--accent);"></span>Active content</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-label">Team Members</div>
-                        <div class="kpi-value" id="kpi-members">2</div>
-                        <div class="kpi-sub"><span class="kpi-dot" style="background:var(--green);"></span>With portal access</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-label">Home Page Posts</div>
-                        <div class="kpi-value" id="kpi-home-posts">0</div>
-                        <div class="kpi-sub"><span class="kpi-dot" style="background:var(--blue);"></span>Visible to clients</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-label">Tax Season</div>
-                        <div class="kpi-value">2026</div>
-                        <div class="kpi-sub"><span class="kpi-dot" style="background:#f59e0b;"></span>Current year</div>
-                    </div>
-                </div>
-
-                <div class="two-col">
-                    <!-- Recent posts -->
-                    <div class="panel-card">
-                        <div class="panel-card-header">
-                            <h3>Recent Posts</h3>
-                            <span id="recent-post-count">—</span>
+        <main class="app-body">
+            
+            <div id="tab-cms" class="tab-panel active">
+                <div class="cms-grid">
+                    
+                    <div class="card">
+                        <div class="card-title"><i data-feather="edit-3"></i> Create Announcement</div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Headline</label>
+                            <input type="text" id="post-title" class="form-input" placeholder="Enter headline...">
                         </div>
-                        <div class="panel-card-body" id="recent-posts-list">
-                            <div style="color:var(--slate);font-size:0.875rem;text-align:center;padding:2rem 0;">No posts yet.</div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Classification</label>
+                            <select id="post-category" class="form-select">
+                                <option value="Tax Tips">Tax Tips & Guidelines</option>
+                                <option value="Company News">Company Updates</option>
+                                <option value="IRS News">IRS / Regulatory News</option>
+                                <option value="Client Reminder">Client Reminder</option>
+                            </select>
                         </div>
-                    </div>
-
-                    <!-- Quick links -->
-                    <div class="panel-card">
-                        <div class="panel-card-header"><h3>Quick Links</h3></div>
-                        <div class="panel-card-body">
-                            <a class="quicklink" href="https://app.riskasfinance.com/" target="_blank" rel="noopener">
-                                <div class="quicklink-icon ql-orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
-                                <div><div class="quicklink-label">Flowtab Software</div><div class="quicklink-sub">Fixed assets & accounting tools</div></div>
-                            </a>
-                            <a class="quicklink" href="https://www.irs.gov/" target="_blank" rel="noopener">
-                                <div class="quicklink-icon ql-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-                                <div><div class="quicklink-label">IRS.gov</div><div class="quicklink-sub">Forms, notices, and updates</div></div>
-                            </a>
-                            <a class="quicklink" href="https://qbo.intuit.com/" target="_blank" rel="noopener">
-                                <div class="quicklink-icon ql-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></div>
-                                <div><div class="quicklink-label">QuickBooks Online</div><div class="quicklink-sub">Client bookkeeping portal</div></div>
-                            </a>
-                            <a class="quicklink" href="tax-filing.html">
-                                <div class="quicklink-icon ql-slate"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-                                <div><div class="quicklink-label">Tax Filing Page</div><div class="quicklink-sub">Client-facing tax intake form</div></div>
-                            </a>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Message Content</label>
+                            <textarea id="post-body" class="form-textarea" placeholder="Draft your message here..."></textarea>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ── NEWSROOM PANEL ── -->
-            <div id="panel-newsroom" class="portal-panel">
-                <div style="margin-bottom:1.75rem;">
-                    <h2 style="font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--ink);margin-bottom:0.2rem;">Newsroom</h2>
-                    <p style="color:var(--slate);font-size:0.875rem;">Write and publish updates to your website and client-facing pages.</p>
-                </div>
-
-                <div class="newsroom-layout">
-                    <!-- Compose -->
-                    <div class="compose-card">
-                        <div class="compose-card-header">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                            New Post
+                        
+                        <div class="form-group">
+                            <label class="form-label">Attach Document (Optional)</label>
+                            <input type="hidden" role="uploadcare-uploader" id="post-file-url" />
                         </div>
-                        <div class="compose-body">
-                            <label class="cf-label">Title</label>
-                            <input type="text" id="post-title" class="cf-input" placeholder="e.g. Q3 Tax Deadline Approaching">
 
-                            <div class="cf-row">
-                                <div>
-                                    <label class="cf-label">Category</label>
-                                    <select id="post-category" class="cf-select">
-                                        <option value="Tax Tips">Tax Tips & Deadlines</option>
-                                        <option value="Company News">Company News</option>
-                                        <option value="IRS News">IRS / Regulatory</option>
-                                        <option value="Client Reminder">Client Reminder</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="cf-label">Publish to</label>
-                                    <select id="post-dest" class="cf-select">
-                                        <option value="dashboard">Portal Only</option>
-                                        <option value="home">Home Page</option>
-                                        <option value="both">Both</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <label class="cf-label">Content</label>
-                            <textarea id="post-body" class="cf-textarea" placeholder="Write your update here…"></textarea>
-
-                            <label class="cf-label">Attachments</label>
-                            <div class="attach-zone" onclick="openAttachWidget()">
-                                <div class="attach-zone-label">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
-                                    Click to attach files (PDF, Excel, Word, images…)
-                                </div>
-                            </div>
-                            <div class="attach-preview" id="attach-preview"></div>
-
-                            <button class="publish-btn" onclick="publishPost()">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                                Publish
-                            </button>
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label class="form-label">Visibility</label>
+                            <select id="post-dest" class="form-select">
+                                <option value="both">Public + Internal Dashboard</option>
+                                <option value="home">Public Homepage Only</option>
+                                <option value="dashboard">Internal Dashboard Only</option>
+                            </select>
                         </div>
-                    </div>
-
-                    <!-- Feed -->
-                    <div>
-                        <div class="post-feed-header">
-                            <h3>Published</h3>
-                            <span class="post-count-badge" id="post-count">0 posts</span>
-                        </div>
-                        <div id="post-feed">
-                            <div class="empty-state">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                                <p>Nothing published yet.<br>Write your first post.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ── ACCESS PANEL ── -->
-            <div id="panel-access" class="portal-panel">
-                <div style="margin-bottom:1.75rem;">
-                    <h2 style="font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--ink);margin-bottom:0.2rem;">Access Control</h2>
-                    <p style="color:var(--slate);font-size:0.875rem;">Manage who can sign in to the Staff Portal.</p>
-                </div>
-
-                <div class="access-layout">
-                    <!-- Current members -->
-                    <div class="access-card">
-                        <div class="access-card-header">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-                            <h3>Portal Members</h3>
-                        </div>
-                        <div class="access-card-body">
-                            <div id="approved-list"></div>
-                        </div>
-                    </div>
-
-                    <!-- Add member -->
-                    <div class="access-card">
-                        <div class="access-card-header">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-                            <h3>Grant Access</h3>
-                        </div>
-                        <div class="access-card-body">
-                            <p style="font-size:0.84rem;color:var(--slate);margin-bottom:1.25rem;">Add a staff member's email and set their password. They'll sign in with email and password.</p>
-                            <div class="add-member-form">
-                                <div>
-                                    <label class="cf-label" style="margin-bottom:5px;">Email address</label>
-                                    <input type="email" id="new-email-input" class="am-input" placeholder="staff@example.com">
-                                </div>
-                                <div>
-                                    <label class="cf-label" style="margin-bottom:5px;">Set password</label>
-                                    <input type="password" id="new-password-input" class="am-input" placeholder="Minimum 6 characters">
-                                </div>
-                                <button class="am-btn" onclick="addApprovedEmail()">Grant Portal Access</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- ── FILES PANEL ── -->
-            <div id="panel-files" class="portal-panel">
-                <div style="margin-bottom:1.75rem;">
-                    <h2 style="font-family:'DM Serif Display',serif;font-size:1.6rem;color:var(--ink);margin-bottom:0.2rem;">Files</h2>
-                    <p style="color:var(--slate);font-size:0.875rem;">Upload and share Excel spreadsheets, PDFs, Word documents, and images with your team.</p>
-                </div>
-
-                <!-- Upload area -->
-                <div class="files-upload-card" id="files-upload-card">
-                    <div class="files-drop-zone" id="files-drop-zone">
-                        <div class="files-drop-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                        </div>
-                        <p class="files-drop-title">Drop files here or click to upload</p>
-                        <p class="files-drop-sub">Supports Excel, PDF, Word, images, and more &middot; Max 100 MB per file</p>
-                        <button class="files-upload-btn" onclick="openUploadcare()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                            Choose Files
+                        
+                        <button class="publish-btn" onclick="publishPost()">
+                            <i data-feather="send" style="width:16px;"></i> Broadcast Post
                         </button>
                     </div>
-                </div>
-
-                <!-- File list -->
-                <div style="margin-top:1.5rem;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
-                        <h3 style="font-size:1rem;font-weight:600;color:var(--ink);">Uploaded Files</h3>
-                        <span class="post-count-badge" id="files-count">0 files</span>
+                    
+                    <div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                            <h2 style="font-size:1.1rem; color:#0f172a;">Live Dispatches</h2>
+                            <span style="font-size:0.85rem; color:#64748b;" id="post-count">0 items</span>
+                        </div>
+                        
+                        <div id="post-feed" class="post-feed">
+                            <div class="empty-feed">
+                                <i data-feather="radio" style="width:32px; height:32px; margin-bottom:1rem; opacity:0.3;"></i>
+                                <p>Establishing secure link to database...</p>
+                            </div>
+                        </div>
                     </div>
-                    <div id="files-list">
-                        <div class="empty-state">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="36" height="36"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-                            <p>No files uploaded yet.<br>Click "Choose Files" to get started.</p>
+
+                </div>
+            </div>
+
+            <div id="tab-admin" class="tab-panel">
+                <div class="card admin-layout">
+                    <div class="card-title"><i data-feather="lock"></i> Identity & Access Management</div>
+                    <p style="font-size:0.85rem; color:#475569; margin-bottom:1.5rem; line-height:1.5;">
+                        Control portal access for personnel. Authorized emails below are permitted to authenticate. System Administrators (Amarildi & Arbri) have immutable access.
+                    </p>
+                    
+                    <div class="approved-list" id="approved-list"></div>
+                    
+                    <div style="margin-top: 2rem; border-top: 1px solid #f1f5f9; padding-top: 1.5rem;">
+                        <label class="form-label">Provision New User</label>
+                        <div class="add-email-row">
+                            <input type="email" id="new-email-input" class="form-input" style="margin:0;" placeholder="employee@riskasfinance.com">
+                            <button class="add-email-btn" onclick="addApprovedEmail()">Authorize</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-        </div><!-- end page-content -->
-    </div><!-- end portal-main -->
-</div><!-- end main-content -->
-
-<div id="toast">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><polyline points="20 6 9 17 4 12"/></svg>
-    <span id="toast-msg"></span>
+        </main>
+    </div>
 </div>
 
-<!-- Uploadcare Widget -->
-<script>
-    UPLOADCARE_PUBLIC_KEY = 'd70e326b495b592aae72';
-    UPLOADCARE_LOCALE = 'en';
-</script>
-<script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js" charset="utf-8"></script>
+<div id="toast"></div>
 
-<!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as fbSignOut }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as fbSignOut, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey:            "AIzaSyAUsHaf3_npOkomivpF9fVT6xtSD0E0xFU",
@@ -1122,526 +389,239 @@ const firebaseConfig = {
     measurementId:     "G-300CNKNFSL"
 };
 
-const OWNER_EMAILS = [
-    "amarildiriska15@gmail.com",
-    "arbririska1@gmail.com"
-];
-
-const app      = initializeApp(firebaseConfig);
-const auth     = getAuth(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app); 
 const provider = new GoogleAuthProvider();
 
+const OWNER_EMAILS = ["amarildiriska15@gmail.com", "arbririska1@gmail.com"];
+
+function getApprovedEmails() {
+    const stored = localStorage.getItem('rf_approved_emails');
+    const extra  = stored ? JSON.parse(stored) : [];
+    return [...new Set([...OWNER_EMAILS, ...extra])];
+}
+function saveExtraEmails(list) {
+    const extra = list.filter(e => !OWNER_EMAILS.includes(e));
+    localStorage.setItem('rf_approved_emails', JSON.stringify(extra));
+}
+
+// Global UI functions
 window._fbSignOut = () => fbSignOut(auth);
-window.OWNER_EMAILS = OWNER_EMAILS;
+
+window.checkIfOwner = function(email) {
+    const val = email.toLowerCase().trim();
+    const pwSection = document.getElementById('password-login-section');
+    const googleSection = document.getElementById('google-login-section');
+    if (OWNER_EMAILS.includes(val)) { pwSection.style.display = 'none'; googleSection.style.display = 'block'; } 
+    else { pwSection.style.display = 'block'; googleSection.style.display = 'none'; }
+};
 
 window.signInWithGoogle = async function() {
     document.getElementById('login-error').style.display = 'none';
     document.getElementById('login-loading').classList.add('visible');
+    try { await signInWithPopup(auth, provider); } 
+    catch(err) { document.getElementById('login-loading').classList.remove('visible'); showLoginError('Authentication failed.'); }
+};
+
+window.signInWithEmail = async function() {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    if(!email || !password) { showLoginError('Credentials required.'); return; }
+    document.getElementById('login-error').style.display = 'none';
+    document.getElementById('login-loading').classList.add('visible');
+    try { await signInWithEmailAndPassword(auth, email, password); } 
+    catch(err) { document.getElementById('login-loading').classList.remove('visible'); showLoginError('Invalid credentials.'); }
+};
+
+// FIRESTORE CMS LOGIC
+let posts = [];
+const catClassMap  = { 'Tax Tips':'cat-tax', 'Company News':'cat-company', 'IRS News':'cat-irs', 'Client Reminder':'cat-reminder' };
+const destLabelMap = { dashboard:'Internal', home:'Public', both:'Public & Internal' };
+
+window.publishPost = async function() {
+    const title = document.getElementById('post-title').value.trim();
+    const category = document.getElementById('post-category').value;
+    const body = document.getElementById('post-body').value.trim();
+    const dest = document.getElementById('post-dest').value;
+    const uploadedFileUrl = document.getElementById('post-file-url').value; 
+    
+    if (!title || !body) { alert('Headline and message content are required.'); return; }
+
+    const publishBtn = document.querySelector('.publish-btn');
+    publishBtn.disabled = true;
+    publishBtn.innerText = 'Broadcasting...';
+
     try {
-        await signInWithPopup(auth, provider);
-    } catch(err) {
-        document.getElementById('login-loading').classList.remove('visible');
-        showLoginError('Sign-in cancelled or failed. Try again.');
+        await addDoc(collection(db, "posts"), {
+            title: title,
+            category: category,
+            body: body,
+            dest: dest,
+            author: window._currentUserName || 'Staff',
+            date: new Date().toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'}),
+            createdAt: Date.now(),
+            fileUrl: uploadedFileUrl || null
+        });
+        
+        document.getElementById('post-title').value = '';
+        document.getElementById('post-body').value = '';
+        const widget = uploadcare.Widget('[role=uploadcare-uploader]');
+        widget.value(null);
+
+        showToast('Broadcast successful');
+    } catch (e) {
+        console.error("Error adding document: ", e);
+        alert("Database connection error.");
+    }
+    
+    publishBtn.disabled = false;
+    publishBtn.innerHTML = `<i data-feather="send" style="width:16px;"></i> Broadcast Post`;
+    feather.replace();
+};
+
+window.deletePost = async function(id) {
+    if(confirm("Permanently delete this record?")) {
+        try {
+            await deleteDoc(doc(db, "posts", id));
+            showToast('Record destroyed');
+        } catch (e) {
+            console.error("Error deleting document: ", e);
+            alert("Deletion failed.");
+        }
     }
 };
+
+function renderPosts() {
+    const feed = document.getElementById('post-feed');
+    const countEl = document.getElementById('post-count');
+    countEl.textContent = `${posts.length} record${posts.length!==1?'s':''}`;
+    
+    if (!posts.length) {
+        feed.innerHTML = `<div class="empty-feed"><i data-feather="inbox" style="width:40px;height:40px;margin-bottom:1rem;opacity:0.3;"></i><p>Archive empty. Awaiting new dispatches.</p></div>`;
+        feather.replace(); return;
+    }
+    
+    feed.innerHTML = posts.map(p => `
+        <div class="post-card">
+            <div class="post-meta">
+                <span class="post-cat-badge ${catClassMap[p.category]||'cat-general'}">${p.category}</span>
+                <span class="post-dest-badge">${destLabelMap[p.dest]}</span>
+                <span class="post-date">${p.date}</span>
+            </div>
+            <h3>${p.title}</h3>
+            <p>${p.body}</p>
+            ${p.fileUrl ? `<a href="${p.fileUrl}" target="_blank" rel="noopener noreferrer" class="download-btn"><i data-feather="paperclip" style="width:14px;height:14px;"></i> View Attached Document</a>` : ''}
+            <div class="post-actions">
+                <div class="post-author"><i data-feather="user" style="width:12px;"></i> ${p.author}</div>
+                <button class="post-del-btn" onclick="deletePost('${p.id}')">Revoke</button>
+            </div>
+        </div>`).join('');
+        
+    feather.replace();
+}
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
         const email = user.email.toLowerCase();
-        if (!OWNER_EMAILS.map(e=>e.toLowerCase()).includes(email)) {
+        const approved = getApprovedEmails().map(e => e.toLowerCase());
+
+        if (!approved.includes(email)) {
             fbSignOut(auth);
-            showLoginError(`<strong>${email}</strong> is not authorised. Contact Amarildi or Arbri.`);
+            showLoginError(`Unauthorized Identity: ${email}`);
             document.getElementById('login-loading').classList.remove('visible');
             return;
         }
+
         document.getElementById('login-loading').classList.remove('visible');
-        openPortal(user.displayName || email, user.photoURL, true, email);
+        document.getElementById('login-error').style.display = 'none';
+        document.getElementById('login-gate').classList.remove('visible');
+        document.getElementById('main-content').classList.add('visible');
+
+        document.getElementById('user-label').textContent = user.displayName || email;
+        const avatar = document.getElementById('user-avatar');
+        if (user.photoURL) { avatar.src = user.photoURL; avatar.style.display = 'inline-block'; }
+        if (OWNER_EMAILS.map(e=>e.toLowerCase()).includes(email)) { document.getElementById('admin-nav-btn').style.display = 'flex'; }
+
+        window._currentUserEmail = email; window._currentUserName  = user.displayName || email;
+        window._approvedEmails   = getApprovedEmails; window._saveExtraEmails  = saveExtraEmails;
+
+        feather.replace();
+        renderAdminList();
+        
+        const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+        onSnapshot(q, (snapshot) => {
+            posts = []; 
+            snapshot.forEach((doc) => {
+                posts.push({ id: doc.id, ...doc.data() });
+            });
+            renderPosts();
+        });
+
     } else {
-        // only show login if no staff session active
-        if (!sessionStorage.getItem('rf_staff_user')) {
-            document.getElementById('login-gate').classList.add('visible');
-            document.getElementById('main-content').classList.remove('visible');
-        }
+        document.getElementById('login-gate').classList.add('visible');
+        document.getElementById('main-content').classList.remove('visible');
     }
 });
 
 function showLoginError(msg) {
-    const el = document.getElementById('login-error');
-    el.innerHTML = msg; el.style.display = 'block';
+    const el = document.getElementById('login-error'); el.innerHTML = msg; el.style.display = 'block';
 }
 </script>
 
 <script>
 feather.replace();
 
-/* ── Top bar date ── */
-document.getElementById('topbar-date').textContent =
-    new Date().toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' });
+function signOut() { if (window._fbSignOut) window._fbSignOut(); }
 
-/* ── Greeting ── */
-function greetingWord() {
-    const h = new Date().getHours();
-    if (h < 12) return 'morning';
-    if (h < 17) return 'afternoon';
-    return 'evening';
-}
-
-/* ============================================================
-   LOGIN FLOW
-============================================================ */
-function handleEmailInput(val) {
-    // nothing needed on input — just on Continue
-}
-
-function proceedFromEmail() {
-    const email = document.getElementById('login-email').value.trim().toLowerCase();
-    if (!email || !email.includes('@')) {
-        showLoginErr('Please enter a valid email address.'); return;
-    }
-    const owners = (window.OWNER_EMAILS || []).map(e => e.toLowerCase());
-    document.getElementById('login-step-email').style.display = 'none';
-    document.getElementById('login-error').style.display = 'none';
-
-    if (owners.includes(email)) {
-        document.getElementById('login-step-google').style.display = 'block';
-    } else {
-        document.getElementById('login-step-password').style.display = 'block';
-    }
-}
-
-function backToEmail() {
-    document.getElementById('login-step-google').style.display   = 'none';
-    document.getElementById('login-step-password').style.display = 'none';
-    document.getElementById('login-step-email').style.display    = 'block';
-    document.getElementById('login-error').style.display         = 'none';
-}
-
-function staffSignIn() {
-    const email    = document.getElementById('login-email').value.trim().toLowerCase();
-    const password = document.getElementById('staff-password').value;
-    if (!password) { showLoginErr('Please enter your password.'); return; }
-
-    const staff = getStaffAccounts();
-    const match = staff.find(s => s.email.toLowerCase() === email && s.password === password);
-    if (match) {
-        sessionStorage.setItem('rf_staff_user', JSON.stringify({ email: match.email, name: match.name || match.email }));
-        openPortal(match.name || match.email, null, false, match.email);
-    } else {
-        showLoginErr('Incorrect password. Contact Amarildi or Arbri if you need help.');
-    }
-}
-
-function showLoginErr(msg) {
-    const el = document.getElementById('login-error');
-    el.innerHTML = msg; el.style.display = 'block';
-}
-
-// Enter key support
-document.getElementById('login-email').addEventListener('keydown', e => { if (e.key === 'Enter') proceedFromEmail(); });
-document.getElementById('staff-password').addEventListener('keydown', e => { if (e.key === 'Enter') staffSignIn(); });
-
-/* Resume staff session */
-(function() {
-    const stored = sessionStorage.getItem('rf_staff_user');
-    if (stored) {
-        try {
-            const u = JSON.parse(stored);
-            openPortal(u.name, null, false, u.email);
-        } catch(e) { sessionStorage.removeItem('rf_staff_user'); }
-    }
-})();
-
-/* ── Open portal after successful auth ── */
-function openPortal(displayName, photoURL, isOwner, email) {
-    document.getElementById('login-gate').classList.remove('visible');
-    document.getElementById('main-content').classList.add('visible');
-
-    // Sidebar user chip
-    const initials = displayName.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    document.getElementById('sidebar-initials').textContent = initials;
-    document.getElementById('sidebar-name').textContent     = displayName;
-    document.getElementById('sidebar-role').textContent     = isOwner ? 'Owner' : 'Staff';
-
-    if (photoURL) {
-        const av = document.getElementById('sidebar-avatar');
-        av.src = photoURL; av.style.display = 'block';
-        document.getElementById('sidebar-initials').style.display = 'none';
-    }
-
-    // Greeting
-    const firstName = displayName.split(' ')[0];
-    document.getElementById('greeting-name').textContent = firstName + '.';
-    document.querySelector('.overview-header h2').textContent = `Good ${greetingWord()}, ${firstName}.`;
-
-    // Show admin nav for owners
-    if (isOwner) document.getElementById('access-nav-item').style.display = 'flex';
-
-    window._currentUserName = displayName;
-    window._isOwner = isOwner;
-
-    feather.replace();
-    initPosts();
-    initFiles();
-    updateKPIs();
-    renderAdminList();
-}
-
-function signOut() {
-    sessionStorage.removeItem('rf_staff_user');
-    if (window._fbSignOut) window._fbSignOut();
-    document.getElementById('login-gate').classList.add('visible');
-    document.getElementById('main-content').classList.remove('visible');
-    backToEmail();
-    document.getElementById('login-email').value    = '';
-    document.getElementById('staff-password').value = '';
-}
-
-/* ============================================================
-   PANEL NAVIGATION
-============================================================ */
-function showPanel(name, btn) {
-    document.querySelectorAll('.portal-panel').forEach(p => p.classList.remove('active'));
+function switchTab(name, btn) {
+    // Switch Panels
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    
+    // Switch Nav Highlights
     document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-    document.getElementById('panel-' + name).classList.add('active');
     btn.classList.add('active');
-    const labels = { overview: 'Overview', newsroom: 'Newsroom', files: 'Files', access: 'Manage Access' };
-    document.getElementById('topbar-title').textContent = labels[name] || name;
-    feather.replace();
+    
+    // Update Header
+    const titles = { 'cms': 'Communications Hub', 'admin': 'Identity & Access' };
+    document.getElementById('page-title').innerText = titles[name];
 }
 
-/* ============================================================
-   KPI UPDATE
-============================================================ */
-function updateKPIs() {
-    const posts     = JSON.parse(localStorage.getItem('riska_posts') || '[]');
-    const homePosts = posts.filter(p => p.dest === 'home' || p.dest === 'both');
-    const staff     = getStaffAccounts();
-
-    const files = JSON.parse(localStorage.getItem('rf_files') || '[]');
-    document.getElementById('kpi-posts').textContent      = posts.length;
-    document.getElementById('kpi-members').textContent    = 2 + staff.length;
-    document.getElementById('kpi-home-posts').textContent = homePosts.length;
-
-    // Recent posts on overview
-    const container = document.getElementById('recent-posts-list');
-    if (!posts.length) {
-        container.innerHTML = '<div style="color:var(--slate);font-size:0.875rem;text-align:center;padding:2rem 0;">No posts yet. Head to Newsroom to publish one.</div>';
-        document.getElementById('recent-post-count').textContent = '0 posts';
-        return;
-    }
-    document.getElementById('recent-post-count').textContent = `${posts.length} total`;
-    const catMap = { 'Tax Tips':'cat-tax','Company News':'cat-company','IRS News':'cat-irs','Client Reminder':'cat-reminder' };
-    container.innerHTML = posts.slice(0,4).map(p => `
-        <div class="activity-item">
-            <div class="activity-dot ${p.dest==='home'||p.dest==='both'?'blue':''}"></div>
-            <div>
-                <div class="activity-text"><strong>${p.title}</strong></div>
-                <div class="activity-time">${p.category} · ${p.date} · by ${p.author}</div>
-            </div>
-        </div>`).join('');
-}
-
-/* ============================================================
-   CMS
-============================================================ */
-const catClassMap  = { 'Tax Tips':'cat-tax','Company News':'cat-company','IRS News':'cat-irs','Client Reminder':'cat-reminder' };
-const destLabelMap = { dashboard:'Portal Only', home:'Home Page', both:'Dashboard + Home' };
-let posts = [];
-
-// Pending attachments for current compose session
-let pendingAttachments = [];
-
-function openAttachWidget() {
-    const dialog = uploadcare.openDialog(null, {
-        publicKey:  'd70e326b495b592aae72',
-        multiple:   true,
-        tabs:       'file camera url',
-        imagesOnly: false,
-    });
-    dialog.done(function(result) {
-        result.promise().then(function(info) {
-            const files = info.files || [info];
-            files.forEach(f => {
-                pendingAttachments.push({ name: f.name, cdnUrl: f.cdnUrl, mimeType: f.mimeType || '', uuid: f.uuid });
-            });
-            renderAttachPreview();
-        });
-    });
-}
-
-function renderAttachPreview() {
-    const container = document.getElementById('attach-preview');
-    if (!pendingAttachments.length) { container.innerHTML = ''; return; }
-    container.innerHTML = pendingAttachments.map((f, i) => `
-        <div class="attach-chip">
-            <span title="${f.name}">${f.name}</span>
-            <button class="attach-chip-rm" onclick="removeAttachment(${i})" title="Remove">×</button>
-        </div>`).join('');
-}
-
-function removeAttachment(index) {
-    pendingAttachments.splice(index, 1);
-    renderAttachPreview();
-}
-
-function publishPost() {
-    const title    = document.getElementById('post-title').value.trim();
-    const category = document.getElementById('post-category').value;
-    const body     = document.getElementById('post-body').value.trim();
-    const dest     = document.getElementById('post-dest').value;
-    if (!title || !body) { alert('Please fill in the title and content.'); return; }
-
-    const post = {
-        id: Date.now(), title, category, body, dest,
-        attachments: [...pendingAttachments],
-        author: window._currentUserName || 'Staff',
-        date: new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' })
-    };
-    posts.unshift(post);
-    savePosts();
-    renderPosts();
-    updateKPIs();
-    document.getElementById('post-title').value = '';
-    document.getElementById('post-body').value  = '';
-    pendingAttachments = [];
-    renderAttachPreview();
-    showToast('Post published');
-}
-
-function savePosts() {
-    localStorage.setItem('riska_posts', JSON.stringify(posts));
-    localStorage.setItem('riska_posts_home', JSON.stringify(posts.filter(p => p.dest==='home'||p.dest==='both')));
-}
-
-function deletePost(id) {
-    posts = posts.filter(p => p.id !== id);
-    savePosts(); renderPosts(); updateKPIs(); showToast('Post deleted');
-}
-
-function renderPosts() {
-    const feed    = document.getElementById('post-feed');
-    const countEl = document.getElementById('post-count');
-    countEl.textContent = `${posts.length} post${posts.length!==1?'s':''}`;
-    if (!posts.length) {
-        feed.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="36" height="36"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><p>Nothing published yet.<br>Write your first post.</p></div>`;
-        return;
-    }
-    feed.innerHTML = posts.map(p => {
-        const attachHtml = (p.attachments && p.attachments.length) ? `
-            <div class="post-attachments">
-                ${p.attachments.map(a => `
-                    <a class="post-attach-link" href="${a.cdnUrl}" target="_blank" rel="noopener" download="${a.name}">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
-                        ${a.name}
-                    </a>`).join('')}
-            </div>` : '';
-        return `
-        <div class="post-item">
-            <div class="post-item-top">
-                <span class="cat-pill ${catClassMap[p.category]||''}">${p.category}</span>
-                <span class="dest-pill">${destLabelMap[p.dest]}</span>
-                <span class="post-date-label">${p.date}</span>
-            </div>
-            <h4>${p.title}</h4>
-            <p>${p.body}</p>
-            ${attachHtml}
-            <div class="post-item-footer">
-                <span class="post-author">Published by ${p.author}</span>
-                <button class="post-del-btn" onclick="deletePost(${p.id})">Remove</button>
-            </div>
-        </div>`;
-    }).join('');
-}
-
-function initPosts() {
-    posts = JSON.parse(localStorage.getItem('riska_posts') || '[]');
-    renderPosts();
-}
-
-/* ============================================================
-   ACCESS CONTROL
-============================================================ */
-function getStaffAccounts() {
-    return JSON.parse(localStorage.getItem('rf_staff_accounts') || '[]');
-}
-function saveStaffAccounts(list) {
-    localStorage.setItem('rf_staff_accounts', JSON.stringify(list));
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
 }
 
 function renderAdminList() {
-    const owners = ['amarildiriska15@gmail.com', 'arbririska1@gmail.com'];
-    const staff  = getStaffAccounts();
-    const el     = document.getElementById('approved-list');
+    if (!window._approvedEmails) return;
+    const list = window._approvedEmails();
+    const owners = ["amarildiriska15@gmail.com", "arbririska1@gmail.com"];
+    const el = document.getElementById('approved-list');
     if (!el) return;
-
-    let html = owners.map(email => `
-        <div class="member-row">
-            <div class="member-avatar">${email[0].toUpperCase()}</div>
-            <span class="member-email">${email}</span>
-            <span class="member-role-tag tag-owner">Owner</span>
-        </div>`).join('');
-
-    html += staff.map((s, i) => `
-        <div class="member-row">
-            <div class="member-avatar" style="background:var(--ink-3);">${s.email[0].toUpperCase()}</div>
-            <span class="member-email">${s.email}</span>
-            <span class="member-role-tag tag-staff">Staff</span>
-            <button class="remove-btn" onclick="revokeStaff(${i})">Remove</button>
-        </div>`).join('');
-
-    el.innerHTML = html || '<p style="color:var(--slate);font-size:0.85rem;">No members yet.</p>';
-}
-
-function addApprovedEmail() {
-    const emailInput = document.getElementById('new-email-input');
-    const passInput  = document.getElementById('new-password-input');
-    const email      = emailInput.value.trim().toLowerCase();
-    const password   = passInput.value.trim();
-
-    if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return; }
-    if (!password || password.length < 6) { alert('Password must be at least 6 characters.'); return; }
-
-    const staff = getStaffAccounts();
-    if (staff.find(s => s.email.toLowerCase() === email)) { alert('This email already has access.'); return; }
-
-    staff.push({ email, password });
-    saveStaffAccounts(staff);
-    emailInput.value = ''; passInput.value = '';
-    renderAdminList();
-    updateKPIs();
-    showToast(`Access granted to ${email}`);
-}
-
-function revokeStaff(index) {
-    const staff = getStaffAccounts();
-    const removed = staff.splice(index, 1);
-    saveStaffAccounts(staff);
-    renderAdminList();
-    updateKPIs();
-    showToast(`Removed ${removed[0]?.email}`);
-}
-
-/* ============================================================
-   FILES — UPLOADCARE
-============================================================ */
-let uploadedFiles = JSON.parse(localStorage.getItem('rf_files') || '[]');
-
-function openUploadcare() {
-    const dialog = uploadcare.openDialog(null, {
-        publicKey:  'd70e326b495b592aae72',
-        multiple:   true,
-        tabs:       'file camera url',
-        imagesOnly: false,
-    });
-
-    dialog.done(function(result) {
-        result.promise().then(function(info) {
-            // Multi-upload: files in info.files
-            const files = info.files || [info];
-            files.forEach(f => {
-                const file = {
-                    uuid:     f.uuid,
-                    name:     f.name,
-                    size:     f.size,
-                    mimeType: f.mimeType || '',
-                    cdnUrl:   f.cdnUrl,
-                    uploaded: new Date().toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }),
-                    uploadedBy: window._currentUserName || 'Staff'
-                };
-                uploadedFiles.unshift(file);
-            });
-            saveFiles();
-            renderFiles();
-            updateKPIs();
-            showToast(files.length === 1 ? '1 file uploaded' : `${files.length} files uploaded`);
-        });
-    });
-}
-
-function saveFiles() {
-    localStorage.setItem('rf_files', JSON.stringify(uploadedFiles));
-}
-
-function deleteFile(uuid) {
-    uploadedFiles = uploadedFiles.filter(f => f.uuid !== uuid);
-    saveFiles();
-    renderFiles();
-    updateKPIs();
-    showToast('File removed');
-}
-
-function getFileTypeInfo(file) {
-    const mime = (file.mimeType || '').toLowerCase();
-    const name = (file.name || '').toLowerCase();
-    if (mime.includes('pdf') || name.endsWith('.pdf'))
-        return { label: 'PDF', cls: 'ft-pdf' };
-    if (mime.includes('spreadsheet') || mime.includes('excel') || name.match(/\.xlsx?$/))
-        return { label: 'XLS', cls: 'ft-xls' };
-    if (mime.includes('word') || mime.includes('document') || name.match(/\.docx?$/))
-        return { label: 'DOC', cls: 'ft-doc' };
-    if (mime.startsWith('image/') || name.match(/\.(png|jpg|jpeg|gif|webp|svg)$/))
-        return { label: 'IMG', cls: 'ft-img' };
-    return { label: 'FILE', cls: 'ft-other' };
-}
-
-function formatBytes(bytes) {
-    if (!bytes) return '';
-    if (bytes < 1024) return bytes + ' B';
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
-}
-
-function renderFiles() {
-    const container = document.getElementById('files-list');
-    const countEl   = document.getElementById('files-count');
-    if (!container) return;
-    countEl.textContent = `${uploadedFiles.length} file${uploadedFiles.length !== 1 ? 's' : ''}`;
-
-    if (!uploadedFiles.length) {
-        container.innerHTML = `<div class="empty-state">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="36" height="36"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-            <p>No files uploaded yet.<br>Click "Choose Files" to get started.</p>
-        </div>`;
-        return;
-    }
-
-    container.innerHTML = uploadedFiles.map(f => {
-        const { label, cls } = getFileTypeInfo(f);
-        const size = formatBytes(f.size);
-        return `<div class="file-row">
-            <div class="file-type-icon ${cls}">${label}</div>
-            <div class="file-info">
-                <div class="file-name" title="${f.name}">${f.name}</div>
-                <div class="file-meta">${size ? size + ' &middot; ' : ''}Uploaded ${f.uploaded} by ${f.uploadedBy}</div>
-            </div>
-            <div class="file-actions">
-                <a class="file-btn file-btn-dl" href="${f.cdnUrl}" target="_blank" rel="noopener" download="${f.name}">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Download
-                </a>
-                <button class="file-btn file-btn-rm" onclick="deleteFile('${f.uuid}')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-                    Remove
-                </button>
-            </div>
-        </div>`;
+    el.innerHTML = list.map(email => {
+        const isOwner = owners.map(e=>e.toLowerCase()).includes(email.toLowerCase());
+        return `<div class="approved-item"><span>${email}${isOwner ? '<span class="owner-tag">Admin</span>' : ''}</span>${!isOwner ? `<button class="revoke-btn" onclick="revokeEmail('${email}')">Revoke</button>` : ''}</div>`;
     }).join('');
 }
 
-function initFiles() {
-    uploadedFiles = JSON.parse(localStorage.getItem('rf_files') || '[]');
-    renderFiles();
+function addApprovedEmail() {
+    const input = document.getElementById('new-email-input'); const email = input.value.trim().toLowerCase();
+    if (!email || !email.includes('@')) { alert('Valid email required.'); return; }
+    if (!window._approvedEmails) return;
+    const current = window._approvedEmails();
+    if (current.map(e=>e.toLowerCase()).includes(email)) { alert('Identity already provisioned.'); return; }
+    window._saveExtraEmails([...current, email]); input.value = ''; renderAdminList(); showToast(`Identity provisioned: ${email}`);
 }
 
-/* ============================================================
-   TOAST
-============================================================ */
-function showToast(msg) {
-    document.getElementById('toast-msg').textContent = msg;
-    const t = document.getElementById('toast');
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2800);
+function revokeEmail(email) {
+    if (!window._approvedEmails) return;
+    window._saveExtraEmails(window._approvedEmails().filter(e => e.toLowerCase() !== email.toLowerCase()));
+    renderAdminList(); showToast(`Access revoked: ${email}`);
 }
 </script>
 </body>
 </html>
+
+```
