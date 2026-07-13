@@ -148,7 +148,7 @@
         .card-title { font-size: 1rem; font-weight: 600; color: #0f172a; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 8px; }
 
         /* ============================================================
-           NEW DASHBOARD SECTIONS (RESOURCES, TASKS, CALENDAR)
+           DASHBOARD SECTIONS (RESOURCES, TASKS, CALENDAR)
         ============================================================ */
         /* Resources Grid */
         .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
@@ -165,33 +165,15 @@
 
         /* Team Tasks */
         .task-list { display: flex; flex-direction: column; gap: 0.5rem; }
-        .task-item { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; color: #334155; }
-        .task-item input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: #FF6B35; flex-shrink: 0; }
-        .task-item.completed { opacity: 0.5; text-decoration: line-through; }
+        .task-list label { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; color: #334155; }
+        .task-list input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: #FF6B35; flex-shrink: 0; }
+        .task-list label.completed { opacity: 0.5; text-decoration: line-through; }
 
         /* ============================================================
            CMS LAYOUT (ENTERPRISE)
         ============================================================ */
         .cms-grid { display: grid; grid-template-columns: 350px 1fr; gap: 2rem; align-items: start; }
         
-        .form-group { margin-bottom: 1.25rem; }
-        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #475569; font-size: 0.85rem; }
-        .form-input, .form-select, .form-textarea {
-            width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px;
-            font-size: 0.9rem; font-family: inherit; transition: border-color 0.2s; background: #f8fafc; box-sizing: border-box;
-        }
-        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: #FF6B35; background: white; }
-        .form-textarea { resize: vertical; min-height: 150px; }
-
-        .publish-btn {
-            width: 100%; background: #FF6B35; color: white; border: none;
-            padding: 12px; border-radius: 6px; font-weight: 600; font-size: 0.9rem;
-            cursor: pointer; transition: background 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;
-        }
-        .publish-btn:hover { background: #e55a2b; }
-        .publish-btn:disabled { background: #94a3b8; cursor: not-allowed; }
-
-        /* Feed */
         .post-feed { display: flex; flex-direction: column; gap: 1rem; }
         .post-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; transition: box-shadow 0.2s; }
         .post-card:hover { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
@@ -322,7 +304,6 @@
             <div class="nav-item active" onclick="switchTab('cms', this)">
                 <i data-feather="file-text"></i> Communications
             </div>
-            <!-- 🔥 NEW TABS ADDED HERE -->
             <div class="nav-item" onclick="switchTab('tasks', this)">
                 <i data-feather="check-square"></i> Team Tasks
             </div>
@@ -335,7 +316,6 @@
             <div class="nav-item" onclick="switchTab('analytics', this)">
                 <i data-feather="bar-chart-2"></i> Site Analytics
             </div>
-            <!-- /END NEW TABS -->
             <div class="nav-item" id="admin-nav-btn" style="display:none;" onclick="switchTab('admin', this)">
                 <i data-feather="shield"></i> Access Control
             </div>
@@ -435,7 +415,7 @@
                 </div>
             </div>
 
-            <!-- 🔥 NEW TAB: TASKS -->
+            <!-- TAB: TASKS -->
             <div id="tab-tasks" class="tab-panel">
                 <div class="card" style="max-width: 800px; margin: 0 auto;">
                     <div class="card-title"><i data-feather="check-square"></i> Shared Team Tasks</div>
@@ -455,7 +435,7 @@
                 </div>
             </div>
 
-            <!-- 🔥 NEW TAB: CALENDAR -->
+            <!-- TAB: CALENDAR -->
             <div id="tab-calendar" class="tab-panel">
                 <div class="card" style="max-width: 900px; margin: 0 auto;">
                     <div class="card-title"><i data-feather="calendar"></i> Important Firm Deadlines</div>
@@ -484,7 +464,7 @@
                 </div>
             </div>
 
-            <!-- 🔥 NEW TAB: RESOURCES -->
+            <!-- TAB: RESOURCES -->
             <div id="tab-resources" class="tab-panel">
                 <h2 style="font-size:1.25rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;">Firm Resources & Quick Links</h2>
                 <div class="resource-grid">
@@ -492,6 +472,18 @@
                         <div class="resource-icon"><i data-feather="layers"></i></div>
                         <h3 style="font-size:1.05rem; font-weight:600; color:#0f172a; margin-top:0.5rem;">Flowtab Software</h3>
                         <p style="font-size:0.85rem; color:#64748b;">Access the main Riska's Finance application dashboard.</p>
+                    </a>
+                    <!-- 🔥 NEW QUICK LINK: RISKA AI -->
+                    <a href="https://ai.riskasfinance.com/" target="_blank" class="resource-card">
+                        <div class="resource-icon"><i data-feather="cpu"></i></div>
+                        <h3 style="font-size:1.05rem; font-weight:600; color:#0f172a; margin-top:0.5rem;">Riska AI</h3>
+                        <p style="font-size:0.85rem; color:#64748b;">Connect to our tax intelligence assistant platform.</p>
+                    </a>
+                    <!-- 🔥 NEW QUICK LINK: FIXED ASSETS APP DOWNLOAD -->
+                    <a href="https://riskafiance.github.io/Thankyou/" target="_blank" class="resource-card">
+                        <div class="resource-icon"><i data-feather="download-cloud"></i></div>
+                        <h3 style="font-size:1.05rem; font-weight:600; color:#0f172a; margin-top:0.5rem;">Fixed Assets App</h3>
+                        <p style="font-size:0.85rem; color:#64748b;">Download link page for our desktop engine software bundle.</p>
                     </a>
                     <a href="https://www.irs.gov/e-services" target="_blank" class="resource-card">
                         <div class="resource-icon"><i data-feather="briefcase"></i></div>
@@ -511,7 +503,7 @@
                 </div>
             </div>
 
-            <!-- 🔥 NEW TAB: ANALYTICS -->
+            <!-- TAB: ANALYTICS -->
             <div id="tab-analytics" class="tab-panel">
                 <div class="card" style="max-width: 800px; margin: 0 auto;">
                     <div class="card-title"><i data-feather="bar-chart-2"></i> Website Traffic & Analytics</div>
@@ -722,7 +714,7 @@ onAuthStateChanged(auth, (user) => {
         document.getElementById('user-label').textContent = user.displayName || email;
         const avatar = document.getElementById('user-avatar');
         if (user.photoURL) { avatar.src = user.photoURL; avatar.style.display = 'inline-block'; }
-        if (OWNER_EMAILS.map(e=>e.toLowerCase()).includes(email)) { document.getElementById('admin-nav-btn').style.display = 'flex'; }
+        if (OWNER_EMAILS.map(e=>e.toLowerCase()).includes(email)) { document.getElementById('admin-tab-btn').style.display = 'flex'; }
 
         window._currentUserEmail = email; window._currentUserName  = user.displayName || email;
         window._approvedEmails   = getApprovedEmails; window._saveExtraEmails  = saveExtraEmails;
@@ -770,7 +762,7 @@ function switchTab(name, btn) {
     document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     
-    // 🔥 NEW: Title Logic updated to support the new tabs
+    // Update Header Text to match selected Tab
     const titles = { 
         'cms': 'Communications Hub', 
         'tasks': 'Team Tasks',
@@ -822,5 +814,3 @@ function revokeEmail(email) {
 </script>
 </body>
 </html>
-
-```
