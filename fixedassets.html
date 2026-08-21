@@ -67,6 +67,7 @@
             max-width: 1150px;
             margin: 0 auto;
             padding: 0 20px;
+            position: relative;
         }
         .nav-brand {
             display: flex;
@@ -78,6 +79,17 @@
             letter-spacing: -0.5px;
         }
         .brand-logo { height: 24px; }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: 5px;
+        }
+
         .nav-menu {
             display: flex;
             list-style: none;
@@ -379,9 +391,41 @@
             margin-top: 0.5rem;
         }
 
-        /* --- RESPONSIVE --- */
+        /* --- RESPONSIVE FIXES (MOBILE) --- */
+        @media (max-width: 1024px) {
+            .mobile-menu-btn { display: block; }
+            .nav-menu { 
+                display: none; 
+                position: absolute; 
+                top: 100%; 
+                left: 0; 
+                width: 100%; 
+                background: var(--white); 
+                flex-direction: column; 
+                padding: 20px; 
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+                border-top: 1px solid var(--border-color);
+                align-items: flex-start;
+                z-index: 1001;
+            }
+            .nav-menu.active { display: flex; }
+            .dropdown-menu {
+                position: static;
+                transform: none !important;
+                box-shadow: none;
+                opacity: 1;
+                visibility: visible;
+                display: none;
+                padding-left: 15px;
+                margin-top: 10px;
+                border: none;
+            }
+            .nav-dropdown:active .dropdown-menu,
+            .nav-dropdown:hover .dropdown-menu {
+                display: block;
+            }
+        }
         @media (max-width: 900px) {
-            .nav-menu { display: none; }
             .feature-row, .feature-row.reverse { grid-template-columns: 1fr; gap: 30px; }
             .feature-row.reverse .feature-text { order: 1; }
             .feature-row.reverse .feature-image-wrapper { order: 2; }
@@ -407,7 +451,13 @@
                 <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo" onerror="this.src='https://via.placeholder.com/24/FF6B35/ffffff?text=R'">
                 <span>Riska's Finance</span>
             </a>
-            <ul class="nav-menu">
+            
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+                <i data-feather="menu" style="width: 24px; height: 24px;"></i>
+            </button>
+
+            <ul class="nav-menu" id="navMenu">
                 <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
                 <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
                 <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
@@ -629,12 +679,12 @@
         </section>
     </main>
 
-   <!-- FOOTER -->
-    <footer class="footer" style="padding: 4rem 0 2.5rem; background: var(--white);">
+    <!-- FOOTER -->
+    <footer class="footer" style="padding: 4rem 0 2.5rem; background: var(--white); border-top: 1px solid var(--border-color);">
         <div class="container">
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 30px; margin-bottom: 40px;">
                 <div>
-                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">Company</h4>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem; color: var(--text-dark);">Company</h4>
                     <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
                         <li><a href="about.html" style="color: inherit;">About Us</a></li>
                         <li><a href="contact.html" style="color: inherit;">Contact Us</a></li>
@@ -642,18 +692,18 @@
                     </ul>
                 </div>
                 <div>
-                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">For Individuals</h4>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem; color: var(--text-dark);">For Individuals</h4>
                     <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
                         <li><a href="tax-filing.html" style="color: inherit;">Tax Preparation</a></li>
-                        <li><a href="https://calendly.com/riskas-finances/30min?" target="_blank" style="color: inherit;">Tax Consulting</a></li>
-                        <li><a href="steps.html" style="color: inherit;">Business Consulting</a></li>
+                        <li><a href="#" style="color: inherit;">Tax Consulting</a></li>
+                        <li><a href="#" style="color: inherit;">Business Consulting</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">For Business</h4>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem; color: var(--text-dark);">For Business</h4>
                     <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
                         <li><a href="#" style="color: inherit;">Accounting</a></li>
-                        <li><a href="fixedassets.html" target="_blank" style="color: inherit;">Riska's Fixed Assets</a></li>
+                        <li><a href="fixedassets.html" style="color: inherit;">Riska's Fixed Assets</a></li>
                         <li><a href="https://get.riskasfinance.com/" target="_blank" style="color: inherit;">ClearPay Software</a></li>
                     </ul>
                 </div>
@@ -674,9 +724,9 @@
                     © 2026 Riska's Finance LLC. All rights reserved.
                 </div>
                 <div style="display: flex; gap: 16px;">
-                    <a href="legal.html" target="_blank" style="color: inherit;">Legal</a>
-                    <a href="legal.html" target="_blank" style="color: inherit;">Privacy</a>
-                    <a href="legal.html" target="_blank" style="color: inherit;">Security</a>
+                    <a href="legal.html#terms" style="color: inherit;">Legal</a>
+                    <a href="legal.html#privacy" style="color: inherit;">Privacy</a>
+                    <a href="legal.html#security" style="color: inherit;">Security</a>
                 </div>
             </div>
         </div>
@@ -697,11 +747,37 @@
         </svg>
     </button>
 
-    <!-- SCRIPTS -->
+    <!-- SCRIPT FOR ICONS & MOBILE NAV -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
     <script>
         if (typeof feather !== 'undefined') {
             feather.replace();
+        }
+
+        // Mobile Nav Script
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        if (mobileMenuBtn && navMenu) {
+            // Toggle menu on button click
+            mobileMenuBtn.addEventListener('click', (e) => {
+                navMenu.classList.toggle('active');
+                e.stopPropagation(); 
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                }
+            });
+            
+            // Close menu when a link inside it is clicked
+            navMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                });
+            });
         }
     </script>
 </body>

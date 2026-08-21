@@ -18,6 +18,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.css">
     
     <style>
         /* --- BRAND GLOBAL STYLES --- */
@@ -65,6 +66,7 @@
             max-width: 1150px;
             margin: 0 auto;
             padding: 0 20px;
+            position: relative;
         }
         .nav-brand {
             display: flex;
@@ -76,6 +78,17 @@
             letter-spacing: -0.5px;
         }
         .brand-logo { height: 24px; }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: 5px;
+        }
+
         .nav-menu {
             display: flex;
             list-style: none;
@@ -314,11 +327,43 @@
             margin-bottom: 30px;
         }
 
-        /* --- RESPONSIVE --- */
+        /* --- RESPONSIVE FIXES (MOBILE) --- */
+        @media (max-width: 1024px) {
+            .mobile-menu-btn { display: block; }
+            .nav-menu { 
+                display: none; 
+                position: absolute; 
+                top: 100%; 
+                left: 0; 
+                width: 100%; 
+                background: var(--white); 
+                flex-direction: column; 
+                padding: 20px; 
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+                border-top: 1px solid var(--border-color);
+                align-items: flex-start;
+                z-index: 1001;
+            }
+            .nav-menu.active { display: flex; }
+            .dropdown-menu {
+                position: static;
+                transform: none !important;
+                box-shadow: none;
+                opacity: 1;
+                visibility: visible;
+                display: none;
+                padding-left: 15px;
+                margin-top: 10px;
+                border: none;
+            }
+            .nav-dropdown:active .dropdown-menu,
+            .nav-dropdown:hover .dropdown-menu {
+                display: block;
+            }
+        }
         @media (max-width: 900px) {
             .about-grid, .expertise-grid { grid-template-columns: 1fr; gap: 30px; }
             .expertise-image { order: -1; } 
-            .nav-menu { display: none; }
         }
         @media (max-width: 768px) {
             .page-hero h1 { font-size: 2.2rem; }
@@ -334,7 +379,13 @@
                 <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo" onerror="this.src='https://via.placeholder.com/24/FF6B35/ffffff?text=R'">
                 <span>Riska's Finance</span>
             </a>
-            <ul class="nav-menu">
+            
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+                <i data-feather="menu" style="width: 24px; height: 24px;"></i>
+            </button>
+
+            <ul class="nav-menu" id="navMenu">
                 <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
                 <li class="nav-item"><a href="about.html" class="nav-link active">About Us</a></li>
                 <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
@@ -481,7 +532,7 @@
         </section>
     </main>
 
-   <!-- FOOTER -->
+    <!-- FOOTER -->
     <footer class="footer" style="padding: 4rem 0 2.5rem; background: var(--white);">
         <div class="container">
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 30px; margin-bottom: 40px;">
@@ -526,19 +577,60 @@
                     © 2026 Riska's Finance LLC. All rights reserved.
                 </div>
                 <div style="display: flex; gap: 16px;">
-                    <a href="legal.html" target="_blank" style="color: inherit;">Legal</a>
-                    <a href="legal.html" target="_blank" style="color: inherit;">Privacy</a>
-                    <a href="legal.html" target="_blank" style="color: inherit;">Security</a>
+                    <a href="legal.html#terms" style="color: inherit;">Legal</a>
+                    <a href="legal.html#privacy" style="color: inherit;">Privacy</a>
+                    <a href="legal.html#security" style="color: inherit;">Security</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- SCRIPT FOR ICONS -->
+    <!-- RISKA AI FLOATING BUBBLE -->
+    <div id="riska-bubble-tooltip" style="position:fixed; bottom:78px; right:20px; background:#fff; color:#1a0a00; font-size:12px; font-family:'Inter',sans-serif; font-weight:600; padding:6px 12px; border-radius:20px; box-shadow:0 2px 10px rgba(0,0,0,0.2); white-space:nowrap; z-index:9999; display:none; pointer-events:none;">Ask Riska AI ✦</div>
+    <button
+        onclick="window.open('https://ai.riskasfinance.com','_blank')"
+        onmouseenter="document.getElementById('riska-bubble-tooltip').style.display='block'"
+        onmouseleave="document.getElementById('riska-bubble-tooltip').style.display='none'"
+        aria-label="Open Riska AI"
+        style="position:fixed; bottom:20px; right:20px; width:48px; height:48px; border-radius:50%; background:var(--primary-color); border:none; cursor:pointer; z-index:9999; box-shadow:0 4px 16px rgba(255,107,53,0.45); display:flex; align-items:center; justify-content:center; transition:transform 0.15s, box-shadow 0.15s;"
+        onmouseover="this.style.transform='scale(1.08)'; this.style.boxShadow='0 6px 20px rgba(255,107,53,0.55)';"
+        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 16px rgba(255,107,53,0.45)';">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+        </svg>
+    </button>
+
+    <!-- SCRIPT FOR ICONS & MOBILE NAV -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
     <script>
         if (typeof feather !== 'undefined') {
             feather.replace();
+        }
+
+        // Mobile Nav Script
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        if (mobileMenuBtn && navMenu) {
+            // Toggle menu on button click
+            mobileMenuBtn.addEventListener('click', (e) => {
+                navMenu.classList.toggle('active');
+                e.stopPropagation(); 
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                }
+            });
+            
+            // Close menu when a link inside it is clicked
+            navMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                });
+            });
         }
     </script>
 </body>

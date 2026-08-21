@@ -66,6 +66,7 @@
             max-width: 1150px;
             margin: 0 auto;
             padding: 0 20px;
+            position: relative;
         }
         .nav-brand {
             display: flex;
@@ -77,6 +78,17 @@
             letter-spacing: -0.5px;
         }
         .brand-logo { height: 24px; }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: 5px;
+        }
+
         .nav-menu {
             display: flex;
             list-style: none;
@@ -459,18 +471,70 @@
             .result-row.main-total { margin-top: 24px; border-top: 2px solid #000; border-bottom: 4px double #000; padding: 16px 0; background-color: #f9f9f9; -webkit-print-color-adjust: exact; }
         }
 
-        /* --- RESPONSIVE --- */
+        /* --- RESPONSIVE / MOBILE FIXES --- */
         @media (max-width: 1024px) {
             .hero-container { grid-template-columns: 1fr; text-align: center; gap: 20px; }
             .hero-content { margin-top: 30px; }
             .hero-content h1 { font-size: 2.8rem; margin: 0 auto 16px; }
             .hero-content p { margin: 0 auto 24px; font-size: 0.95rem; }
-            .hero-visual { height: 350px; transform: scale(0.9); }
-            .nav-menu { display: none; } 
+            
+            /* Add Mobile Hamburger Logic */
+            .mobile-menu-btn { display: block; }
+            .nav-menu { 
+                display: none; 
+                position: absolute; 
+                top: 100%; 
+                left: 0; 
+                width: 100%; 
+                background: var(--white); 
+                flex-direction: column; 
+                padding: 20px; 
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+                border-top: 1px solid var(--border-color);
+                align-items: flex-start;
+                z-index: 1001;
+            }
+            .nav-menu.active { display: flex; }
+            .dropdown-menu {
+                position: static;
+                transform: none !important;
+                box-shadow: none;
+                opacity: 1;
+                visibility: visible;
+                display: none;
+                padding-left: 15px;
+                margin-top: 10px;
+                border: none;
+            }
+            .nav-dropdown:active .dropdown-menu,
+            .nav-dropdown:hover .dropdown-menu {
+                display: block;
+            }
         }
         @media (max-width: 768px) {
             .hero-content h1 { font-size: 2.2rem; }
-            .hero-visual { display: none; }
+            
+            /* Scale up and neatly reorganize the floating badges for phones */
+            .hero-visual { 
+                display: flex; 
+                height: 380px; 
+                transform: scale(0.85); /* Upscaled from 0.55 */
+                margin-top: 20px; 
+            }
+            .smart-search-wrapper { max-width: 100%; padding: 0 10px; }
+            
+            /* Mobile Staggered Layout for Badges */
+            .pos-1 { top: -2%; left: 0%; }
+            .pos-2 { top: 8%; right: 0%; left: auto; }
+            .pos-3 { top: 25%; left: -2%; }
+            .pos-8 { top: 25%; right: -2%; left: auto; }
+            .pos-5 { bottom: 20%; left: 0%; }
+            .pos-6 { bottom: 30%; right: 0%; left: auto; }
+            .pos-7 { bottom: 0%; left: 15%; right: auto; }
+            
+            /* Hide the least important ones to prevent messy overlap */
+            .pos-4, .pos-9, .pos-10 { display: none; }
+            
             .calculator-card { grid-template-columns: 1fr !important; }
             .financial-news > .container > div { grid-template-columns: 1fr !important; }
         }
@@ -485,7 +549,13 @@
                 <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo" onerror="this.src='https://via.placeholder.com/24/FF6B35/ffffff?text=R'">
                 <span>Riska's Finance</span>
             </a>
-            <ul class="nav-menu">
+            
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+                <i data-feather="menu" style="width: 24px; height: 24px;"></i>
+            </button>
+
+            <ul class="nav-menu" id="navMenu">
                 <li class="nav-item"><a href="index.html" class="nav-link active">Home</a></li>
                 <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
                 <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
@@ -1050,10 +1120,37 @@
         </svg>
     </button>
 
-    <!-- INITIALIZE FEATHER ICONS -->
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
     <script>
         if (typeof feather !== 'undefined') {
             feather.replace();
+        }
+
+        // Mobile Nav Script
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        if (mobileMenuBtn && navMenu) {
+            // Toggle menu on button click
+            mobileMenuBtn.addEventListener('click', (e) => {
+                navMenu.classList.toggle('active');
+                e.stopPropagation(); 
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                }
+            });
+            
+            // Close menu when a link inside it is clicked
+            navMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                });
+            });
         }
     </script>
 
@@ -1076,44 +1173,42 @@
         const db = getFirestore(app);
         const feed = document.getElementById('public-news-feed');
         
-        const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-        
-        onSnapshot(q, (snapshot) => {
-            let posts = [];
+        if (feed) {
+            const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+            onSnapshot(q, (snapshot) => {
+                let posts = [];
+                snapshot.forEach((doc) => {
+                    let data = doc.data();
+                    if (data.dest === 'home' || data.dest === 'both') {
+                        posts.push({ id: doc.id, ...data });
+                    }
+                });
             
-            snapshot.forEach((doc) => {
-                let data = doc.data();
-                if (data.dest === 'home' || data.dest === 'both') {
-                    posts.push({ id: doc.id, ...data });
+                if (posts.length === 0) {
+                    feed.innerHTML = `<p style="color: #6b7280; text-align: center; padding: 1.5rem 0; background: white; border-radius: 8px; border: 1px dashed #e5e7eb; font-size: 0.9rem;">No recent updates right now. Check back soon!</p>`;
+                    return;
                 }
-            });
-        
-            if (posts.length === 0) {
-                feed.innerHTML = `<p style="color: #6b7280; text-align: center; padding: 1.5rem 0; background: white; border-radius: 8px; border: 1px dashed #e5e7eb; font-size: 0.9rem;">No recent updates right now. Check back soon!</p>`;
-                return;
-            }
-        
-            feed.innerHTML = posts.map(p => `
-                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.25rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid #f3f4f6; padding-bottom: 0.75rem;">
-                        <span style="background: var(--primary-color); color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">
-                            ${p.category}
-                        </span>
-                        <span style="color: #9ca3af; font-size: 0.75rem;">${p.date}</span>
-                    </div>
-                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem; color: #111;">${p.title}</h3>
-                    <p style="margin: 0 0 1.25rem 0; color: #4b5563; line-height: 1.6; font-size: 0.9rem;">${p.body}</p>
-                    ${p.fileUrl ? `<a href="${p.fileUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 6px; background: #f8fafc; color: #334155; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; text-decoration: none; border: 1px solid #e2e8f0; margin-bottom: 1rem; font-weight: 500; transition: background 0.2s;" onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f8fafc'"><i data-feather="paperclip" style="width:12px;height:12px;"></i> View Attached Document</a>` : ''}
-                    <div style="font-size: 0.75rem; color: #9ca3af;">
-                        Posted by <strong>${p.author}</strong>
-                    </div>
-                </div>
-            `).join('');
             
-            if (typeof feather !== 'undefined') {
-                feather.replace();
-            }
-        });
+                feed.innerHTML = posts.map(p => `
+                    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.25rem; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid #f3f4f6; padding-bottom: 0.75rem;">
+                            <span style="background: var(--primary-color); color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">
+                                ${p.category}
+                            </span>
+                            <span style="color: #9ca3af; font-size: 0.75rem;">${p.date}</span>
+                        </div>
+                        <h3 style="margin: 0 0 0.5rem 0; font-size: 1.1rem; color: #111;">${p.title}</h3>
+                        <p style="margin: 0 0 1.25rem 0; color: #4b5563; line-height: 1.6; font-size: 0.9rem;">${p.body}</p>
+                        ${p.fileUrl ? `<a href="${p.fileUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 6px; background: #f8fafc; color: #334155; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; text-decoration: none; border: 1px solid #e2e8f0; margin-bottom: 1rem; font-weight: 500; transition: background 0.2s;" onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f8fafc'"><i data-feather="paperclip" style="width:12px;height:12px;"></i> View Attached Document</a>` : ''}
+                        <div style="font-size: 0.75rem; color: #9ca3af;">
+                            Posted by <strong>${p.author}</strong>
+                        </div>
+                    </div>
+                `).join('');
+                
+                if (typeof feather !== 'undefined') { feather.replace(); }
+            });
+        }
     </script>
 
     <!-- SMART SEARCH LOGIC -->
@@ -1137,6 +1232,8 @@
             const btn = document.getElementById('aiSearchBtn');
 
             function renderDropdown(query) {
+                if (!input || !dropdown) return;
+                
                 const lowerQuery = query.toLowerCase();
                 const filtered = searchMap.filter(item => 
                     item.title.toLowerCase().includes(lowerQuery)
@@ -1165,46 +1262,47 @@
                         dropdown.appendChild(li);
                     });
                 }
-                
                 if (typeof feather !== 'undefined') feather.replace();
             }
 
-            input.addEventListener('input', (e) => {
-                if(e.target.value.trim().length > 0 || document.activeElement === input) {
-                    dropdown.classList.add('active');
-                    renderDropdown(e.target.value);
-                } else {
-                    dropdown.classList.remove('active');
-                }
-            });
-
-            input.addEventListener('focus', () => {
-                dropdown.classList.add('active');
-                renderDropdown(input.value);
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!wrapper.contains(e.target)) {
-                    dropdown.classList.remove('active');
-                }
-            });
-
-            function handleSearch() {
-                const topResult = dropdown.querySelector('.search-dropdown-item');
-                if (topResult) {
-                    if (topResult.getAttribute('target') === '_blank') {
-                        window.open(topResult.getAttribute('href'), '_blank');
+            if (input && dropdown) {
+                input.addEventListener('input', (e) => {
+                    if(e.target.value.trim().length > 0 || document.activeElement === input) {
+                        dropdown.classList.add('active');
+                        renderDropdown(e.target.value);
                     } else {
-                        window.location.href = topResult.getAttribute('href');
+                        dropdown.classList.remove('active');
+                    }
+                });
+
+                input.addEventListener('focus', () => {
+                    dropdown.classList.add('active');
+                    renderDropdown(input.value);
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (wrapper && !wrapper.contains(e.target)) {
+                        dropdown.classList.remove('active');
+                    }
+                });
+
+                function handleSearch() {
+                    const topResult = dropdown.querySelector('.search-dropdown-item');
+                    if (topResult) {
+                        if (topResult.getAttribute('target') === '_blank') {
+                            window.open(topResult.getAttribute('href'), '_blank');
+                        } else {
+                            window.location.href = topResult.getAttribute('href');
+                        }
                     }
                 }
+
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') handleSearch();
+                });
+
+                if (btn) btn.addEventListener('click', handleSearch);
             }
-
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') handleSearch();
-            });
-
-            btn.addEventListener('click', handleSearch);
         });
     </script>
 </body>

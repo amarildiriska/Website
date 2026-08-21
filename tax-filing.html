@@ -42,7 +42,7 @@
         body {
             font-family: 'Inter', sans-serif;
             color: var(--text-dark);
-            background-color: var(--light-bg); /* Use light bg for the form page */
+            background-color: var(--light-bg); /* Light bg for form page */
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
         }
@@ -67,6 +67,7 @@
             max-width: 1150px;
             margin: 0 auto;
             padding: 0 20px;
+            position: relative;
         }
         .nav-brand {
             display: flex;
@@ -78,6 +79,17 @@
             letter-spacing: -0.5px;
         }
         .brand-logo { height: 24px; }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: 5px;
+        }
+
         .nav-menu {
             display: flex;
             list-style: none;
@@ -149,17 +161,17 @@
         .page-hero p {
             color: #D1D5DB;
             font-size: 1.05rem;
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
             line-height: 1.6;
         }
 
-        /* --- PROCESS STEPS --- */
+        /* --- PROCESS STEPS (Overlap Hero) --- */
         .process-steps {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 24px;
-            margin: -60px auto 40px; /* Pull up to overlap hero */
+            margin: -60px auto 40px; 
             position: relative;
             z-index: 10;
             max-width: 800px;
@@ -171,9 +183,12 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             border-top: 4px solid var(--primary-color);
             text-align: center;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
         }
-        .process-step h3 { margin-bottom: 8px; color: var(--text-dark); font-size: 1.1rem; }
-        .process-step p { font-size: 0.9rem; color: var(--text-gray); margin: 0; }
+        .process-step h3 { margin-bottom: 8px; color: var(--text-dark); font-size: 1.1rem; font-weight: 700;}
+        .process-step p { font-size: 0.9rem; color: var(--text-gray); margin: 0; line-height: 1.5; }
 
         /* --- FORM STYLES --- */
         .form-container {
@@ -221,6 +236,7 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--light-bg);
             transition: all 0.2s;
+            color: var(--text-dark);
         }
         input:focus, select:focus, textarea:focus { 
             outline: none; 
@@ -293,11 +309,42 @@
             color: white;
         }
 
-        /* --- RESPONSIVE --- */
-        @media (max-width: 900px) {
-            .nav-menu { display: none; }
+        /* --- RESPONSIVE FIXES (MOBILE) --- */
+        @media (max-width: 1024px) {
+            .mobile-menu-btn { display: block; }
+            .nav-menu { 
+                display: none; 
+                position: absolute; 
+                top: 100%; 
+                left: 0; 
+                width: 100%; 
+                background: var(--white); 
+                flex-direction: column; 
+                padding: 20px; 
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+                border-top: 1px solid var(--border-color);
+                align-items: flex-start;
+                z-index: 1001;
+            }
+            .nav-menu.active { display: flex; }
+            .dropdown-menu {
+                position: static;
+                transform: none !important;
+                box-shadow: none;
+                opacity: 1;
+                visibility: visible;
+                display: none;
+                padding-left: 15px;
+                margin-top: 10px;
+                border: none;
+            }
+            .nav-dropdown:active .dropdown-menu,
+            .nav-dropdown:hover .dropdown-menu {
+                display: block;
+            }
         }
         @media (max-width: 768px) {
+            .page-hero h1 { font-size: 2.2rem; }
             .process-steps { grid-template-columns: 1fr; margin-top: -30px; padding: 0 20px; }
             .cols-2 { grid-template-columns: 1fr; }
             .form-card { padding: 24px; }
@@ -313,7 +360,13 @@
                 <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo" onerror="this.src='https://via.placeholder.com/24/FF6B35/ffffff?text=R'">
                 <span>Riska's Finance</span>
             </a>
-            <ul class="nav-menu">
+            
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+                <i data-feather="menu" style="width: 24px; height: 24px;"></i>
+            </button>
+
+            <ul class="nav-menu" id="navMenu">
                 <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
                 <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
                 <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
@@ -410,7 +463,7 @@
                             
                             <div class="form-group" style="grid-column: 1 / -1;">
                                 <label style="margin-bottom: 12px;">Are you filing for a Business?</label>
-                                <div style="display:flex; gap:24px;">
+                                <div style="display:flex; flex-wrap: wrap; gap:24px;">
                                     <label style="font-weight:400; display:flex; align-items:center; gap:8px; cursor:pointer;">
                                         <input type="radio" name="filing_type" value="individual" checked onclick="toggleBusinessFields()" style="width:auto; margin:0;"> 
                                         No, Individual only
@@ -480,7 +533,7 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="footer" style="padding: 4rem 0 2.5rem; background: var(--white);">
+    <footer class="footer" style="padding: 4rem 0 2.5rem; background: var(--white); border-top: 1px solid var(--border-color);">
         <div class="container">
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 30px; margin-bottom: 40px;">
                 <div>
@@ -524,9 +577,9 @@
                     © 2026 Riska's Finance LLC. All rights reserved.
                 </div>
                 <div style="display: flex; gap: 16px;">
-                    <a href="legal.html" target="_blank" style="color: inherit;">Legal</a>
-                    <a href="legal.html" target="_blank" style="color: inherit;">Privacy</a>
-                    <a href="legal.html" target="_blank" style="color: inherit;">Security</a>
+                    <a href="legal.html#terms" style="color: inherit;">Legal</a>
+                    <a href="legal.html#privacy" style="color: inherit;">Privacy</a>
+                    <a href="legal.html#security" style="color: inherit;">Security</a>
                 </div>
             </div>
         </div>
@@ -552,6 +605,32 @@
     <script>
         if (typeof feather !== 'undefined') {
             feather.replace();
+        }
+
+        // Mobile Nav Script
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        if (mobileMenuBtn && navMenu) {
+            // Toggle menu on button click
+            mobileMenuBtn.addEventListener('click', (e) => {
+                navMenu.classList.toggle('active');
+                e.stopPropagation(); 
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                }
+            });
+            
+            // Close menu when a link inside it is clicked
+            navMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                });
+            });
         }
 
         // Business Logic Toggle
