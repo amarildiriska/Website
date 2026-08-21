@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S3WPM2ECG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7S3WPM2ECG');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steps to Financial Success - Riska's Finance</title>
+    <link rel="icon" type="image/png" href="attached_assets/Capture1.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.css">
+    
+    <style>
+        /* --- BRAND GLOBAL STYLES --- */
+        :root {
+            --primary-color: #FF6B35;
+            --dark-bg: #111827;
+            --light-bg: #F4F5F8;
+            --text-dark: #1A1A1A;
+            --text-gray: #6B7280;
+            --white: #FFFFFF;
+            --border-color: #E5E7EB;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; }
+        .container { max-width: 1050px; margin: 0 auto; padding: 0 20px; }
+        .section-title { font-size: 2rem; font-weight: 700; color: var(--text-dark); margin-bottom: 1rem; text-align: center; }
+
+        /* --- NAVIGATION --- */
+        .header {
+            background: var(--white);
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1150px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+        .brand-logo { height: 24px; }
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 24px;
+            align-items: center;
+        }
+        .nav-item {
+            position: relative;
+        }
+        .nav-link {
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--primary-color); }
+        
+        /* Dropdown Styles */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            list-style: none;
+            padding: 8px 0;
+            min-width: 180px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 100;
+        }
+        .nav-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(8px);
+        }
+        .dropdown-menu li a {
+            display: block;
+            padding: 8px 20px;
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+        }
+        .dropdown-menu li a:hover {
+            background: var(--light-bg);
+            color: var(--primary-color);
+        }
+
+        /* --- FANCY BUTTON --- */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #FF8A5B 100%);
+            color: var(--white);
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4), inset 0 -1px 0 rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+            z-index: -1;
+        }
+        .btn-primary:hover::before { left: 100%; }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.5), inset 0 -1px 0 rgba(0,0,0,0.15);
+            color: var(--white);
+        }
+
+        /* --- PAGE SPECIFIC HERO (STEPS) --- */
+        .steps-hero {
+            background: linear-gradient(135deg, rgba(17, 24, 39, 0.8) 0%, rgba(17, 24, 39, 0.4) 100%), url('attached_assets/backround.png') no-repeat center center/cover;
+            background-color: var(--dark-bg);
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .steps-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        .steps-info {
+            color: var(--white);
+        }
+        .steps-info h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin: 16px 0;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .steps-info p {
+            font-size: 1.05rem;
+            color: #D1D5DB;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+        }
+        
+        /* Book Cover 3D Effect */
+        .book-cover-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .book-cover-image {
+            width: 100%;
+            max-width: 320px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+            transform: rotateY(-5deg) rotateX(2deg);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
+            border-radius: 6px;
+        }
+        .book-cover-image:hover {
+            transform: rotateY(0deg) scale(1.02) translateY(-5px);
+            box-shadow: 0 30px 60px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.2);
+        }
+
+        /* --- STEP CARDS --- */
+        .guide-steps {
+            padding: 5rem 0;
+            background-color: var(--light-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-top: 3rem;
+        }
+        .step-card {
+            background: var(--white);
+            padding: 32px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid #F3F4F6;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .step-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+            border-color: rgba(255, 107, 53, 0.3);
+        }
+        .step-number-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: rgba(0,0,0,0.03);
+            line-height: 1;
+            z-index: 0;
+            user-select: none;
+        }
+        .step-icon {
+            color: var(--primary-color);
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+        .step-content { position: relative; z-index: 1; }
+        .step-title {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        .step-description {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* --- CTA SECTION --- */
+        .cta-section {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: 50%;
+            transform: translateX(-50%);
+            width: 600px; height: 400px;
+            background: radial-gradient(circle, rgba(255,107,53,0.15) 0%, rgba(255,107,53,0) 70%);
+            pointer-events: none;
+        }
+        .cta-section h2 {
+            font-size: 2.2rem;
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+        .cta-section p {
+            font-size: 1rem;
+            color: #D1D5DB;
+            margin-bottom: 30px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .nav-menu { display: none; }
+            .steps-layout { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+            .steps-info h1 { font-size: 2.5rem; }
+            .steps-info p { margin-left: auto; margin-right: auto; }
+            .book-cover-image { max-width: 280px; }
+            .step-card { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <header class="header">
+        <nav class="nav">
+            <a class="nav-brand" href="index.html">
+                <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo" onerror="this.src='https://via.placeholder.com/24/FF6B35/ffffff?text=R'">
+                <span>Riska's Finance</span>
+            </a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                <li class="nav-item"><a href="steps.html" class="nav-link active">Steps to Success</a></li>
+                <li class="nav-item"><a href="tax-filing.html" class="nav-link">File Taxes</a></li>
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link">Products ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://get.riskasfinance.com" target="_blank" rel="noopener noreferrer">ClearPay Software</a></li>
+                        <li><a href="fixedassets.html" target="_blank" rel="noopener noreferrer">Riska's Fixed Assets</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="dashboard.html" class="nav-link" style="color: var(--primary-color); font-weight: 700;">Sign In</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- STEPS HERO -->
+        <section class="steps-hero">
+            <div class="container">
+                <div class="steps-layout">
+                    
+                    <div class="steps-info">
+                        <span style="color: var(--primary-color); font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; font-size: 0.8rem;">New Release</span>
+                        <h1>Steps to Become Financially Successful</h1>
+                        <p>
+                            Discover the essential habits, strategies, and mindset needed to build lasting wealth. Whether you're just starting out or looking to level up, this practical guide offers clear advice to help you succeed.
+                        </p>
+                        
+                        <div class="steps-action">
+                            <a href="https://arbririska.com/" target="_blank" class="btn-primary">
+                                Get Your Copy <i data-feather="arrow-right" style="width: 16px; height: 16px;"></i>
+                            </a>
+                            <p style="margin-top: 12px; font-size: 0.8rem; color: #9CA3AF; text-shadow: none;">Available now on ArbriRiska.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="steps-visual">
+                        <div class="book-cover-container">
+                            <img src="attached_assets/image_1755482153404.png" alt="Steps to Becoming Financially Successful by Arbri Riska" class="book-cover-image" onerror="this.src='https://via.placeholder.com/320x480/111827/ffffff?text=Book+Cover'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GUIDE STEPS GRID -->
+        <section class="guide-steps">
+            <div class="container">
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h2 class="section-title">Your Path to Financial Freedom</h2>
+                    <p style="color: var(--text-gray); max-width: 600px; margin: 0 auto; font-size: 0.95rem;">An 8-step roadmap designed to take you from where you are today to where you want to be.</p>
+                </div>
+                
+                <div class="steps-grid">
+                    
+                    <article class="step-card">
+                        <div class="step-number-badge">01</div>
+                        <div class="step-icon"><i data-feather="pie-chart" style="width: 28px; height: 28px;"></i></div>
+                        <div class="step-content">
+                            <h3 class="step-title">Assess Your Situation</h3>
+                            <p class="step-description">Take a comprehensive look at your income, expenses, debts, and assets. You can't improve what you don't measure.</p>
+                        </div>
+                    </article>
+
+                    <article class="step-card">
+                        <div class="step-number-badge">02</div>
+                        <div class="step-icon"><i data-feather="target" style="width: 28px; height: 28px;"></i></div>
+                        <div class="step-content">
+                            <h3 class="step-title">Set Clear Goals</h3>
+                            <p class="step-description">Define short-term and long-term objectives. Whether it's buying a home or retiring early, clarity provides direction.</p>
+                        </div>
+                    </article>
+
+                    <article class="step-card">
+                        <div class="step-number-badge">03</div>
+                        <div class="step-icon"><i data-feather="list" style="width: 28px; height: 28px;"></i></div>
+                        <div class="step-content">
+                            <h3 class="step-title">Create a Budget</h3>
+                            <p class="step-description">Develop a realistic plan for your money. Track your spending and make adjustments to ensure you stay profitable.</p>
+                        </div>
+                    </article>
+
+                    <article class="step-card">
+                        <div class="step-number-badge">04</div>
+                        <div class="step-icon"><i data-feather="shield" style="width: 28px; height: 28px;"></i></div>
+                        <div class="step-content">
+                            <h3 class="step-title">Emergency Fund</h3>
+                            <p class="step-description">Save 3-6 months of expenses. This fund protects you from going into debt when life throws a curveball.</p>
+                        </div>
+                    </article>
+
+                    <article class="step-card">
+                        <div class="step-number-badge">05</div>
+                        <div class="step-icon"><i data-feather="trending-down" style="width: 28px; height: 28px;"></i></div>
+                        <div class="step-content">
+                            <h3 class="step-title">Eliminate Debt</h3>
+                            <p class="step-description">Focus on high-interest credit cards and loans. Use the debt snowball or avalanche method to become debt-free.</p>
+                        </div>
+                    </article>
+
+                    <article class="step-card">
+                        <div class="step-number-badge">06</div>
+                        <div class="step-icon"><i data-feather="trending-up" style="width: 28px; height: 28px;"></i></div>
+                        <div class="step-content">
+                            <h3 class="step-title">Start Investing</h3>
+                            <p class="step-description">Put your money to work. Use retirement accounts and index funds to let compound interest grow your wealth.</p>
+                        </div>
+                    </article>
+
+                    <article class="step-card">
+                        <div class="step-number-badge">07</div>
+                        <div class="step-icon"><i data-feather="lock" style="width: 28px; height: 28px;"></i></div>
+                        <div class="step-content">
+                            <h3 class="step-title">Protect Wealth</h3>
+                            <p class="step-description">Ensure you have adequate insurance and estate planning. Defense is just as important as offense.</p>
+                        </div>
+                    </article>
+
+                    <article class="step-card">
+                        <div class="step-number-badge">08</div>
+                        <div class="step-icon"><i data-feather="book-open" style="width: 28px; height: 28px;"></i></div>
+                        <div class="step-content">
+                            <h3 class="step-title">Stay Educated</h3>
+                            <p class="step-description">Financial trends change. Commit to lifelong learning to spot new opportunities and avoid pitfalls.</p>
+                        </div>
+                    </article>
+                    
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA SECTION -->
+        <section class="cta-section">
+            <div class="container" style="position: relative; z-index: 2;">
+                <h2>Ready to Start Your Financial Journey?</h2>
+                <p>Take the first step towards financial success by scheduling a consultation with our experts.</p>
+                <a href="https://calendly.com/riskas-finances" target="_blank" rel="noopener noreferrer" class="btn-primary">
+                    <i data-feather="calendar" style="width: 16px; height: 16px;"></i>
+                    Schedule Consultation
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer" style="padding: 4rem 0 2.5rem; background: var(--white);">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 30px; margin-bottom: 40px;">
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">Company</h4>
+                    <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li><a href="about.html" style="color: inherit;">About Us</a></li>
+                        <li><a href="contact.html" style="color: inherit;">Contact Us</a></li>
+                        <li><a href="dashboard.html" style="color: inherit;">Sign In</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">For Individuals</h4>
+                    <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li><a href="tax-filing.html" style="color: inherit;">Tax Preparation</a></li>
+                        <li><a href="https://calendly.com/riskas-finances/30min?" target="_blank" style="color: inherit;">Tax Consulting</a></li>
+                        <li><a href="steps.html" style="color: inherit;">Business Consulting</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">For Business</h4>
+                    <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li><a href="#" style="color: inherit;">Accounting</a></li>
+                        <li><a href="fixedassets.html" target="_blank" style="color: inherit;">Riska's Fixed Assets</a></li>
+                        <li><a href="https://get.riskasfinance.com/" target="_blank" style="color: inherit;">ClearPay Software</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">Contact</h4>
+                    <ul style="list-style: none; line-height: 2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li>614 Crawford Ave</li>
+                        <li>Dixon IL, 61021</li>
+                        <li style="margin-top: 8px;"><strong>+1 (815) 677-5807 / (815) 440-1394</strong></li>
+                        <li>admin@riskasfinance.com</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="border-top: 1px solid #D1D5DB; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.75rem; color: var(--text-gray);">
+                <div>
+                    <span style="font-weight: 800; color: var(--primary-color); font-size: 1rem; margin-right: 16px;">Riska's Finance</span>
+                    © 2026 Riska's Finance LLC. All rights reserved.
+                </div>
+                <div style="display: flex; gap: 16px;">
+                    <a href="legal.html" target="_blank" style="color: inherit;">Legal</a>
+                    <a href="legal.html" target="_blank" style="color: inherit;">Privacy</a>
+                    <a href="legal.html" target="_blank" style="color: inherit;">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- RISKA AI FLOATING BUBBLE -->
+    <div id="riska-bubble-tooltip" style="position:fixed; bottom:78px; right:20px; background:#fff; color:#1a0a00; font-size:12px; font-family:'Inter',sans-serif; font-weight:600; padding:6px 12px; border-radius:20px; box-shadow:0 2px 10px rgba(0,0,0,0.2); white-space:nowrap; z-index:9999; display:none; pointer-events:none;">Ask Riska AI ✦</div>
+    <button
+        onclick="window.open('https://ai.riskasfinance.com','_blank')"
+        onmouseenter="document.getElementById('riska-bubble-tooltip').style.display='block'"
+        onmouseleave="document.getElementById('riska-bubble-tooltip').style.display='none'"
+        aria-label="Open Riska AI"
+        style="position:fixed; bottom:20px; right:20px; width:48px; height:48px; border-radius:50%; background:var(--primary-color); border:none; cursor:pointer; z-index:9999; box-shadow:0 4px 16px rgba(255,107,53,0.45); display:flex; align-items:center; justify-content:center; transition:transform 0.15s, box-shadow 0.15s;"
+        onmouseover="this.style.transform='scale(1.08)'; this.style.boxShadow='0 6px 20px rgba(255,107,53,0.55)';"
+        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 16px rgba(255,107,53,0.45)';">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+        </svg>
+    </button>
+
+    <!-- INITIALIZE FEATHER ICONS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
+    <script>
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
+    </script>
+</body>
+</html>

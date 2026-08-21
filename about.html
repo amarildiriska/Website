@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S3WPM2ECG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7S3WPM2ECG');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Riska's Finance</title>
+    <link rel="icon" type="image/png" href="attached_assets/Capture1.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- BRAND GLOBAL STYLES --- */
+        :root {
+            --primary-color: #FF6B35;
+            --dark-bg: #111827;
+            --light-bg: #F4F5F8;
+            --text-dark: #1A1A1A;
+            --text-gray: #6B7280;
+            --white: #FFFFFF;
+            --border-color: #E5E7EB;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; }
+        .container { max-width: 1050px; margin: 0 auto; padding: 0 20px; }
+        .section-title { font-size: 2rem; font-weight: 700; color: var(--text-dark); margin-bottom: 1rem; text-align: center; }
+
+        /* --- NAVIGATION --- */
+        .header {
+            background: var(--white);
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1150px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+        .brand-logo { height: 24px; }
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 24px;
+            align-items: center;
+        }
+        .nav-item {
+            position: relative;
+        }
+        .nav-link {
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--primary-color); }
+        
+        /* Dropdown Styles */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            list-style: none;
+            padding: 8px 0;
+            min-width: 180px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 100;
+        }
+        .nav-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(8px);
+        }
+        .dropdown-menu li a {
+            display: block;
+            padding: 8px 20px;
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+        }
+        .dropdown-menu li a:hover {
+            background: var(--light-bg);
+            color: var(--primary-color);
+        }
+
+        /* --- FANCY BUTTON --- */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #FF8A5B 100%);
+            color: var(--white);
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4), inset 0 -1px 0 rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+            z-index: -1;
+        }
+        .btn-primary:hover::before { left: 100%; }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.5), inset 0 -1px 0 rgba(0,0,0,0.15);
+            color: var(--white);
+        }
+
+        /* --- PAGE SPECIFIC STYLES --- */
+        .page-hero {
+            background: linear-gradient(135deg, rgba(17, 24, 39, 0.8) 0%, rgba(17, 24, 39, 0.4) 100%), url('attached_assets/backround.png') no-repeat center center/cover;
+            background-color: var(--dark-bg);
+            padding: 80px 20px;
+            text-align: center;
+        }
+        .page-hero h1 {
+            font-size: 2.8rem;
+            color: var(--white);
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .page-hero p {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .about-grid, .expertise-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            margin-top: 3rem;
+        }
+        .about-text h3 {
+            font-size: 1.6rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+        .about-text p {
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+        .about-image img, .expertise-image img {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            object-fit: cover;
+        }
+
+        .core-values {
+            background-color: var(--light-bg);
+            padding: 5rem 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 3rem;
+        }
+        .value-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid #F3F4F6;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+        }
+        .value-icon-wrapper {
+            width: 60px;
+            height: 60px;
+            background: var(--light-bg);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .value-title {
+            font-size: 1.25rem;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+        .value-description {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        .expertise { padding: 5rem 0; }
+        .expertise-list { display: flex; flex-direction: column; gap: 1.5rem; }
+        .expertise-item {
+            padding: 1.5rem;
+            background: var(--light-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: border-color 0.2s;
+        }
+        .expertise-item:hover { border-color: var(--primary-color); }
+        .expertise-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+        .expertise-description {
+            margin-left: 32px;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            margin-bottom: 0;
+        }
+
+        .cta-section {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Subtle background glow for CTA */
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: 50%;
+            transform: translateX(-50%);
+            width: 600px; height: 400px;
+            background: radial-gradient(circle, rgba(255,107,53,0.15) 0%, rgba(255,107,53,0) 70%);
+            pointer-events: none;
+        }
+        .cta-section h2 {
+            font-size: 2.2rem;
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+        .cta-section p {
+            font-size: 1rem;
+            color: #D1D5DB;
+            margin-bottom: 30px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .about-grid, .expertise-grid { grid-template-columns: 1fr; gap: 30px; }
+            .expertise-image { order: -1; } 
+            .nav-menu { display: none; }
+        }
+        @media (max-width: 768px) {
+            .page-hero h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <header class="header">
+        <nav class="nav">
+            <a class="nav-brand" href="index.html">
+                <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo" onerror="this.src='https://via.placeholder.com/24/FF6B35/ffffff?text=R'">
+                <span>Riska's Finance</span>
+            </a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link active">About Us</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                <li class="nav-item"><a href="steps.html" class="nav-link">Steps to Success</a></li>
+                <li class="nav-item"><a href="tax-filing.html" class="nav-link">File Taxes</a></li>
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link">Products ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://get.riskasfinance.com" target="_blank" rel="noopener noreferrer">ClearPay Software</a></li>
+                        <li><a href="fixedassets.html" target="_blank" rel="noopener noreferrer">Riska's Fixed Assets</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="dashboard.html" class="nav-link" style="color: var(--primary-color); font-weight: 700;">Sign In</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- PAGE HERO -->
+        <section class="page-hero">
+            <div class="container">
+                <h1>Who We Are</h1>
+                <p>Dedicated to Your Growth</p>
+            </div>
+        </section>
+
+        <!-- ABOUT CONTENT -->
+        <section style="padding: 4rem 0;">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-text">
+                        <h3>Our Story & Mission</h3>
+                        <p>
+                            At Riska's Finance, our team of accounting and tax professionals is dedicated to delivering precise financial solutions tailored to your business needs. With a steadfast commitment to excellence, we provide insights that help drive informed decision-making and strategic growth.
+                        </p>
+                        <p>
+                            Our expertise spans across various industries, and we pride ourselves on building lasting relationships with our clients. We understand that every business is unique, which is why we take the time to understand your specific challenges and goals right here in Dixon.
+                        </p>
+                    </div>
+                    <div class="about-image">
+                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800" alt="Accounting Team Working">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CORE VALUES -->
+        <section class="core-values">
+            <div class="container">
+                <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+                    <h2 class="section-title">Our Core Values</h2>
+                    <p style="color: var(--text-gray); font-size: 0.95rem;">These principles guide everything we do and how we serve you.</p>
+                </div>
+                
+                <div class="values-grid">
+                    <article class="value-card">
+                        <div class="value-icon-wrapper">
+                            <i data-feather="award" style="color: var(--primary-color); width: 32px; height: 32px;"></i>
+                        </div>
+                        <h3 class="value-title">Excellence</h3>
+                        <p class="value-description">
+                            We strive for perfection in every aspect of our service delivery, ensuring accuracy and attention to detail.
+                        </p>
+                    </article>
+                    
+                    <article class="value-card">
+                        <div class="value-icon-wrapper">
+                            <i data-feather="shield" style="color: var(--primary-color); width: 32px; height: 32px;"></i>
+                        </div>
+                        <h3 class="value-title">Integrity</h3>
+                        <p class="value-description">
+                            We conduct our business with the highest ethical standards and maintain complete transparency with our clients.
+                        </p>
+                    </article>
+                    
+                    <article class="value-card">
+                        <div class="value-icon-wrapper">
+                            <i data-feather="users" style="color: var(--primary-color); width: 32px; height: 32px;"></i>
+                        </div>
+                        <h3 class="value-title">Partnership</h3>
+                        <p class="value-description">
+                            We build long-term relationships with our clients, working hand-in-hand to achieve their financial goals.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPERTISE SECTION -->
+        <section class="expertise">
+            <div class="container">
+                <h2 class="section-title">Our Expertise</h2>
+                
+                <div class="expertise-grid">
+                    <div class="expertise-image">
+                        <img src="https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&fit=crop&q=80&w=800" alt="Financial Analysis">
+                    </div>
+                    
+                    <div class="expertise-list">
+                        <div class="expertise-item">
+                            <h3 class="expertise-title">
+                                <i data-feather="check-circle" style="color: var(--primary-color); width: 20px; height: 20px;"></i> 
+                                Certified Professionals
+                            </h3>
+                            <p class="expertise-description">
+                                Our team consists of certified accountants and tax professionals with extensive industry experience.
+                            </p>
+                        </div>
+                        
+                        <div class="expertise-item">
+                            <h3 class="expertise-title">
+                                <i data-feather="trending-up" style="color: var(--primary-color); width: 20px; height: 20px;"></i> 
+                                Continuous Learning
+                            </h3>
+                            <p class="expertise-description">
+                                We stay updated with the latest regulations, technologies, and best practices in the financial industry.
+                            </p>
+                        </div>
+                        
+                        <div class="expertise-item">
+                            <h3 class="expertise-title">
+                                <i data-feather="heart" style="color: var(--primary-color); width: 20px; height: 20px;"></i> 
+                                Client-Focused Approach
+                            </h3>
+                            <p class="expertise-description">
+                                Every solution we provide is tailored to meet the unique needs and goals of our clients.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA SECTION -->
+        <section class="cta-section">
+            <div class="container" style="position: relative; z-index: 2;">
+                <h2>Ready to secure your financial future?</h2>
+                <p>Let's sit down and discuss how we can help your business grow.</p>
+                <a href="https://calendly.com/riskas-finances" target="_blank" rel="noopener noreferrer" class="btn-primary">
+                    <i data-feather="calendar" style="width: 16px; height: 16px;"></i>
+                    Schedule an Appointment
+                </a>
+            </div>
+        </section>
+    </main>
+
+   <!-- FOOTER -->
+    <footer class="footer" style="padding: 4rem 0 2.5rem; background: var(--white);">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 30px; margin-bottom: 40px;">
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">Company</h4>
+                    <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li><a href="about.html" style="color: inherit;">About Us</a></li>
+                        <li><a href="contact.html" style="color: inherit;">Contact Us</a></li>
+                        <li><a href="dashboard.html" style="color: inherit;">Sign In</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">For Individuals</h4>
+                    <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li><a href="tax-filing.html" style="color: inherit;">Tax Preparation</a></li>
+                        <li><a href="https://calendly.com/riskas-finances/30min?" target="_blank" style="color: inherit;">Tax Consulting</a></li>
+                        <li><a href="steps.html" style="color: inherit;">Business Consulting</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">For Business</h4>
+                    <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li><a href="#" style="color: inherit;">Accounting</a></li>
+                        <li><a href="fixedassets.html" target="_blank" style="color: inherit;">Riska's Fixed Assets</a></li>
+                        <li><a href="https://get.riskasfinance.com/" target="_blank" style="color: inherit;">ClearPay Software</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">Contact</h4>
+                    <ul style="list-style: none; line-height: 2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li>614 Crawford Ave</li>
+                        <li>Dixon IL, 61021</li>
+                        <li style="margin-top: 8px;"><strong>+1 (815) 677-5807 / (815) 440-1394</strong></li>
+                        <li>admin@riskasfinance.com</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="border-top: 1px solid #D1D5DB; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.75rem; color: var(--text-gray);">
+                <div>
+                    <span style="font-weight: 800; color: var(--primary-color); font-size: 1rem; margin-right: 16px;">Riska's Finance</span>
+                    © 2026 Riska's Finance LLC. All rights reserved.
+                </div>
+                <div style="display: flex; gap: 16px;">
+                    <a href="legal.html" target="_blank" style="color: inherit;">Legal</a>
+                    <a href="legal.html" target="_blank" style="color: inherit;">Privacy</a>
+                    <a href="legal.html" target="_blank" style="color: inherit;">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT FOR ICONS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
+    <script>
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
+    </script>
+</body>
+</html>

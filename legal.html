@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S3WPM2ECG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7S3WPM2ECG');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal & Privacy - Riska's Finance</title>
+    <link rel="icon" type="image/png" href="attached_assets/Capture1.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.css">
+    
+    <style>
+        /* --- BRAND GLOBAL STYLES --- */
+        :root {
+            --primary-color: #FF6B35;
+            --dark-bg: #111827;
+            --light-bg: #F4F5F8;
+            --text-dark: #1A1A1A;
+            --text-gray: #6B7280;
+            --white: #FFFFFF;
+            --border-color: #E5E7EB;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--light-bg);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; }
+        .container { max-width: 1050px; margin: 0 auto; padding: 0 20px; }
+
+        /* --- NAVIGATION --- */
+        .header {
+            background: var(--white);
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1150px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+        .brand-logo { height: 24px; }
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 24px;
+            align-items: center;
+        }
+        .nav-item { position: relative; }
+        .nav-link {
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--primary-color); }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            list-style: none;
+            padding: 8px 0;
+            min-width: 180px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 100;
+        }
+        .nav-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(8px);
+        }
+        .dropdown-menu li a {
+            display: block;
+            padding: 8px 20px;
+            color: var(--text-dark);
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+        }
+        .dropdown-menu li a:hover {
+            background: var(--light-bg);
+            color: var(--primary-color);
+        }
+
+        /* --- PAGE SPECIFIC HERO --- */
+        .page-hero {
+            background: linear-gradient(135deg, rgba(17, 24, 39, 0.8) 0%, rgba(17, 24, 39, 0.4) 100%), url('attached_assets/backround.png') no-repeat center center/cover;
+            background-color: var(--dark-bg);
+            padding: 80px 20px;
+            text-align: center;
+        }
+        .page-hero h1 {
+            font-size: 2.8rem;
+            color: var(--white);
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .page-hero p {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- POLICY LAYOUT --- */
+        .policy-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 40px;
+            padding: 4rem 0;
+            align-items: start;
+        }
+        
+        .policy-sidebar {
+            position: sticky;
+            top: 80px;
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        .policy-sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            color: var(--text-gray);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            transition: all 0.2s;
+        }
+        .policy-sidebar a:hover, .policy-sidebar a.active {
+            background: var(--light-bg);
+            color: var(--primary-color);
+        }
+
+        .policy-content {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 3.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        
+        .policy-section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 100px;
+        }
+        .policy-section:last-child { margin-bottom: 0; }
+        
+        .policy-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            border-bottom: 2px solid var(--light-bg);
+            padding-bottom: 1rem;
+        }
+        .policy-section h3 {
+            font-size: 1.2rem;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-dark);
+        }
+        .policy-section p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+        .policy-section ul {
+            padding-left: 1.5rem;
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        .policy-section li { margin-bottom: 0.5rem; }
+        
+        .last-updated {
+            font-size: 0.85rem;
+            color: #9CA3AF;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .nav-menu { display: none; }
+        }
+        @media (max-width: 768px) {
+            .policy-layout { grid-template-columns: 1fr; gap: 20px; }
+            .policy-sidebar { position: static; margin-bottom: 2rem; }
+            .policy-content { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <header class="header">
+        <nav class="nav">
+            <a class="nav-brand" href="index.html">
+                <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo" onerror="this.src='https://via.placeholder.com/24/FF6B35/ffffff?text=R'">
+                <span>Riska's Finance</span>
+            </a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                <li class="nav-item"><a href="steps.html" class="nav-link">Steps to Success</a></li>
+                <li class="nav-item"><a href="tax-filing.html" class="nav-link">File Taxes</a></li>
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link">Products ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://get.riskasfinance.com" target="_blank" rel="noopener noreferrer">ClearPay Software</a></li>
+                        <li><a href="fixedassets.html" target="_blank" rel="noopener noreferrer">Riska's Fixed Assets</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="dashboard.html" class="nav-link" style="color: var(--primary-color); font-weight: 700;">Sign In</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- PAGE HERO -->
+        <section class="page-hero">
+            <div class="container">
+                <h1>Legal & Policies</h1>
+                <p>Transparency, Privacy, and Security</p>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="policy-layout">
+                
+                <!-- SIDEBAR NAV -->
+                <aside class="policy-sidebar">
+                    <a href="#terms" class="active" onclick="setActive(this)"><i data-feather="file-text" style="width:18px;"></i> Terms of Service</a>
+                    <a href="#privacy" onclick="setActive(this)"><i data-feather="eye-off" style="width:18px;"></i> Privacy Policy</a>
+                    <a href="#security" onclick="setActive(this)"><i data-feather="shield" style="width:18px;"></i> Security Practices</a>
+                </aside>
+
+                <!-- CONTENT -->
+                <div class="policy-content">
+                    
+                    <!-- TERMS OF SERVICE -->
+                    <div id="terms" class="policy-section">
+                        <h2>Terms of Service</h2>
+                        <p class="last-updated">Last Updated: August 2026</p>
+                        
+                        <p>Welcome to Riska's Finance LLC. By accessing our website or utilizing our accounting, tax, or software services, you agree to comply with and be bound by the following terms.</p>
+                        
+                        <h3>1. Professional Services Disclaimer</h3>
+                        <p>The information provided on this website, including calculators and blog posts, is for general informational purposes only and does not constitute formal tax, legal, or financial advice. A formal professional-client relationship is only established upon the execution of a signed engagement letter.</p>
+                        
+                        <h3>2. Software Products</h3>
+                        <p>Our proprietary software tools, including ClearPay and Riska's Fixed Assets, are subject to their respective End User License Agreements (EULA). Single-user licenses for Riska's Fixed Assets are perpetual but non-transferable.</p>
+                        
+                        <h3>3. User Responsibilities</h3>
+                        <p>Clients are solely responsible for the accuracy and completeness of the documents and information provided for tax filing and bookkeeping purposes. Riska's Finance LLC is not liable for penalties resulting from omitted or falsified information provided by the client.</p>
+                    </div>
+
+                    <!-- PRIVACY POLICY -->
+                    <div id="privacy" class="policy-section">
+                        <h2>Privacy Policy</h2>
+                        <p class="last-updated">Last Updated: August 2026</p>
+                        
+                        <p>Riska's Finance LLC is committed to protecting your personal and financial information. This policy outlines how we collect, use, and safeguard your data.</p>
+                        
+                        <h3>1. Information We Collect</h3>
+                        <ul>
+                            <li><strong>Contact Information:</strong> Name, email, and phone number when you submit an intake form or schedule an appointment.</li>
+                            <li><strong>Financial Data:</strong> W-2s, 1099s, business financials, and IDs uploaded securely via our portal for the express purpose of tax preparation and bookkeeping.</li>
+                            <li><strong>Software Usage:</strong> Riska's Fixed Assets operates locally on your machine and does not transmit financial asset data back to our servers.</li>
+                        </ul>
+
+                        <h3>2. How We Use Your Information</h3>
+                        <p>Your information is used strictly to fulfill the accounting, tax, or consultation services you have requested. We use third-party vendors (such as Calendly for scheduling and Dropbox for secure file transfers) to facilitate these services.</p>
+
+                        <h3>3. Data Sharing</h3>
+                        <p>We do not sell, rent, or trade your personal information to third parties. Information may only be disclosed if required by law or to comply with IRS regulations and legal processes.</p>
+                    </div>
+
+                    <!-- SECURITY PRACTICES -->
+                    <div id="security" class="policy-section">
+                        <h2>Security Practices</h2>
+                        <p class="last-updated">Last Updated: August 2026</p>
+                        
+                        <p>Handling financial data requires the highest level of security. Here is how we keep your information safe.</p>
+
+                        <h3>1. Secure Document Portal</h3>
+                        <p>We do not accept sensitive tax documents via unencrypted email. All client document uploads are routed through our secure Dropbox portal, which utilizes 256-bit Advanced Encryption Standard (AES) security to protect your files in transit and at rest.</p>
+
+                        <h3>2. ClearPay & Payment Security</h3>
+                        <p>ClearPay is built on top of Stripe's secure infrastructure. Riska's Finance LLC never directly stores or sees your clients' full credit card or banking information. All transactions are PCI-DSS compliant.</p>
+
+                        <h3>3. Riska's Fixed Assets</h3>
+                        <p>To ensure maximum data sovereignty for CPA firms and businesses, Riska's Fixed Assets relies on a local database architecture. Your proprietary depreciation and asset data never leaves your secure local network.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer" style="padding: 4rem 0 2.5rem; background: var(--white);">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 30px; margin-bottom: 40px;">
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">Company</h4>
+                    <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li><a href="about.html" style="color: inherit;">About Us</a></li>
+                        <li><a href="contact.html" style="color: inherit;">Contact Us</a></li>
+                        <li><a href="dashboard.html" style="color: inherit;">Sign In</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">For Individuals</h4>
+                    <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li><a href="tax-filing.html" style="color: inherit;">Tax Preparation</a></li>
+                        <li><a href="https://calendly.com/riskas-finances/30min?" target="_blank" style="color: inherit;">Tax Consulting</a></li>
+                        <li><a href="steps.html" style="color: inherit;">Business Consulting</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">For Business</h4>
+                    <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li><a href="#" style="color: inherit;">Accounting</a></li>
+                        <li><a href="fixedassets.html" target="_blank" style="color: inherit;">Riska's Fixed Assets</a></li>
+                        <li><a href="https://get.riskasfinance.com/" target="_blank" style="color: inherit;">ClearPay Software</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">Contact</h4>
+                    <ul style="list-style: none; line-height: 2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li>614 Crawford Ave</li>
+                        <li>Dixon IL, 61021</li>
+                        <li style="margin-top: 8px;"><strong>+1 (815) 677-5807 / (815) 440-1394</strong></li>
+                        <li>admin@riskasfinance.com</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="border-top: 1px solid #D1D5DB; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.75rem; color: var(--text-gray);">
+                <div>
+                    <span style="font-weight: 800; color: var(--primary-color); font-size: 1rem; margin-right: 16px;">Riska's Finance</span>
+                    © 2026 Riska's Finance LLC. All rights reserved.
+                </div>
+                <div style="display: flex; gap: 16px;">
+                    <a href="legal.html#terms" style="color: inherit;">Legal</a>
+                    <a href="legal.html#privacy" style="color: inherit;">Privacy</a>
+                    <a href="legal.html#security" style="color: inherit;">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- RISKA AI FLOATING BUBBLE -->
+    <div id="riska-bubble-tooltip" style="position:fixed; bottom:78px; right:20px; background:#fff; color:#1a0a00; font-size:12px; font-family:'Inter',sans-serif; font-weight:600; padding:6px 12px; border-radius:20px; box-shadow:0 2px 10px rgba(0,0,0,0.2); white-space:nowrap; z-index:9999; display:none; pointer-events:none;">Ask Riska AI ✦</div>
+    <button
+        onclick="window.open('https://ai.riskasfinance.com','_blank')"
+        onmouseenter="document.getElementById('riska-bubble-tooltip').style.display='block'"
+        onmouseleave="document.getElementById('riska-bubble-tooltip').style.display='none'"
+        aria-label="Open Riska AI"
+        style="position:fixed; bottom:20px; right:20px; width:48px; height:48px; border-radius:50%; background:var(--primary-color); border:none; cursor:pointer; z-index:9999; box-shadow:0 4px 16px rgba(255,107,53,0.45); display:flex; align-items:center; justify-content:center; transition:transform 0.15s, box-shadow 0.15s;"
+        onmouseover="this.style.transform='scale(1.08)'; this.style.boxShadow='0 6px 20px rgba(255,107,53,0.55)';"
+        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 16px rgba(255,107,53,0.45)';">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+        </svg>
+    </button>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
+    <script>
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
+
+        // Active state toggler for sidebar
+        function setActive(element) {
+            document.querySelectorAll('.policy-sidebar a').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        // Update active state based on scroll position
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('.policy-section');
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('.policy-sidebar a').forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('href').includes(current)) {
+                    a.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
