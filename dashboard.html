@@ -10,113 +10,60 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
 
-    <!-- Uploadcare Script -->
     <script>
         UPLOADCARE_PUBLIC_KEY = 'd70e326b495b592aae72'; 
     </script>
     <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js" charset="utf-8"></script>
 
     <style>
-        /* ============================================================
-           BASE & RESET
-        ============================================================ */
         * { box-sizing: border-box; }
         body, html { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #334155; }
         h1, h2, h3, h4, p { margin: 0; }
         a { text-decoration: none; }
 
-        /* ============================================================
-           LOGIN GATE
-        ============================================================ */
-        #login-gate {
-            display: none; position: fixed; inset: 0;
-            background: #0f172a; z-index: 9999;
-            align-items: center; justify-content: center;
-        }
+        #login-gate { display: none; position: fixed; inset: 0; background: #0f172a; z-index: 9999; align-items: center; justify-content: center; }
         #login-gate.visible { display: flex; }
-        .login-box {
-            background: white; border-radius: 12px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-            padding: 3rem; width: 90%; max-width: 400px;
-            text-align: center;
-        }
+        .login-box { background: white; border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); padding: 3rem; width: 90%; max-width: 400px; text-align: center; }
         .login-logo { width: 50px; margin-bottom: 1.5rem; border-radius: 8px; }
         .login-box h2 { font-size: 1.5rem; color: #0f172a; margin-bottom: 0.5rem; font-weight: 600; }
         .login-box .login-sub { color: #64748b; font-size: 0.9rem; margin-bottom: 2rem; }
         
-        .login-input {
-            width: 100%; padding: 12px 16px; margin-bottom: 1rem;
-            border: 1px solid #cbd5e1; border-radius: 8px;
-            font-size: 0.95rem; font-family: inherit; transition: border-color 0.2s;
-        }
+        .login-input { width: 100%; padding: 12px 16px; margin-bottom: 1rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-family: inherit; transition: border-color 0.2s; }
         .login-input:focus { outline: none; border-color: #FF6B35; }
-        .login-submit-btn {
-            width: 100%; background: #0f172a; color: white; border: none;
-            padding: 12px 20px; border-radius: 8px; font-size: 0.95rem;
-            font-weight: 500; cursor: pointer; transition: background 0.2s;
-        }
+        .login-submit-btn { width: 100%; background: #0f172a; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: background 0.2s; }
         .login-submit-btn:hover { background: #1e293b; }
 
-        .google-btn {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            width: 100%; padding: 12px 20px; background: white;
-            border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem;
-            font-weight: 500; color: #334155; cursor: pointer; transition: all 0.2s;
-        }
+        .google-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px 20px; background: white; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; font-weight: 500; color: #334155; cursor: pointer; transition: all 0.2s; }
         .google-btn:hover { border-color: #94a3b8; background: #f8fafc; }
         .google-btn svg { flex-shrink: 0; }
 
-        .login-error {
-            color: #b91c1c; font-size: 0.85rem; margin-top: 1rem; padding: 10px;
-            background: #fef2f2; border-radius: 6px; display: none; text-align: left;
-            word-wrap: break-word;
-        }
+        .login-error { color: #b91c1c; font-size: 0.85rem; margin-top: 1rem; padding: 10px; background: #fef2f2; border-radius: 6px; display: none; text-align: left; word-wrap: break-word; }
         .login-divider { font-size: 0.75rem; color: #94a3b8; margin-top: 2rem; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        /* ============================================================
-           APP LAYOUT (ENTERPRISE SIDEBAR)
-        ============================================================ */
         #main-content { display: none; height: 100vh; overflow: hidden; }
         #main-content.visible { display: flex; }
 
-        .app-sidebar {
-            width: 260px; background: #0f172a; color: #94a3b8;
-            display: flex; flex-direction: column; flex-shrink: 0;
-            transition: transform 0.3s ease; z-index: 50;
-        }
+        .app-sidebar { width: 260px; background: #0f172a; color: #94a3b8; display: flex; flex-direction: column; flex-shrink: 0; transition: transform 0.3s ease; z-index: 50; }
         .sidebar-header { padding: 1.5rem; border-bottom: 1px solid #1e293b; display: flex; align-items: center; justify-content: space-between; }
         .sidebar-header-left { display: flex; align-items: center; gap: 12px; }
         .sidebar-header img { width: 32px; border-radius: 6px; }
         .sidebar-header h1 { font-size: 1.1rem; color: white; font-weight: 600; letter-spacing: -0.02em; margin: 0; }
         
         .sidebar-nav { padding: 1.5rem 1rem; flex: 1; overflow-y: auto; }
-        .nav-item {
-            display: flex; align-items: center; gap: 12px; padding: 10px 14px;
-            color: #94a3b8; border-radius: 8px; margin-bottom: 4px;
-            cursor: pointer; transition: all 0.2s; font-size: 0.9rem; font-weight: 500;
-        }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; color: #94a3b8; border-radius: 8px; margin-bottom: 4px; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; font-weight: 500; }
         .nav-item:hover { color: white; background: #1e293b; }
         .nav-item.active { color: white; background: #FF6B35; }
         .nav-item svg { width: 18px; height: 18px; }
 
         .sidebar-footer { padding: 1.5rem; border-top: 1px solid #1e293b; }
-        .external-link {
-            display: flex; align-items: center; gap: 8px; color: #94a3b8;
-            font-size: 0.85rem; text-decoration: none; transition: color 0.2s;
-        }
+        .external-link { display: flex; align-items: center; gap: 8px; color: #94a3b8; font-size: 0.85rem; text-decoration: none; transition: color 0.2s; }
         .external-link:hover { color: white; }
 
         .mobile-close-btn { display: none; background: none; border: none; color: #94a3b8; cursor: pointer; padding: 4px; }
         .sidebar-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 40; }
 
-        /* Main Workspace */
         .app-workspace { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
-        
-        .app-header {
-            background: white; height: 70px; border-bottom: 1px solid #e2e8f0;
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 2rem; flex-shrink: 0;
-        }
+        .app-header { background: white; height: 70px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; flex-shrink: 0; }
         .header-left { display: flex; align-items: center; gap: 1rem; }
         .mobile-menu-btn { display: none; background: none; border: none; color: #0f172a; cursor: pointer; padding: 0; }
         .header-title { font-size: 1.1rem; font-weight: 600; color: #0f172a; }
@@ -129,9 +76,6 @@
 
         .app-body { padding: 2rem; overflow-y: auto; flex: 1; }
 
-        /* ============================================================
-           TAB PANELS
-        ============================================================ */
         .tab-panel { display: none; max-width: 1200px; margin: 0 auto; }
         .tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -139,9 +83,6 @@
         .card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .card-title { font-size: 1rem; font-weight: 600; color: #0f172a; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 8px; }
 
-        /* ============================================================
-           HOME DASHBOARD SPECIFIC
-        ============================================================ */
         .home-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start; }
         .widget-panel { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
         .widget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid #f1f5f9; }
@@ -149,7 +90,6 @@
         .widget-link { font-size: 0.8rem; color: #FF6B35; font-weight: 500; cursor: pointer; text-decoration: none; }
         .widget-link:hover { text-decoration: underline; }
 
-        /* Small item styles for widgets */
         .mini-task { padding: 8px 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; color: #334155; }
         .mini-task:last-child { border-bottom: none; padding-bottom: 0; }
         .mini-cal { padding: 8px 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.85rem; }
@@ -157,9 +97,6 @@
         .mini-cal-date { font-weight: 600; color: #FF6B35; margin-bottom: 2px; }
         .mini-cal-desc { color: #475569; }
 
-        /* ============================================================
-           CMS / TASKS / CALENDAR / RESOURCES
-        ============================================================ */
         .inline-form { background: #f8fafc; border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;}
         .inline-form .form-group { margin-bottom: 0; flex: 1; min-width: 200px; }
         .btn-small-del { background: none; border: none; color: #ef4444; cursor: pointer; padding: 4px; border-radius: 4px; display: flex; align-items: center; }
@@ -182,7 +119,6 @@
         .task-item input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: #FF6B35; flex-shrink: 0; }
         .task-item.completed .task-content { opacity: 0.5; text-decoration: line-through; }
 
-        /* CMS Form elements */
         .cms-grid { display: grid; grid-template-columns: 350px 1fr; gap: 2rem; align-items: start; }
         .form-group { margin-bottom: 1.25rem; }
         .form-label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: #475569; font-size: 0.85rem; }
@@ -211,7 +147,6 @@
 
         .empty-feed { text-align: center; padding: 2rem 1rem; color: #94a3b8; width: 100%; font-size: 0.9rem;}
 
-        /* Admin / Directory UI */
         .admin-layout { max-width: 600px; }
         .approved-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
         .approved-item { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 14px; font-size: 0.85rem; }
@@ -220,12 +155,10 @@
         .add-email-row { display: flex; gap: 10px; }
         .add-email-btn { background: #0f172a; color: white; border: none; padding: 0 20px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; cursor: pointer; white-space: nowrap; }
 
-        /* Directory Cards */
         .directory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem;}
         .directory-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; }
         .dir-avatar { width: 45px; height: 45px; background: #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #64748b; font-weight: bold; font-size: 1.2rem; }
 
-        /* Toast */
         #toast { position: fixed; bottom: 2rem; right: 2rem; background: #0f172a; color: white; padding: 12px 24px; border-radius: 8px; font-size: 0.9rem; font-weight: 500; display: none; z-index: 9998; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
         #toast.show { display: block; animation: fadeInUp 0.3s ease; }
         @keyframes fadeInUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
@@ -254,6 +187,7 @@
         <h2>Staff Portal</h2>
         <p class="login-sub">Sign in to access the secure workspace.</p>
         
+        <!-- Modified: Any valid email format triggers the Google Button -->
         <input type="email" id="login-email" class="login-input" placeholder="Work Email Address" 
                oninput="checkIfOwner(this.value)" onchange="checkIfOwner(this.value)" onkeyup="checkIfOwner(this.value)">
         
@@ -271,7 +205,7 @@
                     <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
                     <path fill="none" d="M0 0h48v48H0z"/>
                 </svg>
-                Continue with Administrator Google
+                Continue with Google
             </button>
         </div>
 
@@ -295,32 +229,14 @@
         </div>
         
         <nav class="sidebar-nav">
-            <!-- New Default Home Tab -->
-            <div class="nav-item active" onclick="switchTab('dashboard', this)">
-                <i data-feather="home"></i> Home
-            </div>
-            <div class="nav-item" onclick="switchTab('cms', this)">
-                <i data-feather="file-text"></i> Internal News
-            </div>
-            <div class="nav-item" onclick="switchTab('tasks', this)">
-                <i data-feather="check-square"></i> Team Tasks
-            </div>
-            <div class="nav-item" onclick="switchTab('calendar', this)">
-                <i data-feather="calendar"></i> Firm Calendar
-            </div>
-            <div class="nav-item" onclick="switchTab('resources', this)">
-                <i data-feather="bookmark"></i> Quick Links
-            </div>
-            <!-- New Directory Tab -->
-            <div class="nav-item" onclick="switchTab('directory', this)">
-                <i data-feather="users"></i> Staff Directory
-            </div>
-            <div class="nav-item" onclick="switchTab('analytics', this)">
-                <i data-feather="bar-chart-2"></i> Site Analytics
-            </div>
-            <div class="nav-item" id="admin-nav-btn" style="display:none;" onclick="switchTab('admin', this)">
-                <i data-feather="shield"></i> Access Control
-            </div>
+            <div class="nav-item active" onclick="switchTab('dashboard', this)"><i data-feather="home"></i> Home</div>
+            <div class="nav-item" onclick="switchTab('cms', this)"><i data-feather="file-text"></i> Internal News</div>
+            <div class="nav-item" onclick="switchTab('tasks', this)"><i data-feather="check-square"></i> Team Tasks</div>
+            <div class="nav-item" onclick="switchTab('calendar', this)"><i data-feather="calendar"></i> Firm Calendar</div>
+            <div class="nav-item" onclick="switchTab('resources', this)"><i data-feather="bookmark"></i> Quick Links</div>
+            <div class="nav-item" onclick="switchTab('directory', this)"><i data-feather="users"></i> Staff Directory</div>
+            <div class="nav-item" onclick="switchTab('analytics', this)"><i data-feather="bar-chart-2"></i> Site Analytics</div>
+            <div class="nav-item" id="admin-nav-btn" style="display:none;" onclick="switchTab('admin', this)"><i data-feather="shield"></i> Access Control</div>
         </nav>
 
         <div class="sidebar-footer">
@@ -347,49 +263,27 @@
         <!-- Body / Tabs -->
         <main class="app-body">
             
-            <!-- 🔥 NEW TAB: HOME DASHBOARD -->
+            <!-- TAB: HOME DASHBOARD -->
             <div id="tab-dashboard" class="tab-panel active">
                 <div class="home-grid">
-                    
-                    <!-- Left Column: News Feed -->
                     <div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-                            <h2 style="font-size:1.25rem; font-weight:600; color:#0f172a;">Internal News & Announcements</h2>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;"><h2 style="font-size:1.25rem; font-weight:600; color:#0f172a;">Internal News & Announcements</h2></div>
+                        <div id="dashboard-news-feed" class="post-feed"><div class="empty-feed">Loading recent posts...</div></div>
+                    </div>
+                    <div>
+                        <div class="widget-panel">
+                            <div class="widget-header"><div class="widget-title"><i data-feather="check-square" style="width:18px;"></i> Pending Tasks</div><span class="widget-link" onclick="document.querySelectorAll('.nav-item')[2].click()">View All</span></div>
+                            <div id="dashboard-tasks-feed"><div class="empty-feed" style="padding: 1rem;">No tasks.</div></div>
                         </div>
-                        <div id="dashboard-news-feed" class="post-feed">
-                            <div class="empty-feed">Loading recent posts...</div>
+                        <div class="widget-panel">
+                            <div class="widget-header"><div class="widget-title"><i data-feather="calendar" style="width:18px;"></i> Upcoming Deadlines</div><span class="widget-link" onclick="document.querySelectorAll('.nav-item')[3].click()">View Calendar</span></div>
+                            <div id="dashboard-cal-feed"><div class="empty-feed" style="padding: 1rem;">No events.</div></div>
                         </div>
                     </div>
-
-                    <!-- Right Column: Widgets -->
-                    <div>
-                        <!-- Tasks Widget -->
-                        <div class="widget-panel">
-                            <div class="widget-header">
-                                <div class="widget-title"><i data-feather="check-square" style="width:18px;"></i> Pending Tasks</div>
-                                <span class="widget-link" onclick="document.querySelectorAll('.nav-item')[2].click()">View All</span>
-                            </div>
-                            <div id="dashboard-tasks-feed">
-                                <div class="empty-feed" style="padding: 1rem;">No tasks.</div>
-                            </div>
-                        </div>
-
-                        <!-- Calendar Widget -->
-                        <div class="widget-panel">
-                            <div class="widget-header">
-                                <div class="widget-title"><i data-feather="calendar" style="width:18px;"></i> Upcoming Deadlines</div>
-                                <span class="widget-link" onclick="document.querySelectorAll('.nav-item')[3].click()">View Calendar</span>
-                            </div>
-                            <div id="dashboard-cal-feed">
-                                <div class="empty-feed" style="padding: 1rem;">No events.</div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
 
-            <!-- TAB: CMS / Communications -->
+            <!-- TAB: CMS -->
             <div id="tab-cms" class="tab-panel">
                 <div class="cms-grid">
                     <div class="card">
@@ -413,10 +307,7 @@
                 <div class="card" style="max-width: 800px; margin: 0 auto;">
                     <div class="card-title"><i data-feather="check-square"></i> Shared Team Tasks</div>
                     <p style="font-size:0.85rem; color:#64748b; margin-bottom:1.5rem;">Manage internal bookkeeping and administrative tasks. Updates sync to everyone in real-time.</p>
-                    <div class="add-email-row" style="margin-bottom: 2rem;">
-                        <input type="text" id="new-task-input" class="form-input" style="margin:0;" placeholder="Enter a new task...">
-                        <button class="add-email-btn" onclick="createTask()">Add Task</button>
-                    </div>
+                    <div class="add-email-row" style="margin-bottom: 2rem;"><input type="text" id="new-task-input" class="form-input" style="margin:0;" placeholder="Enter a new task..."><button class="add-email-btn" onclick="createTask()">Add Task</button></div>
                     <div class="task-list" id="task-feed"><div class="empty-feed">Loading tasks...</div></div>
                 </div>
             </div>
@@ -446,15 +337,11 @@
                 <div class="resource-grid" id="resource-feed"><div class="empty-feed" style="grid-column: 1 / -1;">Loading resources...</div></div>
             </div>
 
-            <!-- 🔥 NEW TAB: STAFF DIRECTORY -->
+            <!-- TAB: STAFF DIRECTORY -->
             <div id="tab-directory" class="tab-panel">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
-                    <h2 style="font-size:1.25rem; font-weight:600; color:#0f172a;">Staff Directory</h2>
-                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;"><h2 style="font-size:1.25rem; font-weight:600; color:#0f172a;">Staff Directory</h2></div>
                 <p style="font-size:0.85rem; color:#64748b; margin-bottom:2rem;">Below is the list of currently authorized personnel with access to this internal portal.</p>
-                <div class="directory-grid" id="directory-feed">
-                    <!-- Populated by JS -->
-                </div>
+                <div class="directory-grid" id="directory-feed"></div>
             </div>
 
             <!-- TAB: ANALYTICS -->
@@ -474,7 +361,7 @@
             <div id="tab-admin" class="tab-panel">
                 <div class="card admin-layout">
                     <div class="card-title"><i data-feather="lock"></i> Identity & Access Management</div>
-                    <p style="font-size:0.85rem; color:#475569; margin-bottom:1.5rem; line-height:1.5;">Control portal access for personnel. Authorized emails below are permitted to authenticate.</p>
+                    <p style="font-size:0.85rem; color:#475569; margin-bottom:1.5rem; line-height:1.5;">Control portal access for personnel. Approved emails below are verified against the cloud database.</p>
                     <div class="approved-list" id="approved-list"></div>
                     <div style="margin-top: 2rem; border-top: 1px solid #f1f5f9; padding-top: 1.5rem;">
                         <label class="form-label">Provision New User</label>
@@ -496,7 +383,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as fbSignOut, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, updateDoc, onSnapshot, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, updateDoc, onSnapshot, deleteDoc, doc, query, orderBy, getDocs, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey:            "AIzaSyAUsHaf3_npOkomivpF9fVT6xtSD0E0xFU",
@@ -514,30 +401,29 @@ const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
 const OWNER_EMAILS = ["amarildiriska15@gmail.com", "arbririska1@gmail.com"];
+window.approvedEmailsDB = []; // Will store the live list from Firestore
 
-function getApprovedEmails() {
-    const stored = localStorage.getItem('rf_approved_emails');
-    const extra  = stored ? JSON.parse(stored) : [];
-    return [...new Set([...OWNER_EMAILS, ...extra])];
-}
-function saveExtraEmails(list) {
-    const extra = list.filter(e => !OWNER_EMAILS.includes(e));
-    localStorage.setItem('rf_approved_emails', JSON.stringify(extra));
-}
-
+// --- UI LOGIN GATE LOGIC ---
 window._fbSignOut = () => fbSignOut(auth);
 
 window.checkIfOwner = function(email) {
     const val = email.toLowerCase().trim();
     const pwSection = document.getElementById('password-login-section');
     const googleSection = document.getElementById('google-login-section');
-    if (OWNER_EMAILS.includes(val)) { pwSection.style.display = 'none'; googleSection.style.display = 'block'; } 
-    else { pwSection.style.display = 'block'; googleSection.style.display = 'none'; }
+    
+    // Un-hides Google button for ANY email address, so new employees can actually click it.
+    // (True security is handled by Firestore after they authenticate)
+    if (val.includes('@') && val.includes('.')) { 
+        pwSection.style.display = 'none'; 
+        googleSection.style.display = 'block'; 
+    } else { 
+        pwSection.style.display = 'block'; 
+        googleSection.style.display = 'none'; 
+    }
 };
 
 window.signInWithGoogle = async function() {
     document.getElementById('login-error').style.display = 'none';
-    console.log("Attempting Google Sign-In...");
     try { await signInWithPopup(auth, provider); } 
     catch(err) { showLoginError('Firebase Error: ' + err.message); }
 };
@@ -552,170 +438,153 @@ window.signInWithEmail = async function() {
     catch(err) { document.getElementById('login-loading').classList.remove('visible'); showLoginError('Invalid credentials.'); }
 };
 
-// Data stores
-let posts = []; let tasks = []; let calendarEvents = []; let resources = [];
 
+// --- CLOUD ACCESS CONTROL LOGIC ---
+window.addApprovedEmail = async function() {
+    const input = document.getElementById('new-email-input'); 
+    const email = input.value.trim().toLowerCase();
+    if (!email || !email.includes('@')) { alert('Valid email required.'); return; }
+    
+    if (OWNER_EMAILS.includes(email) || window.approvedEmailsDB.some(e => e.email === email)) {
+        alert('Identity already provisioned.'); return; 
+    }
+    
+    try {
+        await addDoc(collection(db, "staff_directory"), { email: email, addedAt: Date.now() });
+        input.value = ''; 
+        showToast(`Identity provisioned: ${email}`);
+    } catch (e) { alert("Database error: Could not add user."); }
+};
+
+window.revokeEmail = async function(id, email) {
+    if(confirm(`Revoke access for ${email}?`)) {
+        try {
+            await deleteDoc(doc(db, "staff_directory", id));
+            showToast(`Access revoked: ${email}`);
+        } catch (e) { console.error(e); }
+    }
+};
+
+window.renderAdminList = function() {
+    const el = document.getElementById('approved-list'); if (!el) return;
+    const ownersHTML = OWNER_EMAILS.map(email => `<div class="approved-item"><span>${email} <span class="owner-tag">Admin</span></span></div>`).join('');
+    const othersHTML = (window.approvedEmailsDB || []).map(user => `<div class="approved-item"><span>${user.email}</span><button class="revoke-btn" onclick="revokeEmail('${user.id}', '${user.email}')">Revoke</button></div>`).join('');
+    el.innerHTML = ownersHTML + othersHTML;
+};
+
+window.renderDirectory = function() {
+    const allStaff = [...OWNER_EMAILS.map(e => ({email: e, isAdmin: true})), ...(window.approvedEmailsDB || []).map(e => ({email: e.email, isAdmin: false}))];
+    const feed = document.getElementById('directory-feed'); if(!feed) return;
+    
+    feed.innerHTML = allStaff.map(user => {
+        const initial = user.email.charAt(0).toUpperCase();
+        return `<div class="directory-card"><div class="dir-avatar">${initial}</div><div><div style="font-weight:600; color:#0f172a; font-size:0.95rem;">${user.email.split('@')[0]}</div><div style="font-size:0.8rem; color:#64748b; margin-top:2px;">${user.email}</div>${user.isAdmin ? `<span class="owner-tag" style="margin-left:0; margin-top:6px; display:inline-block;">System Admin</span>` : ''}</div></div>`;
+    }).join('');
+};
+
+
+// --- DATA STORES & RENDERERS ---
+let posts = []; let tasks = []; let calendarEvents = []; let resources = [];
 const catClassMap  = { 'Tax Tips':'cat-tax', 'Company News':'cat-company', 'IRS News':'cat-irs', 'Client Reminder':'cat-reminder' };
 const destLabelMap = { dashboard:'Internal', home:'Public', both:'Public & Internal' };
 
-// ======================= DASHBOARD RENDER LOGIC =======================
 function renderHomeDashboard() {
-    // 1. Filter News for Internal Dashboard viewing
     const dashPosts = posts.filter(p => p.dest === 'dashboard' || p.dest === 'both');
     const newsFeed = document.getElementById('dashboard-news-feed');
-    if (!dashPosts.length) {
-        newsFeed.innerHTML = '<div class="empty-feed">No internal announcements right now.</div>';
-    } else {
-        newsFeed.innerHTML = dashPosts.map(p => `
-            <div class="post-card" style="margin-bottom:1rem; padding: 1.2rem;">
-                <div class="post-meta" style="margin-bottom:0.5rem;">
-                    <span class="post-cat-badge ${catClassMap[p.category]||''}">${p.category}</span>
-                    <span class="post-date">${p.date}</span>
-                </div>
-                <h3 style="font-size:1.05rem; margin-bottom:0.5rem;">${p.title}</h3>
-                <p style="font-size:0.9rem; margin-bottom:0;">${p.body}</p>
-                ${p.fileUrl ? `<a href="${p.fileUrl}" target="_blank" class="download-btn" style="margin-top:0.75rem;"><i data-feather="paperclip" style="width:12px;"></i> View Attachment</a>` : ''}
-            </div>
-        `).join('');
-    }
+    if (!dashPosts.length) newsFeed.innerHTML = '<div class="empty-feed">No internal announcements right now.</div>';
+    else newsFeed.innerHTML = dashPosts.map(p => `<div class="post-card" style="margin-bottom:1rem; padding: 1.2rem;"><div class="post-meta" style="margin-bottom:0.5rem;"><span class="post-cat-badge ${catClassMap[p.category]||''}">${p.category}</span><span class="post-date">${p.date}</span></div><h3 style="font-size:1.05rem; margin-bottom:0.5rem;">${p.title}</h3><p style="font-size:0.9rem; margin-bottom:0;">${p.body}</p>${p.fileUrl ? `<a href="${p.fileUrl}" target="_blank" class="download-btn" style="margin-top:0.75rem;"><i data-feather="paperclip" style="width:12px;"></i> View Attachment</a>` : ''}</div>`).join('');
 
-    // 2. Pending Tasks Widget (Top 5 Uncompleted)
     const pending = tasks.filter(t => !t.completed).slice(0, 5);
     const taskFeed = document.getElementById('dashboard-tasks-feed');
-    if (!pending.length) { taskFeed.innerHTML = '<div class="empty-feed" style="padding:1rem;">All caught up!</div>'; }
-    else {
-        taskFeed.innerHTML = pending.map(t => `<div class="mini-task"><i data-feather="circle" style="width:14px; color:#94a3b8;"></i> ${t.title}</div>`).join('');
-    }
+    if (!pending.length) taskFeed.innerHTML = '<div class="empty-feed" style="padding:1rem;">All caught up!</div>'; 
+    else taskFeed.innerHTML = pending.map(t => `<div class="mini-task"><i data-feather="circle" style="width:14px; color:#94a3b8;"></i> ${t.title}</div>`).join('');
 
-    // 3. Calendar Widget (Top 5 Events)
     const calWidget = document.getElementById('dashboard-cal-feed');
     const upNext = calendarEvents.slice(0, 5);
-    if (!upNext.length) { calWidget.innerHTML = '<div class="empty-feed" style="padding:1rem;">No upcoming deadlines.</div>'; }
-    else {
-        calWidget.innerHTML = upNext.map(c => `
-            <div class="mini-cal">
-                <div class="mini-cal-date">${c.date}</div>
-                <div class="mini-cal-desc">${c.desc}</div>
-            </div>
-        `).join('');
-    }
+    if (!upNext.length) calWidget.innerHTML = '<div class="empty-feed" style="padding:1rem;">No upcoming deadlines.</div>';
+    else calWidget.innerHTML = upNext.map(c => `<div class="mini-cal"><div class="mini-cal-date">${c.date}</div><div class="mini-cal-desc">${c.desc}</div></div>`).join('');
     feather.replace();
 }
 
-// ======================= POSTS LOGIC =======================
 window.publishPost = async function() {
-    const title = document.getElementById('post-title').value.trim();
-    const category = document.getElementById('post-category').value;
-    const body = document.getElementById('post-body').value.trim();
-    const dest = document.getElementById('post-dest').value;
-    const fileUrl = document.getElementById('post-file-url').value; 
-    
+    const title = document.getElementById('post-title').value.trim(); const category = document.getElementById('post-category').value; const body = document.getElementById('post-body').value.trim(); const dest = document.getElementById('post-dest').value; const fileUrl = document.getElementById('post-file-url').value; 
     if (!title || !body) { alert('Headline and message content are required.'); return; }
     const pubBtn = document.querySelector('.publish-btn'); pubBtn.disabled = true; pubBtn.innerText = 'Broadcasting...';
-
     try {
-        await addDoc(collection(db, "posts"), {
-            title: title, category: category, body: body, dest: dest,
-            author: window._currentUserName || 'Staff',
-            date: new Date().toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'}),
-            createdAt: Date.now(), fileUrl: fileUrl || null
-        });
-        document.getElementById('post-title').value = ''; document.getElementById('post-body').value = '';
-        const widget = uploadcare.Widget('[role=uploadcare-uploader]'); widget.value(null);
-        showToast('Broadcast successful');
+        await addDoc(collection(db, "posts"), { title: title, category: category, body: body, dest: dest, author: window._currentUserName || 'Staff', date: new Date().toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'}), createdAt: Date.now(), fileUrl: fileUrl || null });
+        document.getElementById('post-title').value = ''; document.getElementById('post-body').value = ''; const widget = uploadcare.Widget('[role=uploadcare-uploader]'); widget.value(null); showToast('Broadcast successful');
     } catch (e) { alert("Database connection error."); }
-    
-    pubBtn.disabled = false; pubBtn.innerHTML = `<i data-feather="send" style="width:16px;"></i> Broadcast Post`;
-    feather.replace();
+    pubBtn.disabled = false; pubBtn.innerHTML = `<i data-feather="send" style="width:16px;"></i> Broadcast Post`; feather.replace();
 };
-
 window.deletePost = async function(id) { if(confirm("Permanently delete this record?")) await deleteDoc(doc(db, "posts", id)); };
-
 function renderPosts() {
-    renderHomeDashboard(); // Sync home dashboard
-    const feed = document.getElementById('post-feed');
-    document.getElementById('post-count').textContent = `${posts.length} record${posts.length!==1?'s':''}`;
+    renderHomeDashboard(); const feed = document.getElementById('post-feed'); document.getElementById('post-count').textContent = `${posts.length} record${posts.length!==1?'s':''}`;
     if (!posts.length) { feed.innerHTML = `<div class="empty-feed">Archive empty.</div>`; return; }
-    
-    feed.innerHTML = posts.map(p => `
-        <div class="post-card">
-            <div class="post-meta"><span class="post-cat-badge ${catClassMap[p.category]||''}">${p.category}</span><span class="post-dest-badge">${destLabelMap[p.dest]}</span><span class="post-date">${p.date}</span></div>
-            <h3>${p.title}</h3><p>${p.body}</p>
-            ${p.fileUrl ? `<a href="${p.fileUrl}" target="_blank" class="download-btn"><i data-feather="paperclip" style="width:14px;"></i> View Attached Document</a>` : ''}
-            <div class="post-actions">
-                <div class="post-author"><i data-feather="user" style="width:12px;"></i> ${p.author}</div>
-                <button class="post-del-btn" onclick="deletePost('${p.id}')">Revoke</button>
-            </div>
-        </div>`).join('');
+    feed.innerHTML = posts.map(p => `<div class="post-card"><div class="post-meta"><span class="post-cat-badge ${catClassMap[p.category]||''}">${p.category}</span><span class="post-dest-badge">${destLabelMap[p.dest]}</span><span class="post-date">${p.date}</span></div><h3>${p.title}</h3><p>${p.body}</p>${p.fileUrl ? `<a href="${p.fileUrl}" target="_blank" class="download-btn"><i data-feather="paperclip" style="width:14px;"></i> View Attached Document</a>` : ''}<div class="post-actions"><div class="post-author"><i data-feather="user" style="width:12px;"></i> ${p.author}</div><button class="post-del-btn" onclick="deletePost('${p.id}')">Revoke</button></div></div>`).join('');
     feather.replace();
 }
 
-// ======================= OTHER MODULES (Tasks, Cal, Res) =======================
-window.createTask = async function() {
-    const v = document.getElementById('new-task-input').value.trim(); if (!v) return;
-    try { await addDoc(collection(db, "tasks"), { title: v, completed: false, createdAt: Date.now()}); document.getElementById('new-task-input').value = ''; } catch (e) {}
-};
+window.createTask = async function() { const v = document.getElementById('new-task-input').value.trim(); if (!v) return; try { await addDoc(collection(db, "tasks"), { title: v, completed: false, createdAt: Date.now()}); document.getElementById('new-task-input').value = ''; } catch (e) {} };
 window.toggleTask = async function(id, c) { try { await updateDoc(doc(db, "tasks", id), { completed: !c }); } catch (e) {} };
 window.deleteTask = async function(id) { if(confirm("Delete this task?")) await deleteDoc(doc(db, "tasks", id)); };
-
 function renderTasks() {
-    renderHomeDashboard();
-    const f = document.getElementById('task-feed'); if (!tasks.length) { f.innerHTML = `<div class="empty-feed">No active tasks.</div>`; return; }
+    renderHomeDashboard(); const f = document.getElementById('task-feed'); if (!tasks.length) { f.innerHTML = `<div class="empty-feed">No active tasks.</div>`; return; }
     f.innerHTML = tasks.map(t => `<div class="task-item ${t.completed ? 'completed' : ''}"><div class="task-content" onclick="toggleTask('${t.id}', ${t.completed})"><input type="checkbox" ${t.completed ? 'checked' : ''} onclick="event.stopPropagation(); toggleTask('${t.id}', ${t.completed})"><span>${t.title}</span></div><button class="btn-small-del" onclick="deleteTask('${t.id}')"><i data-feather="trash-2" style="width:14px;"></i></button></div>`).join('');
     feather.replace();
 }
 
-window.createCalendarEvent = async function() {
-    const d = document.getElementById('new-cal-date').value.trim(); const desc = document.getElementById('new-cal-desc').value.trim();
-    if (!d || !desc) return;
-    try { await addDoc(collection(db, "calendar"), { date: d, desc: desc, createdAt: Date.now()}); document.getElementById('new-cal-date').value = ''; document.getElementById('new-cal-desc').value = ''; } catch (e) {}
-};
+window.createCalendarEvent = async function() { const d = document.getElementById('new-cal-date').value.trim(); const desc = document.getElementById('new-cal-desc').value.trim(); if (!d || !desc) return; try { await addDoc(collection(db, "calendar"), { date: d, desc: desc, createdAt: Date.now()}); document.getElementById('new-cal-date').value = ''; document.getElementById('new-cal-desc').value = ''; } catch (e) {} };
 window.deleteCalendarEvent = async function(id) { if(confirm("Delete event?")) await deleteDoc(doc(db, "calendar", id)); };
-
 function renderCalendar() {
-    renderHomeDashboard();
-    const f = document.getElementById('calendar-feed'); if (!calendarEvents.length) { f.innerHTML = `<div class="empty-feed">No events.</div>`; return; }
+    renderHomeDashboard(); const f = document.getElementById('calendar-feed'); if (!calendarEvents.length) { f.innerHTML = `<div class="empty-feed">No events.</div>`; return; }
     f.innerHTML = calendarEvents.map(c => `<div class="calendar-item"><div class="cal-date">${c.date}</div><div class="cal-desc">${c.desc}</div><button class="btn-small-del" style="position: absolute; right: 1rem; top: 1rem;" onclick="deleteCalendarEvent('${c.id}')"><i data-feather="x" style="width:16px;"></i></button></div>`).join('');
     feather.replace();
 }
 
-window.createResource = async function() {
-    const t = document.getElementById('new-res-title').value.trim(); const u = document.getElementById('new-res-url').value.trim(); const d = document.getElementById('new-res-desc').value.trim();
-    if (!t || !u) return;
-    try { await addDoc(collection(db, "resources"), { title: t, url: u, desc: d, createdAt: Date.now()}); document.getElementById('new-res-title').value = ''; document.getElementById('new-res-url').value = ''; document.getElementById('new-res-desc').value = ''; } catch (e) {}
-};
+window.createResource = async function() { const t = document.getElementById('new-res-title').value.trim(); const u = document.getElementById('new-res-url').value.trim(); const d = document.getElementById('new-res-desc').value.trim(); if (!t || !u) return; try { await addDoc(collection(db, "resources"), { title: t, url: u, desc: d, createdAt: Date.now()}); document.getElementById('new-res-title').value = ''; document.getElementById('new-res-url').value = ''; document.getElementById('new-res-desc').value = ''; } catch (e) {} };
 window.deleteResource = async function(id) { if(confirm("Remove link?")) await deleteDoc(doc(db, "resources", id)); };
-
 function renderResources() {
     const f = document.getElementById('resource-feed'); if (!resources.length) { f.innerHTML = `<div class="empty-feed" style="grid-column: 1/-1;">No resources.</div>`; return; }
     f.innerHTML = resources.map(r => `<a href="${r.url}" target="_blank" class="resource-card"><button class="btn-small-del resource-del" onclick="event.preventDefault(); deleteResource('${r.id}')"><i data-feather="x" style="width:14px;"></i></button><div class="resource-icon"><i data-feather="link"></i></div><h3 style="font-size:1.05rem; font-weight:600; color:#0f172a; margin-top:0.5rem;">${r.title}</h3><p style="font-size:0.85rem; color:#64748b;">${r.desc}</p></a>`).join('');
     feather.replace();
 }
 
-// ======================= AUTH & INIT =======================
-onAuthStateChanged(auth, (user) => {
+// ======================= FIRESTORE AUTHENTICATION CHECK =======================
+onAuthStateChanged(auth, async (user) => {
     if (user) {
         const email = user.email.toLowerCase();
-        const approved = getApprovedEmails().map(e => e.toLowerCase());
+        let isApproved = OWNER_EMAILS.includes(email);
 
-        if (!approved.includes(email)) {
-            fbSignOut(auth); showLoginError(`Unauthorized Identity: ${email}`);
-            document.getElementById('login-loading').classList.remove('visible'); return;
+        // If not a hardcoded admin, strict-check the Firestore Cloud Database
+        if (!isApproved) {
+            try {
+                const q = query(collection(db, "staff_directory"), where("email", "==", email));
+                const snapshot = await getDocs(q);
+                if (!snapshot.empty) isApproved = true;
+            } catch (e) { console.error("Database permission check failed", e); }
         }
 
+        // Boot unauthorized identities
+        if (!isApproved) {
+            fbSignOut(auth); 
+            showLoginError(`Unauthorized Identity: ${email}`);
+            document.getElementById('login-loading').classList.remove('visible'); 
+            return;
+        }
+
+        // If approved, setup the dashboard
         document.getElementById('login-loading').classList.remove('visible');
         document.getElementById('login-error').style.display = 'none';
         document.getElementById('login-gate').classList.remove('visible');
         document.getElementById('main-content').classList.add('visible');
 
         document.getElementById('user-label').textContent = user.displayName || email;
-        if (OWNER_EMAILS.map(e=>e.toLowerCase()).includes(email)) { document.getElementById('admin-nav-btn').style.display = 'flex'; }
+        if (OWNER_EMAILS.includes(email)) { document.getElementById('admin-nav-btn').style.display = 'flex'; }
 
-        window._currentUserEmail = email; window._currentUserName  = user.displayName || email;
-        window._approvedEmails   = getApprovedEmails; window._saveExtraEmails  = saveExtraEmails;
+        window._currentUserName = user.displayName || email;
 
-        feather.replace(); renderAdminList(); renderDirectory();
-        
+        // Start Live Database Listeners
+        onSnapshot(collection(db, "staff_directory"), (s) => { window.approvedEmailsDB = s.docs.map(d => ({ id: d.id, email: d.data().email })); window.renderAdminList(); window.renderDirectory(); });
         onSnapshot(query(collection(db, "posts"), orderBy("createdAt", "desc")), (s) => { posts = s.docs.map(d => ({ id: d.id, ...d.data() })); renderPosts(); });
         onSnapshot(query(collection(db, "tasks"), orderBy("createdAt", "desc")), (s) => { tasks = s.docs.map(d => ({ id: d.id, ...d.data() })); renderTasks(); });
         onSnapshot(query(collection(db, "calendar"), orderBy("createdAt", "asc")), (s) => { calendarEvents = s.docs.map(d => ({ id: d.id, ...d.data() })); renderCalendar(); });
@@ -733,7 +602,6 @@ function showLoginError(msg) { const el = document.getElementById('login-error')
 <!-- UI LOGIC -->
 <script>
 feather.replace();
-
 function toggleSidebar() { document.getElementById('app-sidebar').classList.toggle('open'); document.getElementById('sidebar-backdrop').classList.toggle('open'); }
 function signOut() { if (window._fbSignOut) window._fbSignOut(); }
 
@@ -745,53 +613,9 @@ function switchTab(name, btn) {
     
     const titles = { 'dashboard': 'Home Dashboard', 'cms': 'Internal News', 'tasks': 'Team Tasks', 'calendar': 'Firm Calendar', 'resources': 'Firm Resources', 'directory': 'Staff Directory', 'analytics': 'Site Analytics', 'admin': 'Access Control' };
     document.getElementById('page-title').innerText = titles[name];
-
     if (window.innerWidth <= 900) { toggleSidebar(); }
 }
-
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2800); }
-
-function renderAdminList() {
-    if (!window._approvedEmails) return;
-    const list = window._approvedEmails();
-    const owners = ["amarildiriska15@gmail.com", "arbririska1@gmail.com"];
-    document.getElementById('approved-list').innerHTML = list.map(email => {
-        const isOwner = owners.includes(email.toLowerCase());
-        return `<div class="approved-item"><span>${email}${isOwner ? '<span class="owner-tag">Admin</span>' : ''}</span>${!isOwner ? `<button class="revoke-btn" onclick="revokeEmail('${email}')">Revoke</button>` : ''}</div>`;
-    }).join('');
-    renderDirectory(); // Update directory when admins change
-}
-
-function renderDirectory() {
-    if (!window._approvedEmails) return;
-    const list = window._approvedEmails();
-    document.getElementById('directory-feed').innerHTML = list.map(email => {
-        const initial = email.charAt(0).toUpperCase();
-        const isAdmin = ["amarildiriska15@gmail.com", "arbririska1@gmail.com"].includes(email.toLowerCase());
-        return `
-            <div class="directory-card">
-                <div class="dir-avatar">${initial}</div>
-                <div>
-                    <div style="font-weight:600; color:#0f172a; font-size:0.95rem;">${email.split('@')[0]}</div>
-                    <div style="font-size:0.8rem; color:#64748b; margin-top:2px;">${email}</div>
-                    ${isAdmin ? `<span class="owner-tag" style="margin-left:0; margin-top:6px; display:inline-block;">System Admin</span>` : ''}
-                </div>
-            </div>`;
-    }).join('');
-}
-
-function addApprovedEmail() {
-    const input = document.getElementById('new-email-input'); const email = input.value.trim().toLowerCase();
-    if (!email || !email.includes('@')) { alert('Valid email required.'); return; }
-    const current = window._approvedEmails();
-    if (current.includes(email)) { alert('Identity already provisioned.'); return; }
-    window._saveExtraEmails([...current, email]); input.value = ''; renderAdminList(); showToast(`Identity provisioned: ${email}`);
-}
-
-function revokeEmail(email) {
-    window._saveExtraEmails(window._approvedEmails().filter(e => e.toLowerCase() !== email.toLowerCase()));
-    renderAdminList(); showToast(`Access revoked: ${email}`);
-}
 </script>
 </body>
 </html>
