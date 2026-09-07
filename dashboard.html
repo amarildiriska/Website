@@ -150,24 +150,32 @@
         /* ============================================================
            NEW DASHBOARD SECTIONS (RESOURCES, TASKS, CALENDAR)
         ============================================================ */
+        /* Dynamic Forms */
+        .inline-form { background: #f8fafc; border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;}
+        .inline-form .form-group { margin-bottom: 0; flex: 1; min-width: 200px; }
+        .btn-small-del { background: none; border: none; color: #ef4444; cursor: pointer; padding: 4px; border-radius: 4px; display: flex; align-items: center; }
+        .btn-small-del:hover { background: #fef2f2; }
+
         /* Resources Grid */
         .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-        .resource-card { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.5rem; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; transition: transform 0.2s, box-shadow 0.2s; text-decoration: none; color: inherit; }
+        .resource-card { position: relative; background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.5rem; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; transition: transform 0.2s, box-shadow 0.2s; color: inherit; }
         .resource-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-color: #FF6B35; }
         .resource-icon { width: 42px; height: 42px; background: #fff3ed; color: #FF6B35; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .resource-del { position: absolute; top: 1rem; right: 1rem; }
 
         /* Calendar List */
         .calendar-list { display: flex; flex-direction: column; gap: 1rem; }
-        .calendar-item { background: white; border: 1px solid #e2e8f0; border-left: 4px solid #FF6B35; border-radius: 8px; padding: 1rem 1.5rem; display: flex; align-items: center; gap: 2rem; }
+        .calendar-item { background: white; border: 1px solid #e2e8f0; border-left: 4px solid #FF6B35; border-radius: 8px; padding: 1rem 1.5rem; display: flex; align-items: center; gap: 2rem; position: relative; }
         .cal-date { font-weight: 700; color: #0f172a; font-size: 1.05rem; min-width: 100px; }
         .cal-desc { flex: 1; color: #475569; font-size: 0.95rem; line-height: 1.5; }
         .cal-desc strong { color: #0f172a; }
-
+        
         /* Team Tasks */
         .task-list { display: flex; flex-direction: column; gap: 0.5rem; }
-        .task-item { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; color: #334155; }
+        .task-item { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; color: #334155; justify-content: space-between;}
+        .task-content { display: flex; align-items: center; gap: 12px; flex: 1; cursor: pointer; }
         .task-item input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: #FF6B35; flex-shrink: 0; }
-        .task-item.completed { opacity: 0.5; text-decoration: line-through; }
+        .task-item.completed .task-content { opacity: 0.5; text-decoration: line-through; }
 
         /* ============================================================
            CMS LAYOUT (ENTERPRISE)
@@ -216,7 +224,7 @@
         .post-del-btn { background: none; border: none; color: #ef4444; font-size: 0.8rem; font-weight: 500; cursor: pointer; padding: 4px 8px; border-radius: 4px; }
         .post-del-btn:hover { background: #fef2f2; }
 
-        .empty-feed { text-align: center; padding: 4rem 1rem; color: #94a3b8; }
+        .empty-feed { text-align: center; padding: 4rem 1rem; color: #94a3b8; width: 100%;}
         .empty-feed p { font-size: 0.95rem; margin-top: 1rem; }
 
         /* ============================================================
@@ -270,7 +278,7 @@
 <!-- LOGIN GATE -->
 <div id="login-gate" class="visible">
     <div class="login-box">
-        <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="login-logo">
+        <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="login-logo" onerror="this.src='https://via.placeholder.com/50'">
         <h2>Staff Portal</h2>
         <p class="login-sub">Sign in to access the secure workspace.</p>
         
@@ -294,7 +302,6 @@
             </button>
         </div>
 
-        <div class="login-loading" id="login-loading"><div class="spinner"></div></div>
         <div class="login-error" id="login-error"></div>
         <p class="login-divider">Authorized Personnel Only</p>
     </div>
@@ -310,7 +317,7 @@
     <aside class="app-sidebar" id="app-sidebar">
         <div class="sidebar-header">
             <div class="sidebar-header-left">
-                <img src="attached_assets/Capture1.png" alt="Logo">
+                <img src="attached_assets/Capture1.png" alt="Logo" onerror="this.src='https://via.placeholder.com/32'">
                 <h1>Riska's Finance</h1>
             </div>
             <button class="mobile-close-btn" onclick="toggleSidebar()">
@@ -322,7 +329,6 @@
             <div class="nav-item active" onclick="switchTab('cms', this)">
                 <i data-feather="file-text"></i> Communications
             </div>
-            <!-- 🔥 NEW TABS ADDED HERE -->
             <div class="nav-item" onclick="switchTab('tasks', this)">
                 <i data-feather="check-square"></i> Team Tasks
             </div>
@@ -335,7 +341,6 @@
             <div class="nav-item" onclick="switchTab('analytics', this)">
                 <i data-feather="bar-chart-2"></i> Site Analytics
             </div>
-            <!-- /END NEW TABS -->
             <div class="nav-item" id="admin-nav-btn" style="display:none;" onclick="switchTab('admin', this)">
                 <i data-feather="shield"></i> Access Control
             </div>
@@ -435,100 +440,78 @@
                 </div>
             </div>
 
-            <!-- 🔥 NEW TAB: TASKS -->
+            <!-- TAB: TASKS -->
             <div id="tab-tasks" class="tab-panel">
                 <div class="card" style="max-width: 800px; margin: 0 auto;">
                     <div class="card-title"><i data-feather="check-square"></i> Shared Team Tasks</div>
-                    <p style="font-size:0.85rem; color:#64748b; margin-bottom:1.5rem;">Manage internal bookkeeping and administrative tasks.</p>
+                    <p style="font-size:0.85rem; color:#64748b; margin-bottom:1.5rem;">Manage internal bookkeeping and administrative tasks. Updates sync to everyone in real-time.</p>
                     
                     <div class="add-email-row" style="margin-bottom: 2rem;">
-                        <input type="text" class="form-input" style="margin:0;" placeholder="Enter a new task...">
-                        <button class="add-email-btn" onclick="showToast('Task feature interface loaded')">Add Task</button>
+                        <input type="text" id="new-task-input" class="form-input" style="margin:0;" placeholder="Enter a new task...">
+                        <button class="add-email-btn" onclick="createTask()">Add Task</button>
                     </div>
                     
-                    <div class="task-list">
-                        <label class="task-item"><input type="checkbox"> Review Q3 Payroll Reconciliations</label>
-                        <label class="task-item"><input type="checkbox"> Send tax organizers to Top 50 clients</label>
-                        <label class="task-item"><input type="checkbox"> Follow up with IRS regarding Form 2848 for Client X</label>
-                        <label class="task-item completed"><input type="checkbox" checked> Update website standard deduction limits for 2026</label>
+                    <div class="task-list" id="task-feed">
+                        <div class="empty-feed">Loading tasks...</div>
                     </div>
                 </div>
             </div>
 
-            <!-- 🔥 NEW TAB: CALENDAR -->
+            <!-- TAB: CALENDAR -->
             <div id="tab-calendar" class="tab-panel">
                 <div class="card" style="max-width: 900px; margin: 0 auto;">
                     <div class="card-title"><i data-feather="calendar"></i> Important Firm Deadlines</div>
-                    <div class="calendar-list">
-                        <div class="calendar-item">
-                            <div class="cal-date">March 16</div>
-                            <div class="cal-desc"><strong>Partnerships (Form 1065) & S-Corps (Form 1120-S)</strong> tax returns due, or request for extension (Form 7004).</div>
+                    
+                    <div class="inline-form">
+                        <div class="form-group">
+                            <label class="form-label">Date (e.g. "April 15")</label>
+                            <input type="text" id="new-cal-date" class="form-input" placeholder="April 15">
                         </div>
-                        <div class="calendar-item">
-                            <div class="cal-date">April 15</div>
-                            <div class="cal-desc"><strong>Individual (Form 1040) & C-Corps (Form 1120)</strong> tax returns due. Q1 Estimated Tax Payments due.</div>
+                        <div class="form-group" style="flex: 2;">
+                            <label class="form-label">Event Description</label>
+                            <input type="text" id="new-cal-desc" class="form-input" placeholder="Tax returns due...">
                         </div>
-                        <div class="calendar-item">
-                            <div class="cal-date">June 15</div>
-                            <div class="cal-desc">Q2 Estimated Tax Payments due.</div>
+                        <div class="form-group" style="flex: 0;">
+                            <button class="add-email-btn" style="height: 40px; margin-top: auto;" onclick="createCalendarEvent()">Add Event</button>
                         </div>
-                        <div class="calendar-item">
-                            <div class="cal-date">September 15</div>
-                            <div class="cal-desc"><strong>Extended S-Corps and Partnerships</strong> final deadline. Q3 Estimated Tax Payments due.</div>
-                        </div>
-                        <div class="calendar-item">
-                            <div class="cal-date">October 15</div>
-                            <div class="cal-desc"><strong>Extended Individual & C-Corp</strong> returns final deadline.</div>
-                        </div>
+                    </div>
+
+                    <div class="calendar-list" id="calendar-feed">
+                        <div class="empty-feed">Loading calendar events...</div>
                     </div>
                 </div>
             </div>
 
-            <!-- 🔥 NEW TAB: RESOURCES -->
+            <!-- TAB: RESOURCES -->
             <div id="tab-resources" class="tab-panel">
-                <h2 style="font-size:1.25rem; font-weight:600; color:#0f172a; margin-bottom:1.5rem;">Firm Resources & Quick Links</h2>
-                <div class="resource-grid">
-                    <a href="https://app.riskasfinance.com/" target="_blank" class="resource-card">
-                        <div class="resource-icon"><i data-feather="layers"></i></div>
-                        <h3 style="font-size:1.05rem; font-weight:600; color:#0f172a; margin-top:0.5rem;">Flowtab Software</h3>
-                        <p style="font-size:0.85rem; color:#64748b;">Access the main Riska's Finance application dashboard.</p>
-                    </a>
-		<!-- 🔥 NEW QUICK LINK: RISKA AI -->
-                    <a href="https://ai.riskasfinance.com/" target="_blank" class="resource-card">
-                        <div class="resource-icon"><i data-feather="cpu"></i></div>
-                        <h3 style="font-size:1.05rem; font-weight:600; color:#0f172a; margin-top:0.5rem;">Riska AI</h3>
-                        <p style="font-size:0.85rem; color:#64748b;">Connect to our tax intelligence assistant platform.</p>
-                    </a>
-		<!-- 🔥 NEW QUICK LINK: FIXED ASSETS APP DOWNLOAD -->
-                    <a href="https://riskafiance.github.io/Thankyou/" target="_blank" class="resource-card">
-                        <div class="resource-icon"><i data-feather="download-cloud"></i></div>
-                        <h3 style="font-size:1.05rem; font-weight:600; color:#0f172a; margin-top:0.5rem;">Fixed Assets App</h3>
-                        <p style="font-size:0.85rem; color:#64748b;">Download link page for our desktop engine software bundle.</p>
-                    </a>
-					<a href="https://clearpay.riskasfinance.com/" target="_blank" class="resource-card">
-                        <div class="resource-icon"><i data-feather="credit-card"></i></div>
-                        <h3 style="font-size:1.05rem; font-weight:600; color:#0f172a; margin-top:0.5rem;">ClearPay</h3>
-                        <p style="font-size:0.85rem; color:#64748b;">Create invoices and receive payments online directly via Stripe.</p>
-                    </a>
-                    <a href="https://www.irs.gov/e-services" target="_blank" class="resource-card">
-                        <div class="resource-icon"><i data-feather="briefcase"></i></div>
-                        <h3 style="font-size:1.05rem; font-weight:600; color:#0f172a; margin-top:0.5rem;">IRS e-Services</h3>
-                        <p style="font-size:0.85rem; color:#64748b;">Tax professional portal for transcripts and e-file applications.</p>
-                    </a>
-                    <a href="https://taxfoundation.org/data/all/federal/2024-tax-brackets/" target="_blank" class="resource-card">
-                        <div class="resource-icon"><i data-feather="percent"></i></div>
-                        <h3 style="font-size:1.05rem; font-weight:600; color:#0f172a; margin-top:0.5rem;">Tax Brackets</h3>
-                        <p style="font-size:0.85rem; color:#64748b;">Quick reference for current federal tax brackets and rates.</p>
-                    </a>
-                    <a href="https://console.firebase.google.com/" target="_blank" class="resource-card">
-                        <div class="resource-icon"><i data-feather="database"></i></div>
-                        <h3 style="font-size:1.05rem; font-weight:600; color:#0f172a; margin-top:0.5rem;">Firebase Database</h3>
-                        <p style="font-size:0.85rem; color:#64748b;">Backend administration for your website's news feed.</p>
-                    </a>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                    <h2 style="font-size:1.25rem; font-weight:600; color:#0f172a;">Firm Resources & Quick Links</h2>
+                </div>
+
+                <div class="inline-form" style="background: white;">
+                    <div class="form-group">
+                        <label class="form-label">Title</label>
+                        <input type="text" id="new-res-title" class="form-input" placeholder="Link Name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">URL</label>
+                        <input type="url" id="new-res-url" class="form-input" placeholder="https://...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <input type="text" id="new-res-desc" class="form-input" placeholder="What is this link for?">
+                    </div>
+                    <div class="form-group" style="flex: 0; min-width: 100px;">
+                        <button class="add-email-btn" style="height: 40px; margin-top: auto; width:100%;" onclick="createResource()">Add Link</button>
+                    </div>
+                </div>
+
+                <div class="resource-grid" id="resource-feed">
+                     <div class="empty-feed" style="grid-column: 1 / -1;">Loading resources...</div>
                 </div>
             </div>
 
-            <!-- 🔥 NEW TAB: ANALYTICS -->
+            <!-- TAB: ANALYTICS -->
             <div id="tab-analytics" class="tab-panel">
                 <div class="card" style="max-width: 800px; margin: 0 auto;">
                     <div class="card-title"><i data-feather="bar-chart-2"></i> Website Traffic & Analytics</div>
@@ -575,7 +558,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as fbSignOut, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, updateDoc, onSnapshot, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey:            "AIzaSyAUsHaf3_npOkomivpF9fVT6xtSD0E0xFU",
@@ -632,11 +615,16 @@ window.signInWithEmail = async function() {
     catch(err) { document.getElementById('login-loading').classList.remove('visible'); showLoginError('Invalid credentials.'); }
 };
 
-// FIRESTORE CMS LOGIC
+// FIRESTORE COLLECTIONS LOGIC
 let posts = [];
+let tasks = [];
+let calendarEvents = [];
+let resources = [];
+
 const catClassMap  = { 'Tax Tips':'cat-tax', 'Company News':'cat-company', 'IRS News':'cat-irs', 'Client Reminder':'cat-reminder' };
 const destLabelMap = { dashboard:'Internal', home:'Public', both:'Public & Internal' };
 
+// ======================= POSTS LOGIC =======================
 window.publishPost = async function() {
     const title = document.getElementById('post-title').value.trim();
     const category = document.getElementById('post-category').value;
@@ -652,25 +640,18 @@ window.publishPost = async function() {
 
     try {
         await addDoc(collection(db, "posts"), {
-            title: title,
-            category: category,
-            body: body,
-            dest: dest,
+            title: title, category: category, body: body, dest: dest,
             author: window._currentUserName || 'Staff',
             date: new Date().toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'}),
-            createdAt: Date.now(),
-            fileUrl: uploadedFileUrl || null
+            createdAt: Date.now(), fileUrl: uploadedFileUrl || null
         });
-        
         document.getElementById('post-title').value = '';
         document.getElementById('post-body').value = '';
         const widget = uploadcare.Widget('[role=uploadcare-uploader]');
         widget.value(null);
-
         showToast('Broadcast successful');
     } catch (e) {
-        console.error("Error adding document: ", e);
-        alert("Database connection error.");
+        console.error("Error adding document: ", e); alert("Database connection error.");
     }
     
     publishBtn.disabled = false;
@@ -680,13 +661,8 @@ window.publishPost = async function() {
 
 window.deletePost = async function(id) {
     if(confirm("Permanently delete this record?")) {
-        try {
-            await deleteDoc(doc(db, "posts", id));
-            showToast('Record destroyed');
-        } catch (e) {
-            console.error("Error deleting document: ", e);
-            alert("Deletion failed.");
-        }
+        await deleteDoc(doc(db, "posts", id));
+        showToast('Record destroyed');
     }
 };
 
@@ -715,20 +691,135 @@ function renderPosts() {
                 <button class="post-del-btn" onclick="deletePost('${p.id}')">Revoke</button>
             </div>
         </div>`).join('');
-        
     feather.replace();
 }
 
+// ======================= TASKS LOGIC =======================
+window.createTask = async function() {
+    const taskInput = document.getElementById('new-task-input');
+    const taskTitle = taskInput.value.trim();
+    if (!taskTitle) return;
+    
+    try {
+        await addDoc(collection(db, "tasks"), {
+            title: taskTitle, completed: false, createdAt: Date.now()
+        });
+        taskInput.value = '';
+        showToast('Task added');
+    } catch (e) { console.error("Error adding task: ", e); }
+};
+
+window.toggleTask = async function(id, currentStatus) {
+    try {
+        await updateDoc(doc(db, "tasks", id), { completed: !currentStatus });
+    } catch (e) { console.error("Error updating task: ", e); }
+};
+
+window.deleteTask = async function(id) {
+    if(confirm("Delete this task?")) {
+        await deleteDoc(doc(db, "tasks", id));
+        showToast('Task deleted');
+    }
+};
+
+function renderTasks() {
+    const feed = document.getElementById('task-feed');
+    if (!tasks.length) { feed.innerHTML = `<div class="empty-feed">No active tasks.</div>`; return; }
+    
+    feed.innerHTML = tasks.map(t => `
+        <div class="task-item ${t.completed ? 'completed' : ''}">
+            <div class="task-content" onclick="toggleTask('${t.id}', ${t.completed})">
+                <input type="checkbox" ${t.completed ? 'checked' : ''} onclick="event.stopPropagation(); toggleTask('${t.id}', ${t.completed})">
+                <span>${t.title}</span>
+            </div>
+            <button class="btn-small-del" onclick="deleteTask('${t.id}')"><i data-feather="trash-2" style="width:14px; height:14px;"></i></button>
+        </div>`).join('');
+    feather.replace();
+}
+
+// ======================= CALENDAR LOGIC =======================
+window.createCalendarEvent = async function() {
+    const dateInput = document.getElementById('new-cal-date');
+    const descInput = document.getElementById('new-cal-desc');
+    if (!dateInput.value.trim() || !descInput.value.trim()) { alert('Date and Description required'); return; }
+    
+    try {
+        await addDoc(collection(db, "calendar"), {
+            date: dateInput.value.trim(), desc: descInput.value.trim(), createdAt: Date.now()
+        });
+        dateInput.value = ''; descInput.value = '';
+        showToast('Event added to calendar');
+    } catch (e) { console.error("Error adding event: ", e); }
+};
+
+window.deleteCalendarEvent = async function(id) {
+    if(confirm("Delete this calendar event?")) {
+        await deleteDoc(doc(db, "calendar", id));
+        showToast('Event deleted');
+    }
+};
+
+function renderCalendar() {
+    const feed = document.getElementById('calendar-feed');
+    if (!calendarEvents.length) { feed.innerHTML = `<div class="empty-feed">No upcoming deadlines.</div>`; return; }
+    
+    feed.innerHTML = calendarEvents.map(c => `
+        <div class="calendar-item">
+            <div class="cal-date">${c.date}</div>
+            <div class="cal-desc">${c.desc}</div>
+            <button class="btn-small-del" style="position: absolute; right: 1rem; top: 1rem;" onclick="deleteCalendarEvent('${c.id}')"><i data-feather="x" style="width:16px; height:16px;"></i></button>
+        </div>`).join('');
+    feather.replace();
+}
+
+// ======================= RESOURCES LOGIC =======================
+window.createResource = async function() {
+    const title = document.getElementById('new-res-title').value.trim();
+    const url = document.getElementById('new-res-url').value.trim();
+    const desc = document.getElementById('new-res-desc').value.trim();
+    if (!title || !url) { alert('Title and URL required'); return; }
+    
+    try {
+        await addDoc(collection(db, "resources"), {
+            title: title, url: url, desc: desc, createdAt: Date.now()
+        });
+        document.getElementById('new-res-title').value = '';
+        document.getElementById('new-res-url').value = '';
+        document.getElementById('new-res-desc').value = '';
+        showToast('Resource link added');
+    } catch (e) { console.error("Error adding resource: ", e); }
+};
+
+window.deleteResource = async function(id) {
+    if(confirm("Remove this quick link?")) {
+        await deleteDoc(doc(db, "resources", id));
+        showToast('Link removed');
+    }
+};
+
+function renderResources() {
+    const feed = document.getElementById('resource-feed');
+    if (!resources.length) { feed.innerHTML = `<div class="empty-feed" style="grid-column: 1/-1;">No resources added.</div>`; return; }
+    
+    feed.innerHTML = resources.map(r => `
+        <a href="${r.url}" target="_blank" class="resource-card">
+            <button class="btn-small-del resource-del" onclick="event.preventDefault(); deleteResource('${r.id}')"><i data-feather="x" style="width:14px; height:14px;"></i></button>
+            <div class="resource-icon"><i data-feather="link"></i></div>
+            <h3 style="font-size:1.05rem; font-weight:600; color:#0f172a; margin-top:0.5rem;">${r.title}</h3>
+            <p style="font-size:0.85rem; color:#64748b;">${r.desc}</p>
+        </a>`).join('');
+    feather.replace();
+}
+
+// ======================= AUTH & LISTENERS =======================
 onAuthStateChanged(auth, (user) => {
     if (user) {
         const email = user.email.toLowerCase();
         const approved = getApprovedEmails().map(e => e.toLowerCase());
 
         if (!approved.includes(email)) {
-            fbSignOut(auth);
-            showLoginError(`Unauthorized Identity: ${email}`);
-            document.getElementById('login-loading').classList.remove('visible');
-            return;
+            fbSignOut(auth); showLoginError(`Unauthorized Identity: ${email}`);
+            document.getElementById('login-loading').classList.remove('visible'); return;
         }
 
         document.getElementById('login-loading').classList.remove('visible');
@@ -744,16 +835,20 @@ onAuthStateChanged(auth, (user) => {
         window._currentUserEmail = email; window._currentUserName  = user.displayName || email;
         window._approvedEmails   = getApprovedEmails; window._saveExtraEmails  = saveExtraEmails;
 
-        feather.replace();
-        renderAdminList();
+        feather.replace(); renderAdminList();
         
-        const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-        onSnapshot(q, (snapshot) => {
-            posts = []; 
-            snapshot.forEach((doc) => {
-                posts.push({ id: doc.id, ...doc.data() });
-            });
-            renderPosts();
+        // Connect Listeners
+        onSnapshot(query(collection(db, "posts"), orderBy("createdAt", "desc")), (snapshot) => {
+            posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); renderPosts();
+        });
+        onSnapshot(query(collection(db, "tasks"), orderBy("createdAt", "desc")), (snapshot) => {
+            tasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); renderTasks();
+        });
+        onSnapshot(query(collection(db, "calendar"), orderBy("createdAt", "asc")), (snapshot) => {
+            calendarEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); renderCalendar();
+        });
+        onSnapshot(query(collection(db, "resources"), orderBy("createdAt", "desc")), (snapshot) => {
+            resources = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); renderResources();
         });
 
     } else {
@@ -779,15 +874,12 @@ function toggleSidebar() {
 function signOut() { if (window._fbSignOut) window._fbSignOut(); }
 
 function switchTab(name, btn) {
-    // Switch Panels
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
     
-    // Switch Nav Highlights
     document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     
-    // 🔥 NEW: Title Logic updated to support the new tabs
     const titles = { 
         'cms': 'Communications Hub', 
         'tasks': 'Team Tasks',
@@ -839,5 +931,3 @@ function revokeEmail(email) {
 </script>
 </body>
 </html>
-
-```
