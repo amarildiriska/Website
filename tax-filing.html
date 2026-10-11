@@ -12,15 +12,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.85">
     <title>File Your Taxes | Riska's Finance</title>
-    <link rel="icon" type="image/png" href="attached_assets/Capture1.png">
     <meta name="description" content="File your individual or business taxes securely with Riska's Finance. Upload documents, answer questions, and we'll handle the rest." />
-    
+    <link rel="icon" type="image/png" href="attached_assets/Capture1.png">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.css">
-    
+
     <style>
         /* --- BRAND GLOBAL STYLES --- */
         :root {
@@ -31,25 +31,21 @@
             --text-gray: #6B7280;
             --white: #FFFFFF;
             --border-color: #E5E7EB;
+            --error-color: #B42318;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Inter', sans-serif;
             color: var(--text-dark);
-            background-color: var(--light-bg); /* Light bg for form page */
+            background-color: var(--light-bg);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
         }
 
         a { text-decoration: none; }
         .container { max-width: 1050px; margin: 0 auto; padding: 0 20px; }
-        .section-title { font-size: 2rem; font-weight: 700; color: var(--text-dark); margin-bottom: 1rem; text-align: center; }
 
         /* --- NAVIGATION --- */
         .header {
@@ -79,7 +75,7 @@
             letter-spacing: -0.5px;
         }
         .brand-logo { height: 24px; }
-        
+
         /* Mobile Menu Button */
         .mobile-menu-btn {
             display: none;
@@ -96,9 +92,7 @@
             gap: 24px;
             align-items: center;
         }
-        .nav-item {
-            position: relative;
-        }
+        .nav-item { position: relative; }
         .nav-link {
             color: var(--text-dark);
             font-weight: 500;
@@ -107,8 +101,7 @@
             cursor: pointer;
         }
         .nav-link:hover, .nav-link.active { color: var(--primary-color); }
-        
-        /* Dropdown Styles */
+
         .dropdown-menu {
             position: absolute;
             top: 100%;
@@ -148,7 +141,7 @@
         .page-hero {
             background: linear-gradient(135deg, rgba(17, 24, 39, 0.8) 0%, rgba(17, 24, 39, 0.4) 100%), url('attached_assets/backround.png') no-repeat center center/cover;
             background-color: var(--dark-bg);
-            padding: 80px 20px 120px; /* Extra bottom padding for overlap */
+            padding: 80px 20px;
             text-align: center;
         }
         .page-hero h1 {
@@ -159,169 +152,213 @@
             text-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
         .page-hero p {
-            color: #D1D5DB;
-            font-size: 1.05rem;
-            max-width: 650px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        /* --- PROCESS STEPS (Overlap Hero) --- */
-        .process-steps {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin: -60px auto 40px; 
-            position: relative;
-            z-index: 10;
-            max-width: 800px;
-        }
-        .process-step {
-            background: var(--white);
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            border-top: 4px solid var(--primary-color);
-            text-align: center;
-            border-left: 1px solid var(--border-color);
-            border-right: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-        }
-        .process-step h3 { margin-bottom: 8px; color: var(--text-dark); font-size: 1.1rem; font-weight: 700;}
-        .process-step p { font-size: 0.9rem; color: var(--text-gray); margin: 0; line-height: 1.5; }
-
-        /* --- FORM STYLES --- */
-        .form-container {
-            max-width: 800px;
-            margin: 0 auto 60px;
-        }
-        .form-card {
-            background: var(--white);
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            padding: 40px;
-            margin-bottom: 40px;
-            border: 1px solid var(--border-color);
-        }
-        
-        fieldset { 
-            border: 1px solid var(--border-color); 
-            border-radius: 10px; 
-            padding: 24px; 
-            margin-bottom: 30px; 
-        }
-        legend { 
-            padding: 0 12px; 
-            font-weight: 700; 
-            color: var(--text-dark); 
+            color: var(--primary-color);
             font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        
-        .form-grid { display: grid; gap: 24px; }
-        .cols-2 { grid-template-columns: 1fr 1fr; }
-        
-        .form-group { display: flex; flex-direction: column; gap: 8px; }
-        label { font-weight: 600; font-size: 0.9rem; color: var(--text-dark); }
-        
-        input[type="text"], 
-        input[type="email"], 
-        input[type="tel"], 
-        select, 
-        textarea {
-            padding: 12px 16px; 
-            border: 1px solid var(--border-color); 
-            border-radius: 8px; 
-            font-size: 0.95rem; 
-            width: 100%;
-            font-family: 'Inter', sans-serif;
-            background-color: var(--light-bg);
-            transition: all 0.2s;
+
+        /* --- SIGN-UP LAYOUT (mirrors the policy layout) --- */
+        .signup-layout {
+            display: grid;
+            grid-template-columns: 290px 1fr;
+            gap: 40px;
+            padding: 4rem 0;
+            align-items: start;
+        }
+
+        .signup-sidebar {
+            position: sticky;
+            top: 80px;
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        .signup-sidebar h3 {
+            font-size: 1.05rem;
+            margin-bottom: 1rem;
             color: var(--text-dark);
         }
-        input:focus, select:focus, textarea:focus { 
-            outline: none; 
-            border-color: var(--primary-color);
-            background-color: var(--white);
-            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
-        }
-
-        /* Fancy Button */
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, #FF8A5B 100%);
-            color: var(--white);
-            padding: 14px 28px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4), inset 0 -1px 0 rgba(0,0,0,0.15);
-            border: 1px solid rgba(255,255,255,0.2);
+        .next-steps { list-style: none; margin-bottom: 1.5rem; counter-reset: step; }
+        .next-steps li {
+            counter-increment: step;
             position: relative;
-            overflow: hidden;
-            width: 100%;
-            cursor: pointer;
+            padding: 0 0 16px 40px;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            line-height: 1.5;
         }
-        .btn-primary::before {
-            content: '';
+        .next-steps li::before {
+            content: counter(step);
             position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.6s ease;
+            left: 0;
+            top: 0;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: var(--white);
+            font-weight: 700;
+            font-size: 0.8rem;
+            display: grid;
+            place-items: center;
         }
-        .btn-primary:hover::before { left: 100%; }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.5), inset 0 -1px 0 rgba(0,0,0,0.15);
+        .next-steps li:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            left: 12px;
+            top: 30px;
+            bottom: 4px;
+            width: 2px;
+            background: var(--border-color);
+        }
+        .next-steps strong { display: block; color: var(--text-dark); font-weight: 600; }
+        .sidebar-contact {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.1rem;
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            line-height: 1.7;
+        }
+        .sidebar-contact a { color: var(--primary-color); font-weight: 600; }
+        .sidebar-contact a:hover { text-decoration: underline; }
+
+        .signup-content {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 3.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        .signup-content h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        .signup-intro {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--light-bg);
         }
 
-        /* --- DROPBOX SECTION --- */
-        .upload-section {
-            background: #F0FDF4; 
-            border: 1px dashed #16A34A;
-            border-radius: 12px;
-            padding: 32px;
-            text-align: center;
-        }
-        .upload-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #16A34A;
-            color: white;
-            padding: 14px 28px;
-            border-radius: 50px;
+        /* --- FORM --- */
+        fieldset { border: 0; min-width: 0; margin-bottom: 2rem; }
+        legend {
+            font-size: 1.2rem;
             font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            padding: 0;
+        }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
+        .full { grid-column: 1 / -1; }
+        .field-label { display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 6px; color: var(--text-dark); }
+        .optional { font-weight: 400; color: var(--text-gray); }
+
+        input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+            width: 100%;
+            font: inherit;
             font-size: 0.95rem;
-            transition: all 0.2s;
-            box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+            color: var(--text-dark);
+            background: var(--white);
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            padding: 11px 13px;
+            min-height: 46px;
         }
-        .upload-btn:hover { 
-            background: #15803D; 
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(22, 163, 74, 0.4);
-            color: white;
+        textarea { min-height: 110px; resize: vertical; }
+        input:focus, select:focus, textarea:focus {
+            outline: 3px solid rgba(255, 107, 53, 0.3);
+            border-color: var(--primary-color);
         }
+        .invalid { border-color: var(--error-color) !important; }
+        .err { color: var(--error-color); font-size: 0.83rem; margin-top: 5px; display: none; }
+        .err.show { display: block; }
+
+        .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+        .check {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 11px 13px;
+            cursor: pointer;
+            font-size: 0.92rem;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .check:hover { border-color: #C5CBD3; }
+        .check input { margin-top: 3px; width: 18px; height: 18px; accent-color: var(--primary-color); flex: none; }
+        .check:has(input:checked) { border-color: var(--primary-color); background: #FFF6F1; }
+
+        .privacy-note {
+            background: var(--light-bg);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+            padding: 12px 14px;
+            font-size: 0.88rem;
+            color: var(--text-gray);
+            margin-bottom: 1.25rem;
+        }
+        .consent {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            font-size: 0.88rem;
+            color: var(--text-gray);
+            margin-bottom: 1.25rem;
+        }
+        .consent input { margin-top: 3px; width: 18px; height: 18px; accent-color: var(--primary-color); flex: none; }
+        .consent a { color: var(--primary-color); font-weight: 600; }
+
+        .submit-btn {
+            font: inherit;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            padding: 14px 30px;
+            min-height: 50px;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .submit-btn:hover { background: #E85A24; }
+        .submit-btn[disabled] { opacity: 0.6; cursor: progress; }
+        .form-error { color: var(--error-color); font-weight: 600; margin-top: 14px; display: none; }
+        .form-error.show { display: block; }
+        .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+        :focus-visible { outline: 3px solid rgba(255, 107, 53, 0.55); outline-offset: 2px; }
+
+        /* --- SUCCESS --- */
+        .success { display: none; }
+        .success.show { display: block; }
+        .success h2 { color: #146C43; }
+        .success p { color: var(--text-gray); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1rem; }
+        .success a { color: var(--primary-color); font-weight: 600; }
 
         /* --- RESPONSIVE FIXES (MOBILE) --- */
         @media (max-width: 1024px) {
             .mobile-menu-btn { display: block; }
-            .nav-menu { 
-                display: none; 
-                position: absolute; 
-                top: 100%; 
-                left: 0; 
-                width: 100%; 
-                background: var(--white); 
-                flex-direction: column; 
-                padding: 20px; 
-                box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
                 border-top: 1px solid var(--border-color);
                 align-items: flex-start;
                 z-index: 1001;
@@ -343,11 +380,68 @@
                 display: block;
             }
         }
+
         @media (max-width: 768px) {
             .page-hero h1 { font-size: 2.2rem; }
-            .process-steps { grid-template-columns: 1fr; margin-top: -30px; padding: 0 20px; }
-            .cols-2 { grid-template-columns: 1fr; }
-            .form-card { padding: 24px; }
+            .signup-layout { grid-template-columns: 1fr; gap: 20px; }
+            .signup-sidebar { position: static; margin-bottom: 1rem; }
+            .signup-content { padding: 2rem 1.25rem; }
+            .form-grid, .checks { grid-template-columns: 1fr; }
+        }
+    
+        /* --- TAX FILING PAGE EXTRAS --- */
+        .content-col { display: grid; gap: 24px; min-width: 0; }
+        .biz-panel {
+            display: none;
+            margin-top: 16px;
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 18px;
+        }
+        .upload-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-top: 4px solid #16A34A;
+            border-radius: 12px;
+            padding: 2.5rem 3.5rem 3rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        .upload-card h2 { font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--text-dark); }
+        .upload-section {
+            background: #F0FDF4;
+            border: 1px dashed #16A34A;
+            border-radius: 12px;
+            padding: 28px;
+            text-align: center;
+        }
+        .upload-section h3 {
+            color: #166534;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .upload-section p { color: #166534; font-size: 0.9rem; margin-bottom: 1.25rem; }
+        .upload-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #16A34A;
+            color: #fff !important;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+        }
+        .upload-btn:hover { background: #15803D; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(22, 163, 74, 0.4); }
+        .success .upload-btn { margin-top: 0.5rem; }
+        @media (max-width: 768px) {
+            .upload-card { padding: 2rem 1.25rem; }
+            input[type="text"], input[type="email"], input[type="tel"], select, textarea { font-size: 16px; }
         }
     </style>
 </head>
@@ -360,7 +454,7 @@
                 <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo" onerror="this.src='https://via.placeholder.com/24/FF6B35/ffffff?text=R'">
                 <span>Riska's Finance</span>
             </a>
-            
+
             <!-- Mobile Menu Button -->
             <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
                 <i data-feather="menu" style="width: 24px; height: 24px;"></i>
@@ -389,147 +483,170 @@
         <section class="page-hero">
             <div class="container">
                 <h1>Secure Tax Filing</h1>
-                <p>Submit your details and upload your documents in a few secure steps. We handle the complexity so you can relax.</p>
+                <p>Individual and Business Tax Preparation</p>
             </div>
         </section>
 
-        <!-- MAIN CONTENT -->
-        <div class="container form-container">
-            
-            <div class="process-steps">
-                <div class="process-step">
-                    <h3>1. Client Intake</h3>
-                    <p>Fill out the form below so we have your contact info and tax situation details.</p>
-                </div>
-                <div class="process-step" style="border-top-color: #16A34A;">
-                    <h3>2. Secure Upload</h3>
-                    <p>Use the secure link to send us your W-2s, 1099s, and other required documents.</p>
-                </div>
-            </div>
+        <section class="container">
+            <div class="signup-layout">
 
-            <!-- INTAKE FORM -->
-            <div class="form-card" id="start">
-                <h2 style="margin-bottom: 0.5rem; color: var(--text-dark);">Client Intake Form</h2>
-                <p style="color: var(--text-gray); margin-bottom: 2rem; font-size: 0.95rem;">Please complete this form before uploading your tax documents.</p>
+                <!-- SIDEBAR -->
+                <aside class="signup-sidebar">
+                    <h3>How it works</h3>
+                    <ol class="next-steps">
+                        <li><strong>Client intake</strong>Fill out the form with your contact info and tax situation.</li>
+                        <li><strong>Secure upload</strong>Send your W-2s, 1099s, and IDs through our encrypted Dropbox portal.</li>
+                        <li><strong>We take it from here</strong>We review everything and reach out if we need anything else.</li>
+                    </ol>
+                    <div class="sidebar-contact">
+                        Questions before you start?<br>
+                        Call <a href="tel:+18156775807/+18154401394">(815) 677-5807/(815) 440-1394</a><br>
+                        or email <a href="mailto:admin@riskasfinance.com">admin@riskasfinance.com</a>
+                    </div>
+                </aside>
 
-                <div id="success-message" style="display:none; padding:1.2rem; background:#dcfce7; color:#166534; border-radius:8px; margin-bottom:1.5rem; font-weight: 500; font-size: 0.95rem;">
-                    <strong>✓ Form Submitted Successfully!</strong> Now, please scroll down to securely upload your documents.
-                </div>
+                <!-- CONTENT -->
+                <div class="content-col">
 
-                <form id="tax-intake-form" method="POST" action="https://formspree.io/f/xvgvwydp" enctype="multipart/form-data">
-                    
-                    <fieldset>
-                        <legend>Contact Information</legend>
-                        <div class="form-grid cols-2">
-                            <div class="form-group">
-                                <label>First Name *</label>
-                                <input name="first_name" type="text" required placeholder="John" />
-                            </div>
-                            <div class="form-group">
-                                <label>Last Name *</label>
-                                <input name="last_name" type="text" required placeholder="Doe" />
-                            </div>
-                            <div class="form-group">
-                                <label>Email Address *</label>
-                                <input name="email" type="email" required placeholder="john@example.com" />
-                            </div>
-                            <div class="form-group">
-                                <label>Phone Number</label>
-                                <input name="phone" type="tel" placeholder="(555) 555-5555" />
-                            </div>
-                        </div>
-                    </fieldset>
+                    <div class="signup-content" id="start">
 
-                    <fieldset>
-                        <legend>Filing Details</legend>
-                        <div class="form-grid cols-2">
-                            <div class="form-group">
-                                <label>Tax Year *</label>
-                                <select name="tax_year" required>
-                                    <option value="2025">2025</option>
-                                    <option value="2024">2024</option>
-                                    <option value="prior">Prior Year(s)</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Filing Status</label>
-                                <select name="status">
-                                    <option>Single</option>
-                                    <option>Married Filing Jointly</option>
-                                    <option>Married Filing Separately</option>
-                                    <option>Head of Household</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group" style="grid-column: 1 / -1;">
-                                <label style="margin-bottom: 12px;">Are you filing for a Business?</label>
-                                <div style="display:flex; flex-wrap: wrap; gap:24px;">
-                                    <label style="font-weight:400; display:flex; align-items:center; gap:8px; cursor:pointer;">
-                                        <input type="radio" name="filing_type" value="individual" checked onclick="toggleBusinessFields()" style="width:auto; margin:0;"> 
-                                        No, Individual only
-                                    </label>
-                                    <label style="font-weight:400; display:flex; align-items:center; gap:8px; cursor:pointer;">
-                                        <input type="radio" name="filing_type" value="business" onclick="toggleBusinessFields()" style="width:auto; margin:0;"> 
-                                        Yes (LLC, Corp, etc.)
-                                    </label>
+                        <div id="formWrap">
+                            <h2>Client intake form</h2>
+                            <p class="signup-intro">We handle the complexity so you can relax. Complete this form first, then upload your tax documents. Fields marked with * are required.</p>
+
+                            <form id="tax-intake-form" method="POST" action="https://formspree.io/f/xvgvwydp" enctype="multipart/form-data" novalidate>
+                                <div class="hp" aria-hidden="true">
+                                    <label>Leave this field empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
                                 </div>
-                            </div>
 
-                            <div id="business-fields" style="display:none; grid-column: 1 / -1; background:var(--light-bg); padding:20px; border-radius:8px; border:1px solid var(--border-color); margin-top:8px;">
-                                <div class="form-grid cols-2">
-                                    <div class="form-group">
-                                        <label>Business Name</label>
-                                        <input name="biz_name" type="text" placeholder="Company LLC" />
+                                <fieldset>
+                                    <legend>Contact information</legend>
+                                    <div class="form-grid">
+                                        <div>
+                                            <label class="field-label" for="firstName">First name *</label>
+                                            <input type="text" id="firstName" name="first_name" autocomplete="given-name" placeholder="John" required>
+                                            <div class="err" data-for="firstName">Enter your first name.</div>
+                                        </div>
+                                        <div>
+                                            <label class="field-label" for="lastName">Last name *</label>
+                                            <input type="text" id="lastName" name="last_name" autocomplete="family-name" placeholder="Doe" required>
+                                            <div class="err" data-for="lastName">Enter your last name.</div>
+                                        </div>
+                                        <div>
+                                            <label class="field-label" for="email">Email address *</label>
+                                            <input type="email" id="email" name="email" autocomplete="email" placeholder="john@example.com" required>
+                                            <div class="err" data-for="email">Enter a valid email address.</div>
+                                        </div>
+                                        <div>
+                                            <label class="field-label" for="phone">Phone number <span class="optional">(optional)</span></label>
+                                            <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="(555) 555-5555">
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Entity Type</label>
-                                        <select name="entity">
-                                            <option value="LLC">LLC</option>
-                                            <option value="S-Corp">S-Corp</option>
-                                            <option value="Partnership">Partnership</option>
-                                        </select>
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Filing details</legend>
+                                    <div class="form-grid">
+                                        <div>
+                                            <label class="field-label" for="taxYear">Tax year *</label>
+                                            <select id="taxYear" name="tax_year" required>
+                                                <option value="2025">2025</option>
+                                                <option value="2024">2024</option>
+                                                <option value="prior">Prior year(s)</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="field-label" for="status">Filing status</label>
+                                            <select id="status" name="status">
+                                                <option>Single</option>
+                                                <option>Married Filing Jointly</option>
+                                                <option>Married Filing Separately</option>
+                                                <option>Head of Household</option>
+                                            </select>
+                                        </div>
+                                        <div class="full">
+                                            <span class="field-label" id="bizLabel">Are you filing for a business?</span>
+                                            <div class="checks" role="radiogroup" aria-labelledby="bizLabel">
+                                                <label class="check"><input type="radio" name="filing_type" value="individual" checked><span>No, individual only</span></label>
+                                                <label class="check"><input type="radio" name="filing_type" value="business"><span>Yes (LLC, Corp, etc.)</span></label>
+                                            </div>
+                                            <div class="biz-panel" id="businessFields">
+                                                <div class="form-grid">
+                                                    <div>
+                                                        <label class="field-label" for="bizName">Business name</label>
+                                                        <input type="text" id="bizName" name="biz_name" autocomplete="organization" placeholder="Company LLC">
+                                                    </div>
+                                                    <div>
+                                                        <label class="field-label" for="entity">Entity type</label>
+                                                        <select id="entity" name="entity">
+                                                            <option>Sole proprietorship</option>
+                                                            <option>Single-member LLC</option>
+                                                            <option>Multi-member LLC / partnership</option>
+                                                            <option>S corporation</option>
+                                                            <option>C corporation</option>
+                                                            <option>Nonprofit</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </fieldset>
+                                </fieldset>
 
-                    <fieldset>
-                        <legend>Notes & Consent</legend>
-                        <div class="form-group">
-                            <label>Any specific changes or questions?</label>
-                            <textarea name="notes" placeholder="New job, new house, new baby, etc." style="min-height:120px;"></textarea>
-                        </div>
-                        <div style="margin-top:16px;">
-                            <label style="display:flex; gap:12px; align-items:start; font-weight:400; cursor:pointer; font-size: 0.9rem;">
-                                <input type="checkbox" required name="consent" style="width:auto; margin-top:4px;" />
-                                <span>I agree to Riska's Finance engagement terms and authorize electronic communication.</span>
-                            </label>
-                        </div>
-                    </fieldset>
+                                <fieldset>
+                                    <legend>Notes and consent</legend>
+                                    <div class="form-grid">
+                                        <div class="full">
+                                            <label class="field-label" for="notes">Any specific changes or questions? <span class="optional">(optional)</span></label>
+                                            <textarea id="notes" name="notes" placeholder="New job, new house, new baby, etc."></textarea>
+                                        </div>
+                                    </div>
+                                </fieldset>
 
-                    <button id="submit-btn" class="btn-primary" type="submit">Submit Intake Form</button>
-                </form>
-            </div>
+                                <p class="privacy-note">Please don't enter Social Security numbers or bank account details here. Send tax documents through the secure upload portal below.</p>
 
-            <!-- UPLOAD SECTION -->
-            <div class="form-card" style="border-top: 4px solid #16a34a; margin-bottom: 0;">
-                <h2 style="margin-bottom: 0.5rem; color: var(--text-dark);">Step 2: Upload Documents</h2>
-                <p style="color: var(--text-gray); margin-bottom: 1.5rem; font-size: 0.95rem;">
-                    Once you have submitted the form above, please use our secure Dropbox portal to upload your W-2s, 1099s, and IDs.
-                </p>
-                
-                <div class="upload-section">
-                    <h3 style="color: #166534; margin-top:0; margin-bottom: 8px;">📤 Secure Document Portal</h3>
-                    <p style="margin-bottom: 1.5rem; color: #166534; font-size: 0.9rem;">No Dropbox account required. Your files are fully encrypted.</p>
-                    <a href="https://www.dropbox.com/request/DJ1llMlQHMkZ5bhpGaJz" class="upload-btn" target="_blank" rel="noopener noreferrer">
-                        <i data-feather="upload-cloud" style="width: 18px; height: 18px;"></i>
-                        Click Here to Upload Documents
-                    </a>
+                                <label class="consent">
+                                    <input type="checkbox" id="consent" name="consent" required>
+                                    <span>I agree to Riska's Finance <a href="legal.html#terms">engagement terms</a> and authorize electronic communication. *</span>
+                                </label>
+                                <div class="err" id="consentErr" style="margin: -0.6rem 0 1.25rem;">Check the box to continue.</div>
+
+                                <button type="submit" class="submit-btn" id="submitBtn">Submit intake form</button>
+                                <div class="form-error" id="formError" role="alert"></div>
+                            </form>
+                        </div>
+
+                        <!-- SUCCESS MESSAGE -->
+                        <div class="success" id="success" role="status" tabindex="-1">
+                            <h2>Intake form received</h2>
+                            <p id="successMsg">Thanks. Your details are in.</p>
+                            <p><strong>Next step:</strong> upload your W-2s, 1099s, and IDs through the secure portal.</p>
+                            <a href="#upload" class="upload-btn">
+                                <i data-feather="arrow-down" style="width: 18px; height: 18px;"></i>
+                                Go to secure upload
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <!-- UPLOAD SECTION -->
+                    <div class="upload-card" id="upload">
+                        <h2>Step 2: Upload documents</h2>
+                        <p class="signup-intro">Once you have submitted the intake form, use our secure Dropbox portal to upload your W-2s, 1099s, and IDs.</p>
+
+                        <div class="upload-section">
+                            <h3><i data-feather="lock" style="width: 18px; height: 18px;"></i> Secure document portal</h3>
+                            <p>No Dropbox account required. Your files are fully encrypted.</p>
+                            <a href="https://www.dropbox.com/request/DJ1llMlQHMkZ5bhpGaJz" class="upload-btn" target="_blank" rel="noopener noreferrer">
+                                <i data-feather="upload-cloud" style="width: 18px; height: 18px;"></i>
+                                Click here to upload documents
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
-        </div>
+        </section>
     </main>
 
     <!-- FOOTER -->
@@ -570,7 +687,7 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div style="border-top: 1px solid #D1D5DB; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.75rem; color: var(--text-gray);">
                 <div>
                     <span style="font-weight: 800; color: var(--primary-color); font-size: 1rem; margin-right: 16px;">Riska's Finance</span>
@@ -610,22 +727,19 @@
         // Mobile Nav Script
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const navMenu = document.getElementById('navMenu');
-        
+
         if (mobileMenuBtn && navMenu) {
-            // Toggle menu on button click
             mobileMenuBtn.addEventListener('click', (e) => {
                 navMenu.classList.toggle('active');
-                e.stopPropagation(); 
+                e.stopPropagation();
             });
 
-            // Close menu when clicking outside
             document.addEventListener('click', (e) => {
                 if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
                     navMenu.classList.remove('active');
                 }
             });
-            
-            // Close menu when a link inside it is clicked
+
             navMenu.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', () => {
                     navMenu.classList.remove('active');
@@ -633,61 +747,105 @@
             });
         }
 
-        // Business Logic Toggle
+        // --- TAX INTAKE FORM ---
+        // Posts to the same Formspree form as before. Requests arrive with the
+        // subject "New Tax Filing Intake: First Last".
+        const form = document.getElementById('tax-intake-form');
+        const btn = document.getElementById('submitBtn');
+        const formError = document.getElementById('formError');
+        const bizPanel = document.getElementById('businessFields');
+
         function toggleBusinessFields() {
             const isBusiness = document.querySelector('input[name="filing_type"][value="business"]').checked;
-            const fieldContainer = document.getElementById('business-fields');
-            fieldContainer.style.display = isBusiness ? 'block' : 'none';
+            bizPanel.style.display = isBusiness ? 'block' : 'none';
+        }
+        document.querySelectorAll('input[name="filing_type"]').forEach(r => r.addEventListener('change', toggleBusinessFields));
+        toggleBusinessFields();
+
+        function showError(id, on) {
+            const el = document.querySelector('.err[data-for="' + id + '"]');
+            if (el) el.classList.toggle('show', on);
+            const input = document.getElementById(id);
+            if (input) input.classList.toggle('invalid', on);
         }
 
-        // Form Submission Logic
-        const form = document.getElementById('tax-intake-form');
-        const submitBtn = document.getElementById('submit-btn');
-        const successMsg = document.getElementById('success-message');
+        function validate() {
+            let ok = true, firstBad = null;
 
-        if(form) {
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                submitBtn.disabled = true;
-                submitBtn.innerText = 'Sending...';
-                
-                try {
-                    const response = await fetch(form.action, {
-                        method: 'POST',
-                        body: new FormData(form),
-                        headers: { 'Accept': 'application/json' }
-                    });
-                    
-                    if (response.ok) {
-                        form.reset();
-                        successMsg.style.display = 'block';
-                        submitBtn.innerText = 'Submitted';
-                        
-                        // Scroll smoothly to the success message
-                        window.scrollTo({
-                            top: successMsg.getBoundingClientRect().top + window.scrollY - 120,
-                            behavior: 'smooth'
-                        });
-                        
-                        // Reset button after a few seconds
-                        setTimeout(() => {
-                            submitBtn.disabled = false;
-                            submitBtn.innerText = 'Submit Intake Form';
-                            successMsg.style.display = 'none';
-                        }, 8000);
-                        
-                    } else {
-                        alert('Oops! There was a problem submitting your form');
-                        submitBtn.disabled = false;
-                        submitBtn.innerText = 'Submit Intake Form';
-                    }
-                } catch (error) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = 'Submit Intake Form';
-                    alert('Oops! There was a problem submitting your form');
-                }
+            ['firstName', 'lastName'].forEach(id => {
+                const el = document.getElementById(id);
+                const bad = !el.value.trim();
+                showError(id, bad);
+                if (bad) { ok = false; firstBad = firstBad || el; }
             });
+
+            const email = document.getElementById('email');
+            const emailBad = !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim());
+            showError('email', emailBad);
+            if (emailBad) { ok = false; firstBad = firstBad || email; }
+
+            const consent = document.getElementById('consent');
+            document.getElementById('consentErr').classList.toggle('show', !consent.checked);
+            if (!consent.checked) { ok = false; firstBad = firstBad || consent; }
+
+            if (firstBad) firstBad.focus();
+            return ok;
         }
+
+        function done(firstName) {
+            form.reset();
+            toggleBusinessFields();
+            document.getElementById('formWrap').style.display = 'none';
+            const s = document.getElementById('success');
+            document.getElementById('successMsg').textContent = 'Thanks, ' + firstName + '. Your details are in.';
+            s.classList.add('show');
+            if (typeof feather !== 'undefined') feather.replace();
+            s.focus();
+            window.scrollTo({ top: s.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            formError.classList.remove('show');
+
+            // Honeypot: bots fill this in, people never see it.
+            if (form.elements['website'].value) return;
+            if (!validate()) return;
+
+            const first = form.elements['first_name'].value.trim();
+            const last = form.elements['last_name'].value.trim();
+            const data = new FormData(form);
+            data.delete('website');
+            data.set('_subject', 'New Tax Filing Intake: ' + first + ' ' + last);
+            data.set('form_type', 'Tax filing intake');
+            data.set('submitted_from', location.href);
+
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!response.ok) throw new Error('bad status');
+                if (typeof gtag === 'function') gtag('event', 'generate_lead', { form_name: 'tax_filing_intake' });
+                done(first);
+            } catch (err) {
+                formError.textContent = 'We couldn\'t send your intake form. Please try again, or call (815) 677-5807/(815) 440-1394.';
+                formError.classList.add('show');
+            }
+            btn.disabled = false;
+            btn.textContent = 'Submit intake form';
+        });
+
+        // Clear an error as soon as the field is fixed.
+        form.addEventListener('input', (e) => {
+            const t = e.target;
+            if (t.id) showError(t.id, false);
+            if (t.id === 'consent') document.getElementById('consentErr').classList.remove('show');
+        });
     </script>
 </body>
 </html>
