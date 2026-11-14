@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S3WPM2ECG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7S3WPM2ECG');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Client Sign In | Riska's Finance</title>
+    <meta name="description" content="Sign in to your Riska's Finance client dashboard." />
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/png" href="attached_assets/Capture1.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #FF6B35;
+            --dark-bg: #111827;
+            --light-bg: #F4F5F8;
+            --text-dark: #1A1A1A;
+            --text-gray: #6B7280;
+            --white: #FFFFFF;
+            --border-color: #E5E7EB;
+            --error-color: #B42318;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: var(--light-bg); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        a { text-decoration: none; }
+        .container { max-width: 1050px; margin: 0 auto; padding: 0 20px; }
+
+        /* NAV */
+        .header { background: var(--white); padding: 10px 0; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
+        .nav { display: flex; justify-content: space-between; align-items: center; max-width: 1150px; margin: 0 auto; padding: 0 20px; position: relative; }
+        .nav-brand { display: flex; align-items: center; gap: 10px; font-size: 1.25rem; font-weight: 800; color: var(--primary-color); letter-spacing: -0.5px; }
+        .brand-logo { height: 24px; }
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: var(--text-dark); cursor: pointer; padding: 5px; }
+        .nav-menu { display: flex; list-style: none; gap: 24px; align-items: center; }
+        .nav-item { position: relative; }
+        .nav-link { color: var(--text-dark); font-weight: 500; font-size: 0.85rem; transition: color 0.2s; cursor: pointer; }
+        .nav-link:hover, .nav-link.active { color: var(--primary-color); }
+        .dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--white); border: 1px solid var(--border-color); border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); list-style: none; padding: 8px 0; min-width: 180px; opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 100; }
+        .nav-dropdown:hover .dropdown-menu, .nav-dropdown:focus-within .dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(8px); }
+        .dropdown-menu li a { display: block; padding: 8px 20px; color: var(--text-dark); font-size: 0.85rem; font-weight: 500; transition: background 0.2s, color 0.2s; }
+        .dropdown-menu li a:hover { background: var(--light-bg); color: var(--primary-color); }
+
+        /* HERO */
+        .page-hero { background: linear-gradient(135deg, rgba(17,24,39,0.8) 0%, rgba(17,24,39,0.4) 100%), url('attached_assets/backround.png') no-repeat center center/cover; background-color: var(--dark-bg); padding: 80px 20px; text-align: center; }
+        .page-hero h1 { font-size: 2.8rem; color: var(--white); margin-bottom: 10px; letter-spacing: -1px; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        .page-hero p { color: var(--primary-color); font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* LAYOUT */
+        .signup-layout { display: grid; grid-template-columns: 290px 1fr; gap: 40px; padding: 4rem 0; align-items: start; }
+        .signup-sidebar { position: sticky; top: 80px; background: var(--white); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .signup-sidebar h3 { font-size: 1.05rem; margin-bottom: 1rem; }
+        .next-steps { list-style: none; margin-bottom: 1.5rem; counter-reset: step; }
+        .next-steps li { counter-increment: step; position: relative; padding: 0 0 16px 40px; font-size: 0.9rem; color: var(--text-gray); line-height: 1.5; }
+        .next-steps li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--primary-color); color: var(--white); font-weight: 700; font-size: 0.8rem; display: grid; place-items: center; }
+        .next-steps li:not(:last-child)::after { content: ""; position: absolute; left: 12px; top: 30px; bottom: 4px; width: 2px; background: var(--border-color); }
+        .next-steps strong { display: block; color: var(--text-dark); font-weight: 600; }
+        .sidebar-contact { border-top: 1px solid var(--border-color); padding-top: 1.1rem; font-size: 0.85rem; color: var(--text-gray); line-height: 1.7; }
+        .sidebar-contact a { color: var(--primary-color); font-weight: 600; }
+        .sidebar-contact a:hover { text-decoration: underline; }
+        .content-col { display: grid; gap: 24px; min-width: 0; }
+        .signup-content { background: var(--white); border: 1px solid var(--border-color); border-radius: 12px; padding: 3.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .signup-content h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .signup-intro { color: var(--text-gray); font-size: 0.95rem; line-height: 1.8; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--light-bg); }
+
+        /* FORM */
+        fieldset { border: 0; min-width: 0; margin-bottom: 2rem; }
+        legend { font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; padding: 0; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
+        .full { grid-column: 1 / -1; }
+        .field-label { display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 6px; }
+        input[type="text"], input[type="email"], select { width: 100%; font: inherit; font-size: 0.95rem; color: var(--text-dark); background: var(--white); border: 1px solid #D1D5DB; border-radius: 8px; padding: 11px 13px; min-height: 46px; }
+        input:focus, select:focus { outline: 3px solid rgba(255,107,53,0.3); border-color: var(--primary-color); }
+        .invalid { border-color: var(--error-color) !important; }
+        .err { color: var(--error-color); font-size: 0.83rem; margin-top: 5px; display: none; }
+        .err.show { display: block; }
+        .privacy-note { background: var(--light-bg); border-left: 4px solid var(--primary-color); border-radius: 4px; padding: 12px 14px; font-size: 0.88rem; color: var(--text-gray); }
+        .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+        :focus-visible { outline: 3px solid rgba(255,107,53,0.55); outline-offset: 2px; }
+        .form-error { color: var(--error-color); font-weight: 600; margin-top: 14px; display: none; }
+        .form-error.show { display: block; }
+
+        /* UPLOAD */
+        .upload-card { background: var(--white); border: 1px solid var(--border-color); border-top: 4px solid #16A34A; border-radius: 12px; padding: 2.5rem 3.5rem 3rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .upload-card h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .upload-section { background: #F0FDF4; border: 1px dashed #16A34A; border-radius: 12px; padding: 28px; text-align: center; transition: background 0.2s, border-color 0.2s; }
+        .upload-section.over { background: #DCFCE7; border-style: solid; }
+        .upload-section h3 { color: #166534; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .upload-section p { color: #166534; font-size: 0.9rem; margin-bottom: 1.25rem; }
+        .upload-btn { display: inline-flex; align-items: center; gap: 8px; background: #16A34A; color: #fff; padding: 14px 28px; border-radius: 50px; font: inherit; font-weight: 700; font-size: 0.95rem; border: 0; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 15px rgba(22,163,74,0.3); }
+        .upload-btn:hover { background: #15803D; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(22,163,74,0.4); }
+        .cf { display: flex; justify-content: center; margin-bottom: 1.25rem; }
+        .file-list { list-style: none; margin-top: 1.5rem; }
+        .file-list li { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 12px 14px; margin-bottom: 8px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.9rem; }
+        .file-list .name { font-weight: 600; overflow-wrap: anywhere; }
+        .file-list .bar { grid-column: 1 / -1; height: 5px; background: var(--border-color); border-radius: 3px; overflow: hidden; }
+        .file-list .bar i { display: block; height: 100%; width: 0; background: #16A34A; transition: width 0.2s; }
+        .st { color: var(--text-gray); font-weight: 600; }
+        .st.done { color: #146C43; }
+        .st.fail { color: var(--error-color); }
+
+        @media (max-width: 1024px) {
+            .mobile-menu-btn { display: block; }
+            .nav-menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--white); flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-top: 1px solid var(--border-color); align-items: flex-start; z-index: 1001; }
+            .nav-menu.active { display: flex; }
+            .dropdown-menu { position: static; transform: none !important; box-shadow: none; opacity: 1; visibility: visible; display: none; padding-left: 15px; margin-top: 10px; border: none; }
+            .nav-dropdown:hover .dropdown-menu, .nav-dropdown:focus-within .dropdown-menu { display: block; }
+        }
+        @media (max-width: 768px) {
+            .page-hero h1 { font-size: 2.2rem; }
+            .signup-layout { grid-template-columns: 1fr; gap: 20px; }
+            .signup-sidebar { position: static; margin-bottom: 1rem; }
+            .signup-content, .upload-card { padding: 2rem 1.25rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            input[type="text"], input[type="email"], select { font-size: 16px; }
+        }
+        @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+        /* DASHBOARD */
+        .dash-hero { padding: 56px 20px; }
+        .dash-hero h1 { font-size: 2.2rem; }
+        .sample-note { background: #FFF6F1; border: 1px solid #FFD9C7; border-radius: 8px; padding: 10px 14px; font-size: 0.85rem; color: var(--text-gray); margin-bottom: 20px; }
+        .acct-list { list-style: none; display: grid; gap: 8px; margin-bottom: 1.5rem; }
+        .acct-btn { width: 100%; text-align: left; font: inherit; background: var(--white); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+        .acct-btn:hover { border-color: #C5CBD3; }
+        .acct-btn[aria-pressed="true"] { border-color: var(--primary-color); background: #FFF6F1; }
+        .acct-btn strong { display: block; font-size: 0.92rem; }
+        .acct-btn span { font-size: 0.8rem; color: var(--text-gray); }
+        .side-links { border-top: 1px solid var(--border-color); padding-top: 1rem; margin-bottom: 1.1rem; display: grid; gap: 8px; font-size: 0.9rem; }
+        .side-links a { color: var(--primary-color); font-weight: 600; }
+        .acct-card { background: var(--white); border: 1px solid var(--border-color); border-left: 4px solid var(--primary-color); border-radius: 12px; padding: 1.75rem 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .acct-card h2 { font-size: 1.6rem; margin-bottom: 4px; }
+        .acct-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px 20px; margin-top: 1.1rem; padding-top: 1.1rem; border-top: 2px solid var(--light-bg); }
+        .acct-meta dt { font-size: 0.78rem; color: var(--text-gray); font-weight: 600; }
+        .acct-meta dd { font-size: 0.95rem; font-weight: 600; }
+        .badge { display: inline-block; font-size: 0.78rem; font-weight: 700; padding: 3px 10px; border-radius: 50px; background: var(--light-bg); color: var(--text-dark); }
+        .badge.warn { background: #FEF3C7; color: #92400E; }
+        .badge.bad { background: #FEE2E2; color: var(--error-color); }
+        .badge.ok { background: #DCFCE7; color: #146C43; }
+        .panel { background: var(--white); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem 2.25rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .panel.green { border-top: 4px solid #16A34A; }
+        .panel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 2px solid var(--light-bg); }
+        .panel-head h2 { font-size: 1.35rem; }
+        .panel-head .count { color: var(--text-gray); font-size: 0.88rem; font-weight: 600; }
+        .rows { list-style: none; }
+        .row-item { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-color); }
+        .row-item:last-child { border-bottom: 0; padding-bottom: 0; }
+        .row-title { font-weight: 600; font-size: 0.95rem; }
+        .row-sub { font-size: 0.85rem; color: var(--text-gray); }
+        .row-action { display: inline-block; font-weight: 700; font-size: 0.85rem; color: var(--white); background: var(--primary-color); padding: 8px 16px; border-radius: 50px; transition: background 0.2s; }
+        .row-action:hover { background: #E85A24; }
+        .row-action.green { background: #16A34A; }
+        .row-action.green:hover { background: #15803D; }
+        .empty { color: var(--text-gray); font-size: 0.92rem; padding: 6px 0; }
+        .timeline { list-style: none; }
+        .timeline li { position: relative; padding: 0 0 18px 28px; font-size: 0.92rem; }
+        .timeline li::before { content: ""; position: absolute; left: 0; top: 7px; width: 10px; height: 10px; border-radius: 50%; background: var(--primary-color); }
+        .timeline li:not(:last-child)::after { content: ""; position: absolute; left: 4px; top: 20px; bottom: 0; width: 2px; background: var(--border-color); }
+        .timeline time { display: block; font-size: 0.8rem; color: var(--text-gray); }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .two-col > * { min-width: 0; }
+        @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .panel, .acct-card { padding: 1.5rem 1.25rem; } .dash-hero h1 { font-size: 1.9rem; } }
+
+        /* LOGIN */
+        .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--light-bg); padding: 5px; border-radius: 10px; margin-bottom: 1.5rem; }
+        .tab { font: inherit; font-weight: 600; font-size: 0.92rem; padding: 10px; border: 0; border-radius: 8px; background: transparent; color: var(--text-gray); cursor: pointer; }
+        .tab[aria-selected="true"] { background: var(--white); color: var(--text-dark); box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+        .google-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; font: inherit; font-weight: 600; font-size: 0.95rem; min-height: 50px; background: var(--white); color: var(--text-dark); border: 1px solid #D1D5DB; border-radius: 8px; cursor: pointer; transition: background 0.2s, border-color 0.2s; }
+        .google-btn:hover { background: var(--light-bg); border-color: #9CA3AF; }
+        .or { display: flex; align-items: center; gap: 12px; color: var(--text-gray); font-size: 0.85rem; margin: 1.25rem 0; }
+        .or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--border-color); }
+        .stack { display: grid; gap: 16px; }
+        input[type="password"] { width: 100%; font: inherit; font-size: 0.95rem; color: var(--text-dark); background: var(--white); border: 1px solid #D1D5DB; border-radius: 8px; padding: 11px 13px; min-height: 46px; }
+        input[type="password"]:focus { outline: 3px solid rgba(255,107,53,0.3); border-color: var(--primary-color); }
+        @media (max-width: 768px) { input[type="password"] { font-size: 16px; } }
+        .link-btn { font: inherit; font-weight: 600; font-size: 0.88rem; color: var(--primary-color); background: none; border: 0; padding: 0; cursor: pointer; text-align: left; }
+        .link-btn:hover { text-decoration: underline; }
+        .msg { font-size: 0.9rem; font-weight: 600; margin-top: 14px; display: none; }
+        .msg.show { display: block; }
+        .msg.bad { color: var(--error-color); }
+        .msg.good { color: #146C43; }
+        .verify p { color: var(--text-gray); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a class="nav-brand" href="index.html">
+                <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo">
+                <span>Riska's Finance</span>
+            </a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu" aria-expanded="false">
+                <i data-feather="menu" style="width: 24px; height: 24px;"></i>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                <li class="nav-item"><a href="steps.html" class="nav-link">Steps to Success</a></li>
+                <li class="nav-item"><a href="tax-filing.html" class="nav-link">File Taxes</a></li>
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link" href="#" onclick="return false" aria-haspopup="true">Products ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://get.riskasfinance.com" target="_blank" rel="noopener noreferrer">ClearPay Software</a></li>
+                        <li><a href="fixedassets.html" target="_blank" rel="noopener noreferrer">Riska's Fixed Assets</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="dashboard.html" class="nav-link" style="color: var(--primary-color); font-weight: 700;">Sign In</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-hero dash-hero">
+            <div class="container">
+                <h1>Client Sign In</h1>
+                <p>Access your Riska's Finance dashboard</p>
+            </div>
+        </section>
+        <section class="container">
+            <div class="signup-layout">
+                <aside class="signup-sidebar">
+                    <h3>Before you sign in</h3>
+                    <ol class="next-steps">
+                        <li><strong>Use the email we have on file</strong>Sign in with Google or an email and password, using the address you gave Riska's Finance.</li>
+                        <li><strong>Verify your email</strong>New email accounts get a verification link. Google accounts are verified already.</li>
+                        <li><strong>See your dashboard</strong>Requests, deadlines, signatures, and recent activity, all in one place.</li>
+                    </ol>
+                    <div class="sidebar-contact">
+                        Not seeing your account?<br>
+                        Call <a href="tel:+18156775807">(815) 677-5807</a> or <a href="tel:+18154401394">(815) 440-1394</a><br>
+                        or email <a href="mailto:admin@riskasfinance.com">admin@riskasfinance.com</a>
+                    </div>
+                </aside>
+
+                <div class="content-col">
+                    <div class="signup-content" id="authCard">
+                        <div id="authView">
+                            <h2>Welcome back</h2>
+                            <p class="signup-intro">Sign in to see what we need from you and what's coming up.</p>
+
+                            <button type="button" class="google-btn" id="googleBtn">
+                                <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.5 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C1 16.3 0 20 0 24s1 7.7 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.3 0 11.6-2.1 15.5-5.7l-7.5-5.8c-2.1 1.4-4.8 2.3-8 2.3-6.3 0-11.6-4-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+                                Continue with Google
+                            </button>
+                            <div class="or">or use your email</div>
+
+                            <div class="tabs" role="tablist">
+                                <button class="tab" role="tab" id="tabIn" aria-selected="true" type="button">Sign in</button>
+                                <button class="tab" role="tab" id="tabUp" aria-selected="false" type="button">Create account</button>
+                            </div>
+
+                            <form id="authForm" class="stack" novalidate>
+                                <div id="nameWrap" hidden>
+                                    <label class="field-label" for="name">Full name *</label>
+                                    <input type="text" id="name" autocomplete="name" placeholder="John Doe">
+                                </div>
+                                <div>
+                                    <label class="field-label" for="email">Email address *</label>
+                                    <input type="email" id="email" autocomplete="email" placeholder="john@example.com">
+                                </div>
+                                <div>
+                                    <label class="field-label" for="pw">Password *</label>
+                                    <input type="password" id="pw" autocomplete="current-password">
+                                </div>
+                                <button type="submit" class="submit-btn" id="submitBtn">Sign in</button>
+                                <button type="button" class="link-btn" id="forgotBtn">Forgot your password?</button>
+                            </form>
+                            <div class="msg" id="msg" role="alert"></div>
+                        </div>
+
+                        <div class="verify" id="verifyView" hidden>
+                            <h2>Verify your email</h2>
+                            <p id="verifyText"></p>
+                            <button type="button" class="submit-btn" id="verifiedBtn">I've verified my email</button>
+                            <p style="margin-top:1rem"><button type="button" class="link-btn" id="resendBtn">Resend the link</button> &nbsp;&middot;&nbsp; <button type="button" class="link-btn" id="otherBtn">Use a different account</button></p>
+                            <div class="msg" id="vmsg" role="alert"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer" style="padding: 4rem 0 2.5rem; background: var(--white); border-top: 1px solid var(--border-color);">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 30px; margin-bottom: 40px;">
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">Company</h4>
+                    <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li><a href="about.html" style="color: inherit;">About Us</a></li>
+                        <li><a href="contact.html" style="color: inherit;">Contact Us</a></li>
+                        <li><a href="dashboard.html" style="color: inherit;">Sign In</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">For Individuals</h4>
+                    <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li><a href="tax-filing.html" style="color: inherit;">Tax Preparation</a></li>
+                        <li><a href="https://calendly.com/riskas-finances/30min" target="_blank" rel="noopener noreferrer" style="color: inherit;">Tax Consulting</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">For Business</h4>
+                    <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li><a href="accounting.html" style="color: inherit;">Accounting</a></li>
+                        <li><a href="fixedassets.html" style="color: inherit;">Riska's Fixed Assets</a></li>
+                        <li><a href="https://get.riskasfinance.com/" target="_blank" rel="noopener noreferrer" style="color: inherit;">ClearPay Software</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">Contact</h4>
+                    <ul style="list-style: none; line-height: 2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li>614 Crawford Ave</li>
+                        <li>Dixon IL, 61021</li>
+                        <li style="margin-top: 8px;"><strong><a href="tel:+18156775807" style="color: inherit;">+1 (815) 677-5807</a> / <a href="tel:+18154401394" style="color: inherit;">(815) 440-1394</a></strong></li>
+                        <li>admin@riskasfinance.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="border-top: 1px solid #D1D5DB; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.75rem; color: var(--text-gray);">
+                <div>
+                    <span style="font-weight: 800; color: var(--primary-color); font-size: 1rem; margin-right: 16px;">Riska's Finance</span>
+                    © 2026 Riska's Finance LLC. All rights reserved.
+                </div>
+                <div style="display: flex; gap: 16px;">
+                    <a href="legal.html#terms" style="color: inherit;">Legal</a>
+                    <a href="legal.html#privacy" style="color: inherit;">Privacy</a>
+                    <a href="legal.html#security" style="color: inherit;">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="riska-bubble-tooltip" style="position:fixed; bottom:78px; right:20px; background:#fff; color:#1a0a00; font-size:12px; font-family:'Inter',sans-serif; font-weight:600; padding:6px 12px; border-radius:20px; box-shadow:0 2px 10px rgba(0,0,0,0.2); white-space:nowrap; z-index:9999; display:none; pointer-events:none;">Ask Riska AI ✦</div>
+    <button onclick="window.open('https://ai.riskasfinance.com','_blank')"
+        onmouseenter="document.getElementById('riska-bubble-tooltip').style.display='block'"
+        onmouseleave="document.getElementById('riska-bubble-tooltip').style.display='none'"
+        aria-label="Open Riska AI"
+        style="position:fixed; bottom:20px; right:20px; width:48px; height:48px; border-radius:50%; background:var(--primary-color); border:none; cursor:pointer; z-index:9999; box-shadow:0 4px 16px rgba(255,107,53,0.45); display:flex; align-items:center; justify-content:center;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+    </button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
+    <script type="module">
+        import { auth } from "./client-firebase.js";
+        import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+                 sendEmailVerification, sendPasswordResetEmail, updateProfile, onAuthStateChanged, signOut }
+            from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        if (typeof feather !== 'undefined') feather.replace();
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        mobileMenuBtn.addEventListener('click', (e) => { const o = navMenu.classList.toggle('active'); mobileMenuBtn.setAttribute('aria-expanded', o); e.stopPropagation(); });
+
+        const $ = id => document.getElementById(id);
+        let mode = "in";
+
+        function say(id, text, kind) { const m = $(id); m.textContent = text; m.className = "msg show " + kind; }
+        function clear() { ["msg", "vmsg"].forEach(i => $(i).className = "msg"); }
+
+        function setMode(m) {
+            mode = m; clear();
+            $("tabIn").setAttribute("aria-selected", m === "in");
+            $("tabUp").setAttribute("aria-selected", m === "up");
+            $("nameWrap").hidden = m === "in";
+            $("submitBtn").textContent = m === "in" ? "Sign in" : "Create account";
+            $("pw").autocomplete = m === "in" ? "current-password" : "new-password";
+            $("forgotBtn").hidden = m === "up";
+        }
+        $("tabIn").addEventListener("click", () => setMode("in"));
+        $("tabUp").addEventListener("click", () => setMode("up"));
+
+        const ERRORS = {
+            "auth/invalid-credential": "That email and password don't match. Try again, reset your password, or continue with Google.",
+            "auth/invalid-email": "Enter a valid email address.",
+            "auth/email-already-in-use": "An account with that email already exists. Sign in instead, or continue with Google.",
+            "auth/weak-password": "Use a password with at least 8 characters.",
+            "auth/too-many-requests": "Too many attempts. Wait a few minutes, then try again.",
+            "auth/popup-closed-by-user": "Google sign-in was closed before it finished.",
+            "auth/popup-blocked": "Your browser blocked the Google window. Allow pop-ups for this site and try again.",
+            "auth/unauthorized-domain": "This website isn't authorized for sign-in yet. Contact Riska's Finance.",
+            "auth/network-request-failed": "Network problem. Check your connection and try again."
+        };
+        const fail = (id, e) => say(id, ERRORS[e.code] || "Something went wrong. Please try again, or call (815) 677-5807.", "bad");
+
+        // Route by state: verified -> dashboard, unverified -> verify screen, signed out -> form
+        onAuthStateChanged(auth, user => {
+            if (user && user.emailVerified) { location.replace("client-dashboard.html"); return; }
+            $("authView").hidden = !!user;
+            $("verifyView").hidden = !user;
+            if (user) $("verifyText").textContent = "We sent a verification link to " + user.email + ". Open it, then come back and press the button below.";
+        });
+
+        $("googleBtn").addEventListener("click", async () => {
+            clear();
+            try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch (e) { fail("msg", e); }
+        });
+
+        $("authForm").addEventListener("submit", async (e) => {
+            e.preventDefault(); clear();
+            const email = $("email").value.trim(), pw = $("pw").value, name = $("name").value.trim();
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return say("msg", ERRORS["auth/invalid-email"], "bad");
+            if (!pw) return say("msg", "Enter your password.", "bad");
+            if (mode === "up" && !name) return say("msg", "Enter your full name.", "bad");
+            if (mode === "up" && pw.length < 8) return say("msg", ERRORS["auth/weak-password"], "bad");
+            const btn = $("submitBtn"); btn.disabled = true;
+            try {
+                if (mode === "in") {
+                    await signInWithEmailAndPassword(auth, email, pw);
+                } else {
+                    const cred = await createUserWithEmailAndPassword(auth, email, pw);
+                    await updateProfile(cred.user, { displayName: name });
+                    await sendEmailVerification(cred.user);
+                }
+            } catch (err) { fail("msg", err); }
+            btn.disabled = false;
+        });
+
+        $("forgotBtn").addEventListener("click", async () => {
+            clear();
+            const email = $("email").value.trim();
+            if (!email) return say("msg", "Enter your email above first.", "bad");
+            try { await sendPasswordResetEmail(auth, email); } catch (e) { if (e.code === "auth/invalid-email") return fail("msg", e); }
+            say("msg", "If an account exists for that email, a reset link is on its way.", "good");
+        });
+
+        $("verifiedBtn").addEventListener("click", async () => {
+            clear();
+            await auth.currentUser.reload();
+            if (auth.currentUser.emailVerified) {
+                await auth.currentUser.getIdToken(true); // refresh the email_verified claim
+                location.replace("client-dashboard.html");
+            } else say("vmsg", "We can't see the verification yet. Open the link in your email, then try again.", "bad");
+        });
+        $("resendBtn").addEventListener("click", async () => {
+            clear();
+            try { await sendEmailVerification(auth.currentUser); say("vmsg", "Sent. Check your inbox and spam folder.", "good"); } catch (e) { fail("vmsg", e); }
+        });
+        $("otherBtn").addEventListener("click", () => signOut(auth));
+    </script>
+</body>
+</html>

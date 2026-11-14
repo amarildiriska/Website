@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | Riska's Finance</title>
+    <link rel="icon" type="image/png" href="attached_assets/Capture1.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #FF6B35;
+            --dark-bg: #111827;
+            --light-bg: #F4F5F8;
+            --text-dark: #1A1A1A;
+            --text-gray: #6B7280;
+            --white: #FFFFFF;
+            --border-color: #E5E7EB;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: var(--light-bg); line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
+        
+        /* HEADER */
+        .header { background: var(--white); padding: 15px 0; border-bottom: 1px solid var(--border-color); }
+        .nav-brand { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.25rem; font-weight: 800; color: var(--primary-color); text-decoration: none; }
+        .brand-logo { height: 28px; }
+
+        /* CONTAINER */
+        .portal-wrapper { max-width: 900px; margin: 4rem auto; padding: 0 20px; width: 100%; }
+        .portal-card-main { background: var(--white); border: 1px solid var(--border-color); border-radius: 16px; padding: 3rem 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.04); text-align: center; }
+        
+        .portal-header h2 { font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin-bottom: 6px; letter-spacing: -0.5px; }
+        .portal-header p { color: var(--text-gray); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3rem; }
+
+        .portals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2.5rem; text-align: left; }
+        
+        .portal-option { background: var(--light-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease; }
+        .portal-option:hover { border-color: var(--primary-color); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.05); background: var(--white); }
+
+        .portal-icon { width: 44px; height: 44px; background: #FFF6F1; color: var(--primary-color); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.2rem; }
+        .portal-option h3 { font-size: 1.2rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.5rem; }
+        .portal-option p { color: var(--text-gray); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; }
+
+        .portal-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 20px; border-radius: 50px; font-weight: 700; font-size: 0.9rem; text-decoration: none; transition: all 0.2s; cursor: pointer; border: none; }
+        .portal-btn.staff { background: #0f172a; color: white; }
+        .portal-btn.staff:hover { background: #1e293b; }
+        .portal-btn.client { background: #16A34A; color: white; }
+        .portal-btn.client:hover { background: #15803D; }
+
+        .portal-footer-note { color: var(--text-gray); font-size: 0.85rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; }
+
+        /* FOOTER */
+        .footer { text-align: center; padding: 2rem; color: var(--text-gray); font-size: 0.8rem; border-top: 1px solid var(--border-color); background: var(--white); }
+        .footer a { color: var(--primary-color); text-decoration: none; font-weight: 600; }
+
+        @media (max-width: 768px) {
+            .portals-grid { grid-template-columns: 1fr; }
+            .portal-card-main { padding: 2rem 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a class="nav-brand" href="index.html">
+            <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo">
+            <span>Riska's Finance</span>
+        </a>
+    </header>
+
+    <main class="portal-wrapper">
+        <div class="portal-card-main">
+            <div class="portal-header">
+                <h2>Riska's Finance</h2>
+                <p>Accounting &bull; Tax &bull; Business Solutions</p>
+            </div>
+
+            <div class="portals-grid">
+                <!-- Employee Portal -->
+                <div class="portal-option">
+                    <div>
+                        <div class="portal-icon">
+                            <i data-feather="users" style="width: 22px; height: 22px;"></i>
+                        </div>
+                        <h3>Employee Portal</h3>
+                        <p>Internal operations, employee tasks, administration and workflow.</p>
+                    </div>
+                    <a href="dashboard.html" class="portal-btn staff">Employees</a>
+                </div>
+
+                <!-- Client Portal -->
+                <div class="portal-option">
+                    <div>
+                        <div class="portal-icon">
+                            <i data-feather="user" style="width: 22px; height: 22px;"></i>
+                        </div>
+                        <h3>Client Portal</h3>
+                        <p>Documents, tax returns, invoices, communication and account management.</p>
+                    </div>
+                    <a href="client-login.html" class="portal-btn client">Clients</a>
+                </div>
+            </div>
+
+            <div class="portal-footer-note">
+                Two separate experiences connected to the Riska's Finance ecosystem.
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        © 2026 Riska's Finance LLC. All rights reserved. &bull; <a href="index.html">Return to Home</a>
+    </footer>
+
+    <script>
+        if (typeof feather !== 'undefined') feather.replace();
+    </script>
+</body>
+</html>

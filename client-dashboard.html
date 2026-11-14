@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S3WPM2ECG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7S3WPM2ECG');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Client Dashboard | Riska's Finance</title>
+    <meta name="description" content="Your Riska's Finance client dashboard." />
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/png" href="attached_assets/Capture1.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #FF6B35;
+            --dark-bg: #111827;
+            --light-bg: #F4F5F8;
+            --text-dark: #1A1A1A;
+            --text-gray: #6B7280;
+            --white: #FFFFFF;
+            --border-color: #E5E7EB;
+            --error-color: #B42318;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: var(--light-bg); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        a { text-decoration: none; }
+        .container { max-width: 1050px; margin: 0 auto; padding: 0 20px; }
+
+        /* NAV */
+        .header { background: var(--white); padding: 10px 0; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
+        .nav { display: flex; justify-content: space-between; align-items: center; max-width: 1150px; margin: 0 auto; padding: 0 20px; position: relative; }
+        .nav-brand { display: flex; align-items: center; gap: 10px; font-size: 1.25rem; font-weight: 800; color: var(--primary-color); letter-spacing: -0.5px; }
+        .brand-logo { height: 24px; }
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: var(--text-dark); cursor: pointer; padding: 5px; }
+        .nav-menu { display: flex; list-style: none; gap: 24px; align-items: center; }
+        .nav-item { position: relative; }
+        .nav-link { color: var(--text-dark); font-weight: 500; font-size: 0.85rem; transition: color 0.2s; cursor: pointer; }
+        .nav-link:hover, .nav-link.active { color: var(--primary-color); }
+        .dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--white); border: 1px solid var(--border-color); border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); list-style: none; padding: 8px 0; min-width: 180px; opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 100; }
+        .nav-dropdown:hover .dropdown-menu, .nav-dropdown:focus-within .dropdown-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(8px); }
+        .dropdown-menu li a { display: block; padding: 8px 20px; color: var(--text-dark); font-size: 0.85rem; font-weight: 500; transition: background 0.2s, color 0.2s; }
+        .dropdown-menu li a:hover { background: var(--light-bg); color: var(--primary-color); }
+
+        /* HERO */
+        .page-hero { background: linear-gradient(135deg, rgba(17,24,39,0.8) 0%, rgba(17,24,39,0.4) 100%), url('attached_assets/backround.png') no-repeat center center/cover; background-color: var(--dark-bg); padding: 80px 20px; text-align: center; }
+        .page-hero h1 { font-size: 2.8rem; color: var(--white); margin-bottom: 10px; letter-spacing: -1px; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        .page-hero p { color: var(--primary-color); font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* LAYOUT */
+        .signup-layout { display: grid; grid-template-columns: 290px 1fr; gap: 40px; padding: 4rem 0; align-items: start; }
+        .signup-sidebar { position: sticky; top: 80px; background: var(--white); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .signup-sidebar h3 { font-size: 1.05rem; margin-bottom: 1rem; }
+        .next-steps { list-style: none; margin-bottom: 1.5rem; counter-reset: step; }
+        .next-steps li { counter-increment: step; position: relative; padding: 0 0 16px 40px; font-size: 0.9rem; color: var(--text-gray); line-height: 1.5; }
+        .next-steps li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--primary-color); color: var(--white); font-weight: 700; font-size: 0.8rem; display: grid; place-items: center; }
+        .next-steps li:not(:last-child)::after { content: ""; position: absolute; left: 12px; top: 30px; bottom: 4px; width: 2px; background: var(--border-color); }
+        .next-steps strong { display: block; color: var(--text-dark); font-weight: 600; }
+        .sidebar-contact { border-top: 1px solid var(--border-color); padding-top: 1.1rem; font-size: 0.85rem; color: var(--text-gray); line-height: 1.7; }
+        .sidebar-contact a { color: var(--primary-color); font-weight: 600; }
+        .sidebar-contact a:hover { text-decoration: underline; }
+        .content-col { display: grid; gap: 24px; min-width: 0; }
+        .signup-content { background: var(--white); border: 1px solid var(--border-color); border-radius: 12px; padding: 3.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .signup-content h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .signup-intro { color: var(--text-gray); font-size: 0.95rem; line-height: 1.8; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--light-bg); }
+
+        /* FORM */
+        fieldset { border: 0; min-width: 0; margin-bottom: 2rem; }
+        legend { font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; padding: 0; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
+        .full { grid-column: 1 / -1; }
+        .field-label { display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 6px; }
+        input[type="text"], input[type="email"], select { width: 100%; font: inherit; font-size: 0.95rem; color: var(--text-dark); background: var(--white); border: 1px solid #D1D5DB; border-radius: 8px; padding: 11px 13px; min-height: 46px; }
+        input:focus, select:focus { outline: 3px solid rgba(255,107,53,0.3); border-color: var(--primary-color); }
+        .invalid { border-color: var(--error-color) !important; }
+        .err { color: var(--error-color); font-size: 0.83rem; margin-top: 5px; display: none; }
+        .err.show { display: block; }
+        .privacy-note { background: var(--light-bg); border-left: 4px solid var(--primary-color); border-radius: 4px; padding: 12px 14px; font-size: 0.88rem; color: var(--text-gray); }
+        .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+        :focus-visible { outline: 3px solid rgba(255,107,53,0.55); outline-offset: 2px; }
+        .form-error { color: var(--error-color); font-weight: 600; margin-top: 14px; display: none; }
+        .form-error.show { display: block; }
+
+        /* UPLOAD */
+        .upload-card { background: var(--white); border: 1px solid var(--border-color); border-top: 4px solid #16A34A; border-radius: 12px; padding: 2.5rem 3.5rem 3rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .upload-card h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .upload-section { background: #F0FDF4; border: 1px dashed #16A34A; border-radius: 12px; padding: 28px; text-align: center; transition: background 0.2s, border-color 0.2s; }
+        .upload-section.over { background: #DCFCE7; border-style: solid; }
+        .upload-section h3 { color: #166534; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .upload-section p { color: #166534; font-size: 0.9rem; margin-bottom: 1.25rem; }
+        .upload-btn { display: inline-flex; align-items: center; gap: 8px; background: #16A34A; color: #fff; padding: 14px 28px; border-radius: 50px; font: inherit; font-weight: 700; font-size: 0.95rem; border: 0; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 15px rgba(22,163,74,0.3); }
+        .upload-btn:hover { background: #15803D; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(22,163,74,0.4); }
+        .cf { display: flex; justify-content: center; margin-bottom: 1.25rem; }
+        .file-list { list-style: none; margin-top: 1.5rem; }
+        .file-list li { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 12px 14px; margin-bottom: 8px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.9rem; }
+        .file-list .name { font-weight: 600; overflow-wrap: anywhere; }
+        .file-list .bar { grid-column: 1 / -1; height: 5px; background: var(--border-color); border-radius: 3px; overflow: hidden; }
+        .file-list .bar i { display: block; height: 100%; width: 0; background: #16A34A; transition: width 0.2s; }
+        .st { color: var(--text-gray); font-weight: 600; }
+        .st.done { color: #146C43; }
+        .st.fail { color: var(--error-color); }
+
+        @media (max-width: 1024px) {
+            .mobile-menu-btn { display: block; }
+            .nav-menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--white); flex-direction: column; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-top: 1px solid var(--border-color); align-items: flex-start; z-index: 1001; }
+            .nav-menu.active { display: flex; }
+            .dropdown-menu { position: static; transform: none !important; box-shadow: none; opacity: 1; visibility: visible; display: none; padding-left: 15px; margin-top: 10px; border: none; }
+            .nav-dropdown:hover .dropdown-menu, .nav-dropdown:focus-within .dropdown-menu { display: block; }
+        }
+        @media (max-width: 768px) {
+            .page-hero h1 { font-size: 2.2rem; }
+            .signup-layout { grid-template-columns: 1fr; gap: 20px; }
+            .signup-sidebar { position: static; margin-bottom: 1rem; }
+            .signup-content, .upload-card { padding: 2rem 1.25rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            input[type="text"], input[type="email"], select { font-size: 16px; }
+        }
+        @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+        /* DASHBOARD */
+        .dash-hero { padding: 56px 20px; }
+        .dash-hero h1 { font-size: 2.2rem; }
+        .sample-note { background: #FFF6F1; border: 1px solid #FFD9C7; border-radius: 8px; padding: 10px 14px; font-size: 0.85rem; color: var(--text-gray); margin-bottom: 20px; }
+        .acct-list { list-style: none; display: grid; gap: 8px; margin-bottom: 1.5rem; }
+        .acct-btn { width: 100%; text-align: left; font: inherit; background: var(--white); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+        .acct-btn:hover { border-color: #C5CBD3; }
+        .acct-btn[aria-pressed="true"] { border-color: var(--primary-color); background: #FFF6F1; }
+        .acct-btn strong { display: block; font-size: 0.92rem; }
+        .acct-btn span { font-size: 0.8rem; color: var(--text-gray); }
+        .side-links { border-top: 1px solid var(--border-color); padding-top: 1rem; margin-bottom: 1.1rem; display: grid; gap: 8px; font-size: 0.9rem; }
+        .side-links a { color: var(--primary-color); font-weight: 600; }
+        .acct-card { background: var(--white); border: 1px solid var(--border-color); border-left: 4px solid var(--primary-color); border-radius: 12px; padding: 1.75rem 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .acct-card h2 { font-size: 1.6rem; margin-bottom: 4px; }
+        .acct-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px 20px; margin-top: 1.1rem; padding-top: 1.1rem; border-top: 2px solid var(--light-bg); }
+        .acct-meta dt { font-size: 0.78rem; color: var(--text-gray); font-weight: 600; }
+        .acct-meta dd { font-size: 0.95rem; font-weight: 600; }
+        .badge { display: inline-block; font-size: 0.78rem; font-weight: 700; padding: 3px 10px; border-radius: 50px; background: var(--light-bg); color: var(--text-dark); }
+        .badge.warn { background: #FEF3C7; color: #92400E; }
+        .badge.bad { background: #FEE2E2; color: var(--error-color); }
+        .badge.ok { background: #DCFCE7; color: #146C43; }
+        .panel { background: var(--white); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem 2.25rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .panel.green { border-top: 4px solid #16A34A; }
+        .panel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 2px solid var(--light-bg); }
+        .panel-head h2 { font-size: 1.35rem; }
+        .panel-head .count { color: var(--text-gray); font-size: 0.88rem; font-weight: 600; }
+        .rows { list-style: none; }
+        .row-item { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-color); }
+        .row-item:last-child { border-bottom: 0; padding-bottom: 0; }
+        .row-title { font-weight: 600; font-size: 0.95rem; }
+        .row-sub { font-size: 0.85rem; color: var(--text-gray); }
+        .row-action { display: inline-block; font-weight: 700; font-size: 0.85rem; color: var(--white); background: var(--primary-color); padding: 8px 16px; border-radius: 50px; transition: background 0.2s; }
+        .row-action:hover { background: #E85A24; }
+        .row-action.green { background: #16A34A; }
+        .row-action.green:hover { background: #15803D; }
+        .empty { color: var(--text-gray); font-size: 0.92rem; padding: 6px 0; }
+        .timeline { list-style: none; }
+        .timeline li { position: relative; padding: 0 0 18px 28px; font-size: 0.92rem; }
+        .timeline li::before { content: ""; position: absolute; left: 0; top: 7px; width: 10px; height: 10px; border-radius: 50%; background: var(--primary-color); }
+        .timeline li:not(:last-child)::after { content: ""; position: absolute; left: 4px; top: 20px; bottom: 0; width: 2px; background: var(--border-color); }
+        .timeline time { display: block; font-size: 0.8rem; color: var(--text-gray); }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .two-col > * { min-width: 0; }
+        @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .panel, .acct-card { padding: 1.5rem 1.25rem; } .dash-hero h1 { font-size: 1.9rem; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a class="nav-brand" href="index.html">
+                <img src="attached_assets/Capture1.png" alt="Riska's Finance Logo" class="brand-logo">
+                <span>Riska's Finance</span>
+            </a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu" aria-expanded="false">
+                <i data-feather="menu" style="width: 24px; height: 24px;"></i>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                <li class="nav-item"><a href="steps.html" class="nav-link">Steps to Success</a></li>
+                <li class="nav-item"><a href="tax-filing.html" class="nav-link">File Taxes</a></li>
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link" href="#" onclick="return false" aria-haspopup="true">Products ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://get.riskasfinance.com" target="_blank" rel="noopener noreferrer">ClearPay Software</a></li>
+                        <li><a href="fixedassets.html" target="_blank" rel="noopener noreferrer">Riska's Fixed Assets</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="#" id="signOutLink" class="nav-link" style="color: var(--primary-color); font-weight: 700;">Sign out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-hero dash-hero">
+            <div class="container">
+                <h1 id="welcome">Client Dashboard</h1>
+                <p>Your account at a glance</p>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="signup-layout">
+                <aside class="signup-sidebar">
+                    <h3>Your accounts</h3>
+                    <ul class="acct-list" id="acctList"></ul>
+                    <div class="side-links">
+                        <a href="portal.html">Upload documents</a>
+                        <a href="contact.html">Contact your preparer</a>
+                    </div>
+                    <div class="sidebar-contact">
+                        Need help?<br>
+                        Call <a href="tel:+18156775807">(815) 677-5807</a> or <a href="tel:+18154401394">(815) 440-1394</a><br>
+                        or email <a href="mailto:admin@riskasfinance.com">admin@riskasfinance.com</a>
+                    </div>
+                </aside>
+
+                <div class="content-col">
+                    <div class="acct-card" id="acctCard" aria-live="polite"></div>
+
+                    <div class="panel green" id="requestsPanel">
+                        <div class="panel-head"><h2>Outstanding requests</h2><span class="count" id="reqCount"></span></div>
+                        <ul class="rows" id="requests"></ul>
+                    </div>
+
+                    <div class="panel" id="signPanel">
+                        <div class="panel-head"><h2>Pending signatures</h2><span class="count" id="signCount"></span></div>
+                        <ul class="rows" id="signatures"></ul>
+                    </div>
+
+                    <div class="two-col" id="lowerPanels">
+                        <div class="panel">
+                            <div class="panel-head"><h2>Upcoming deadlines</h2></div>
+                            <ul class="rows" id="deadlines"></ul>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-head"><h2>Recent activity</h2></div>
+                            <ul class="timeline" id="activity"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer" style="padding: 4rem 0 2.5rem; background: var(--white); border-top: 1px solid var(--border-color);">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 30px; margin-bottom: 40px;">
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">Company</h4>
+                    <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li><a href="about.html" style="color: inherit;">About Us</a></li>
+                        <li><a href="contact.html" style="color: inherit;">Contact Us</a></li>
+                        <li><a href="dashboard.html" style="color: inherit;">Sign In</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">For Individuals</h4>
+                    <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li><a href="tax-filing.html" style="color: inherit;">Tax Preparation</a></li>
+                        <li><a href="https://calendly.com/riskas-finances/30min" target="_blank" rel="noopener noreferrer" style="color: inherit;">Tax Consulting</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">For Business</h4>
+                    <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li><a href="accounting.html" style="color: inherit;">Accounting</a></li>
+                        <li><a href="fixedassets.html" style="color: inherit;">Riska's Fixed Assets</a></li>
+                        <li><a href="https://get.riskasfinance.com/" target="_blank" rel="noopener noreferrer" style="color: inherit;">ClearPay Software</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-weight: 700; margin-bottom: 16px; font-size: 0.9rem;">Contact</h4>
+                    <ul style="list-style: none; line-height: 2; font-size: 0.8rem; color: var(--text-gray);">
+                        <li>614 Crawford Ave</li>
+                        <li>Dixon IL, 61021</li>
+                        <li style="margin-top: 8px;"><strong><a href="tel:+18156775807" style="color: inherit;">+1 (815) 677-5807</a> / <a href="tel:+18154401394" style="color: inherit;">(815) 440-1394</a></strong></li>
+                        <li>admin@riskasfinance.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="border-top: 1px solid #D1D5DB; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; font-size: 0.75rem; color: var(--text-gray);">
+                <div>
+                    <span style="font-weight: 800; color: var(--primary-color); font-size: 1rem; margin-right: 16px;">Riska's Finance</span>
+                    © 2026 Riska's Finance LLC. All rights reserved.
+                </div>
+                <div style="display: flex; gap: 16px;">
+                    <a href="legal.html#terms" style="color: inherit;">Legal</a>
+                    <a href="legal.html#privacy" style="color: inherit;">Privacy</a>
+                    <a href="legal.html#security" style="color: inherit;">Security</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="riska-bubble-tooltip" style="position:fixed; bottom:78px; right:20px; background:#fff; color:#1a0a00; font-size:12px; font-family:'Inter',sans-serif; font-weight:600; padding:6px 12px; border-radius:20px; box-shadow:0 2px 10px rgba(0,0,0,0.2); white-space:nowrap; z-index:9999; display:none; pointer-events:none;">Ask Riska AI ✦</div>
+    <button onclick="window.open('https://ai.riskasfinance.com','_blank')"
+        onmouseenter="document.getElementById('riska-bubble-tooltip').style.display='block'"
+        onmouseleave="document.getElementById('riska-bubble-tooltip').style.display='none'"
+        aria-label="Open Riska AI"
+        style="position:fixed; bottom:20px; right:20px; width:48px; height:48px; border-radius:50%; background:var(--primary-color); border:none; cursor:pointer; z-index:9999; box-shadow:0 4px 16px rgba(255,107,53,0.45); display:flex; align-items:center; justify-content:center;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+    </button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js"></script>
+    <script type="module">
+        import { auth, db } from "./client-firebase.js";
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { collection, query, where, orderBy, limit, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        if (typeof feather !== 'undefined') feather.replace();
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        mobileMenuBtn.addEventListener('click', (e) => {
+            const open = navMenu.classList.toggle('active');
+            mobileMenuBtn.setAttribute('aria-expanded', open);
+            e.stopPropagation();
+        });
+        document.addEventListener('click', (e) => {
+            if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) navMenu.classList.remove('active');
+        });
+
+        const iso = v => !v ? "" : (typeof v === "string" ? v : (v.toDate ? v.toDate().toISOString() : new Date(v).toISOString()));
+        const rows = snap => snap.docs.map(x => ({ id: x.id, ...x.data() }));
+
+        async function getDashboardData(user) {
+            const email = user.email.toLowerCase();
+            const accountsRef = collection(db, "accounts");
+            let snap = await getDocs(query(accountsRef, where("memberEmails", "array-contains", email)));
+
+            // Automatically create an account document if it doesn't exist yet
+            if (snap.empty) {
+                await addDoc(accountsRef, {
+                    name: user.displayName || email.split("@")[0],
+                    type: "Individual",
+                    entity: "Form 1040",
+                    taxYear: "2026",
+                    status: "Client",
+                    preparer: "Riska's Finance",
+                    memberEmails: [email] // Correctly saved as a Firestore Array!
+                });
+                snap = await getDocs(query(accountsRef, where("memberEmails", "array-contains", email)));
+            }
+
+            console.log("[dashboard] looked up", JSON.stringify(email), "-> accounts found:", snap.size);
+            const accounts = await Promise.all(snap.docs.map(async doc => {
+                const sub = n => collection(doc.ref, n);
+                const [rq, dl, sg, ac] = await Promise.all([
+                    getDocs(query(sub("requests"), where("status", "==", "open"))),
+                    getDocs(sub("deadlines")),
+                    getDocs(query(sub("signatures"), where("status", "==", "pending"))),
+                    getDocs(query(sub("activity"), orderBy("at", "desc"), limit(10)))
+                ]);
+                const a = doc.data();
+                return {
+                    id: doc.id, name: a.name || "Account", type: a.type || "Individual", entity: a.entity || "",
+                    taxYear: a.taxYear || "", status: a.status || "Active", preparer: a.preparer || "Riska's Finance",
+                    requests: rows(rq).map(r => ({ ...r, due: iso(r.due).slice(0, 10) })),
+                    deadlines: rows(dl).map(r => ({ ...r, date: iso(r.date).slice(0, 10) })),
+                    signatures: rows(sg).map(r => ({ ...r, sent: iso(r.sent) })),
+                    activity: rows(ac).map(r => ({ ...r, at: iso(r.at) }))
+                };
+            }));
+            return { clientName: (user.displayName || "").split(" ")[0], accounts };
+        }
+
+        // ---------------------------------------------------------------
+        const $ = id => document.getElementById(id);
+        const fmtDate = s => new Date(s.length === 10 ? s + "T12:00:00" : s).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+        const daysFrom = s => Math.round((new Date(s + "T12:00:00") - new Date(new Date().toISOString().slice(0, 10) + "T12:00:00")) / 864e5);
+
+        function el(tag, cls, text) {
+            const n = document.createElement(tag);
+            if (cls) n.className = cls;
+            if (text !== undefined) n.textContent = text;
+            return n;
+        }
+        function badgeFor(s) {
+            const n = daysFrom(s);
+            if (n < 0) return el("span", "badge bad", Math.abs(n) + (Math.abs(n) === 1 ? " day overdue" : " days overdue"));
+            if (n === 0) return el("span", "badge warn", "Due today");
+            if (n <= 7) return el("span", "badge warn", "Due in " + n + (n === 1 ? " day" : " days"));
+            return el("span", "badge", "Due " + fmtDate(s));
+        }
+        function fill(listId, items, emptyText, build) {
+            const ul = $(listId); ul.replaceChildren();
+            if (!items.length) { const li = el("li", "empty", emptyText); ul.append(li); return; }
+            items.forEach(i => ul.append(build(i)));
+        }
+        function rowItem(title, sub, right) {
+            const li = el("li", "row-item");
+            const left = el("div"); left.append(el("div", "row-title", title), el("div", "row-sub", sub));
+            li.append(left, right); return li;
+        }
+
+        function render(a) {
+            const card = $("acctCard"); card.replaceChildren();
+            const top = el("div"); 
+            const h = el("h2", "", a.name);
+            const t = el("span", "badge", a.type); t.style.marginRight = "8px";
+            const e = el("span", "row-sub", [a.entity, a.taxYear ? "Tax year " + a.taxYear : ""].filter(Boolean).join(" \u00B7 "));
+            top.append(h, t, e);
+            const dl = el("dl", "acct-meta");
+            [["Status", a.status], ["Prepared by", a.preparer], ["Open requests", String(a.requests.length)], ["Pending signatures", String(a.signatures.length)]]
+                .forEach(([k, v]) => { const d = el("div"); d.append(el("dt", "", k), el("dd", "", v)); dl.append(d); });
+            card.append(top, dl);
+
+            const reqs = [...a.requests].sort((x, y) => x.due.localeCompare(y.due));
+            $("reqCount").textContent = reqs.length ? reqs.length + " open" : "";
+            fill("requests", reqs, "You're all caught up. We don't need anything else right now.", r => {
+                const right = el("div"); right.style.textAlign = "right";
+                const up = el("a", "row-action", "Upload"); up.href = "portal.html";
+                const bd = badgeFor(r.due); bd.style.marginRight = "10px";
+                right.append(bd, up);
+                return rowItem(r.title, r.note || "", right);
+            });
+
+            $("signCount").textContent = a.signatures.length ? a.signatures.length + " waiting" : "";
+            fill("signatures", a.signatures, "Nothing to sign right now.", s => {
+                const right = el("div"); right.style.textAlign = "right";
+                const go = el("a", "row-action green", "Review and sign");
+                go.href = /^https:\/\//.test(s.url || "") ? s.url : "contact.html";
+                right.append(go);
+                return rowItem(s.title, [s.note, s.sent ? "Sent " + fmtDate(s.sent) + "." : ""].filter(Boolean).join(" "), right);
+            });
+
+            const dls = [...a.deadlines].filter(d => daysFrom(d.date) >= -1).sort((x, y) => x.date.localeCompare(y.date));
+            fill("deadlines", dls, "No upcoming deadlines.", d => {
+                const n = daysFrom(d.date);
+                const right = el("span", "badge" + (n <= 7 ? " warn" : ""), n <= 0 ? "Today" : n + (n === 1 ? " day" : " days"));
+                return rowItem(d.title, fmtDate(d.date), right);
+            });
+
+            const act = [...a.activity].sort((x, y) => y.at.localeCompare(x.at));
+            const ul = $("activity"); ul.replaceChildren();
+            if (!act.length) ul.append(el("li", "empty", "No activity yet."));
+            act.forEach(i => { const li = el("li"); const tm = el("time", "", fmtDate(i.at)); li.append(document.createTextNode(i.text), tm); ul.append(li); });
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            try {
+                const data = await getDashboardData(user);
+                let currentAccount = data.accounts[0];
+
+                const acctList = $("acctList");
+                acctList.replaceChildren();
+                data.accounts.forEach((acc, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'acct-btn';
+                    btn.setAttribute('aria-pressed', idx === 0 ? 'true' : 'false');
+                    btn.innerHTML = `<strong>${acc.name}</strong><span>${acc.type} &middot; ${acc.entity || 'Personal'}</span>`;
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.acct-btn').forEach(b => b.setAttribute('aria-pressed', 'false'));
+                        btn.setAttribute('aria-pressed', 'true');
+                        render(acc);
+                    });
+                    acctList.append(btn);
+                });
+
+                const signOutLink = $("signOutLink");
+                if (signOutLink) {
+                    signOutLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        signOut(auth).then(() => { window.location.href = "index.html"; });
+                    });
+                }
+
+                render(currentAccount);
+            } catch (err) {
+                console.error("Dashboard error:", err);
+            }
+        });
+    </script>
+</body>
+</html>
