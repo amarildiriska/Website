@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.80">
+    <meta name="viewport" content="width=device-width, initial-scale=0.85">
     <title>Staff Portal - Riska's Finance</title>
     <link rel="icon" type="image/png" href="attached_assets/Capture1.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,7 +38,9 @@
         .google-btn svg { flex-shrink: 0; }
 
         .login-error { color: #b91c1c; font-size: 0.85rem; margin-top: 1rem; padding: 10px; background: #fef2f2; border-radius: 6px; display: none; text-align: left; word-wrap: break-word; }
-        .login-divider { font-size: 0.75rem; color: #94a3b8; margin-top: 2rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .login-loading { display: none; margin-top: 1rem; }
+        .spinner { width: 24px; height: 24px; border: 3px solid #cbd5e1; border-top-color: #FF6B35; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         #main-content { display: none; height: 100vh; overflow: hidden; }
         #main-content.visible { display: flex; }
@@ -125,9 +127,9 @@
         .post-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 0.75rem; flex-wrap: wrap; }
         .post-cat-badge { font-size: 0.7rem; font-weight: 600; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
         
-        .cat-tax     { background:#fef3c7; color:#92400e; }
+        .cat-tax   { background:#fef3c7; color:#92400e; }
         .cat-company  { background:#dbeafe; color:#1e40af; }
-        .cat-irs     { background:#fce7f3; color:#9d174d; }
+        .cat-irs   { background:#fce7f3; color:#9d174d; }
         .cat-reminder { background:#d1fae5; color:#065f46; }
 
         .empty-feed { text-align: center; padding: 2rem 1rem; color: #94a3b8; width: 100%; font-size: 0.9rem;}
@@ -258,7 +260,7 @@
             <div id="tab-dashboard" class="tab-panel active">
                 <div class="home-grid">
                     <div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;"><h2 style="font-size:1.25rem; font-weight:600; color:#0f172a;">Internal News & Announcements</h2></div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;"><h2 style="font-size:1.25rem; font-weight:600; color:#0f172a;">Internal News & Announcements</h2></div>
                         <div id="dashboard-news-feed" class="post-feed"><div class="empty-feed">Loading recent posts...</div></div>
                     </div>
                     <div>
@@ -304,7 +306,7 @@
                         <button class="publish-btn" onclick="publishPost()"><i data-feather="send" style="width:16px;"></i> Broadcast Post</button>
                     </div>
                     <div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;"><h2 style="font-size:1.1rem; color:#0f172a;">Manage All Dispatches</h2><span style="font-size:0.85rem; color:#64748b;" id="post-count">0 items</span></div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.0rem;"><h2 style="font-size:1.1rem; color:#0f172a;">Manage All Dispatches</h2><span style="font-size:0.85rem; color:#64748b;" id="post-count">0 items</span></div>
                         <div id="post-feed" class="post-feed"><div class="empty-feed">Loading database...</div></div>
                     </div>
                 </div>
@@ -387,6 +389,22 @@
 
 <div id="toast"></div>
 
+<!-- NEW CLIENT MODAL -->
+<div id="new-client-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:white; border-radius:12px; padding:2rem; width:90%; max-width:450px;">
+        <h3 style="margin-bottom:1rem; font-weight:600; color:#0f172a;">Add New Client Account</h3>
+        <div class="form-group"><label class="form-label">Business / Account Name *</label><input type="text" id="nc-name" class="form-input" placeholder="e.g. Acme LLC"></div>
+        <div class="form-group"><label class="form-label">Client Email (Login/Member) *</label><input type="email" id="nc-email" class="form-input" placeholder="client@example.com"></div>
+        <div class="form-group"><label class="form-label">Account Type</label><select id="nc-type" class="form-select"><option value="Business">Business</option><option value="Individual">Individual</option></select></div>
+        <div class="form-group"><label class="form-label">Tax Entity / Structure</label><select id="nc-entity" class="form-select"><option value="LLC">LLC</option><option value="S-Corporation">S-Corporation</option><option value="C-Corporation">C-Corporation</option><option value="Partnership">Partnership</option><option value="Sole Proprietorship">Sole Proprietorship</option><option value="Form 1040">Form 1040 (Individual)</option></select></div>
+        <div class="form-group"><label class="form-label">Tax Year</label><input type="text" id="nc-year" class="form-input" value="2026"></div>
+        <div style="display:flex; gap:10px; margin-top:1.5rem;">
+            <button class="logout-btn" style="flex:1;" onclick="closeNewClientModal()">Cancel</button>
+            <button class="add-email-btn" style="flex:1; padding:10px;" onclick="createClientAccount()">Create Account</button>
+        </div>
+    </div>
+</div>
+
 <!-- FIREBASE SDK & APP LOGIC -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -409,483 +427,540 @@ const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
 const OWNER_EMAILS = ["amarildiriska15@gmail.com", "arbririska1@gmail.com"];
-window.approvedEmailsDB = [];
 
-window.checkIfOwner = function(email) {
-    const val = email.toLowerCase().trim();
-    const pwSection = document.getElementById('password-login-section');
-    const googleSection = document.getElementById('google-login-section');
-    if (OWNER_EMAILS.includes(val)) {
-        pwSection.style.display = 'none';
-        googleSection.style.display = 'block';
-    } else {
-        pwSection.style.display = 'block';
-        googleSection.style.display = 'none';
-    }
-};
-
-window.signInWithGoogle = async () => {
-    try {
-        await signInWithPopup(auth, provider);
-    } catch(err) {
-        showError(err.message);
-    }
-};
-
-window.signInWithEmail = async () => {
-    const email = document.getElementById('login-email').value.trim();
-    const password = document.getElementById('login-password').value;
-    try {
-        await signInWithEmailAndPassword(auth, email, password);
-    } catch(err) {
-        showError(err.message);
-    }
-};
-
-window.signOut = () => fbSignOut(auth);
-
-function showError(msg) {
-    const el = document.getElementById('login-error');
-    el.textContent = msg;
-    el.style.display = 'block';
-}
-
-function showToast(msg) {
-    const t = document.getElementById('toast');
+window.showToast = function(msg) {
+    const t = document.getElementById("toast");
     t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
-}
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 3000);
+};
 
 window.toggleSidebar = function() {
-    document.getElementById('app-sidebar').classList.toggle('open');
-    document.getElementById('sidebar-backdrop').classList.toggle('open');
+    document.getElementById("app-sidebar").classList.toggle("open");
+    document.getElementById("sidebar-backdrop").classList.toggle("open");
 };
 
-window.switchTab = function(tabName, el) {
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    document.getElementById('tab-' + tabName).classList.add('active');
-    if (el) el.classList.add('active');
-    const titles = { dashboard: 'Home Dashboard', clients: 'Client Portals Management', cms: 'Internal News & CMS', tasks: 'Team Tasks', calendar: 'Firm Calendar', resources: 'Quick Links', directory: 'Staff Directory', analytics: 'Site Analytics', admin: 'Access Control' };
-    document.getElementById('page-title').textContent = titles[tabName] || 'Dashboard';
-    if(window.innerWidth <= 900) toggleSidebar();
-    if(tabName === 'clients') loadStaffClients();
+window.switchTab = function(tabId, el) {
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".nav-item").forEach(i => i.classList.remove("active"));
+    document.getElementById("tab-" + tabId).classList.add("active");
+    if (el) el.classList.add("active");
+    const titles = {
+        'dashboard': 'Home Dashboard',
+        'clients': 'Client Portals & Requests',
+        'cms': 'Internal News & CMS',
+        'tasks': 'Team Tasks',
+        'calendar': 'Firm Calendar',
+        'resources': 'Quick Links',
+        'directory': 'Staff Directory',
+        'analytics': 'Site Analytics',
+        'admin': 'Access Control'
+    };
+    document.getElementById("page-title").textContent = titles[tabId] || 'Staff Portal';
+    if (window.innerWidth <= 900) toggleSidebar();
 };
 
-// --- AUTH STATE & DATA SYNC ---
-onAuthStateChanged(auth, async (user) => {
-    const gate = document.getElementById('login-gate');
-    const main = document.getElementById('main-content');
-    if (!user) {
-        gate.classList.add('visible');
-        main.classList.remove('visible');
-        return;
+window.checkIfOwner = function(email) {
+    const passSection = document.getElementById("password-login-section");
+    const googleSection = document.getElementById("google-login-section");
+    const cleanEmail = email.trim().toLowerCase();
+    if (OWNER_EMAILS.includes(cleanEmail)) {
+        passSection.style.display = "none";
+        googleSection.style.display = "block";
+    } else {
+        passSection.style.display = "block";
+        googleSection.style.display = "none";
     }
+};
 
-    const email = user.email.toLowerCase();
-    // Fetch approved emails to verify access
-    const snap = await getDocs(collection(db, "allowed_staff"));
-    window.approvedEmailsDB = snap.docs.map(d => d.email || d.data().email).filter(Boolean);
-
-    const isOwner = OWNER_EMAILS.includes(email);
-    const isAllowed = isOwner || window.approvedEmailsDB.includes(email);
-
-    if (!isAllowed && window.approvedEmailsDB.length > 0) {
-        await fbSignOut(auth);
-        gate.classList.add('visible');
-        main.classList.remove('visible');
-        showError("Access denied. Email not authorized.");
-        return;
+window.signInWithGoogle = async function() {
+    try {
+        const res = await signInWithPopup(auth, provider);
+        if (!OWNER_EMAILS.includes(res.user.email.toLowerCase())) {
+            await fbSignOut(auth);
+            throw new Error("Unauthorized owner account.");
+        }
+    } catch (err) {
+        showError(err.message);
     }
+};
 
-    gate.classList.remove('visible');
-    main.classList.add('visible');
-
-    document.getElementById('user-label').textContent = user.displayName || email;
-    if (user.photoURL) {
-        const av = document.getElementById('user-avatar');
-        av.src = user.photoURL;
-        av.style.display = 'block';
+window.signInWithEmail = async function() {
+    const email = document.getElementById("login-email").value.trim();
+    const pass = document.getElementById("login-password").value;
+    if (!email || !pass) { showError("Enter email and password."); return; }
+    
+    document.getElementById("login-loading").style.display = "block";
+    try {
+        const q = query(collection(db, "approved_emails"), where("email", "==", email.toLowerCase()));
+        const snap = await getDocs(q);
+        if (snap.empty) {
+            throw new Error("This email is not authorized for staff access.");
+        }
+        await signInWithEmailAndPassword(auth, email, pass);
+    } catch (err) {
+        showError(err.message);
+        document.getElementById("login-loading").style.display = "none";
     }
+};
 
-    if (isOwner) {
-        document.getElementById('admin-nav-btn').style.display = 'flex';
-        loadAdminAccessList();
-    }
+window.signOut = async function() {
+    await fbSignOut(auth);
+};
 
-    if (typeof feather !== 'undefined') feather.replace();
-    loadStaffDashboardFeeds();
-});
+function showError(msg) {
+    const errBox = document.getElementById("login-error");
+    errBox.textContent = msg;
+    errBox.style.display = "block";
+}
 
-// --- STAFF CLIENT PORTALS MANAGEMENT ---
-let selectedClientId = null;
+// Client Portals Management
+let activeClientDocId = null;
 
 async function loadStaffClients() {
-    const listEl = document.getElementById('staff-client-list');
-    listEl.innerHTML = '<div class="empty-feed">Loading clients...</div>';
+    const listEl = document.getElementById("staff-client-list");
     try {
         const snap = await getDocs(collection(db, "accounts"));
-        if(snap.empty) {
-            listEl.innerHTML = '<div class="empty-feed">No client accounts found. Click "+ Add New Client Account" above.</div>';
+        if (snap.empty) {
+            listEl.innerHTML = '<div class="empty-feed">No client accounts found.</div>';
             return;
         }
-        listEl.innerHTML = '';
-        snap.forEach(docSnap => {
+        let html = "";
+        snap.docs.forEach(docSnap => {
             const data = docSnap.data();
-            const btn = document.createElement('button');
-            btn.className = 'client-select-btn' + (selectedClientId === docSnap.id ? ' active' : '');
-            btn.innerHTML = `<strong>${data.name || 'Unnamed'}</strong><br><span style="font-size:0.75rem; color:#64748b;">${data.memberEmails ? data.memberEmails.join(', ') : 'No email'} · ${data.type || 'Individual'}</span>`;
-            btn.onclick = () => selectClientAccount(docSnap.id, data);
-            listEl.appendChild(btn);
+            const isActive = activeClientDocId === docSnap.id ? "active" : "";
+            html += `<button class="client-select-btn ${isActive}" onclick="selectClient('${docSnap.id}')">
+                <strong>${escapeHtml(data.name || 'Unnamed')}</strong>
+                <span style="font-size:0.75rem; color:#64748b;">${escapeHtml(data.type || '')} (${escapeHtml(data.entity || 'N/A')})</span>
+            </button>`;
         });
-    } catch(e) {
-        listEl.innerHTML = '<div class="empty-feed">Error loading accounts.</div>';
+        listEl.innerHTML = html;
+    } catch (err) {
+        listEl.innerHTML = '<div class="empty-feed">Error loading client accounts.</div>';
     }
 }
 
-window.openNewClientModal = async () => {
-    const name = prompt("Client Name (e.g. John Doe):");
-    if(!name) return;
-    const email = prompt("Client Email (e.g. john@example.com):");
-    if(!email) return;
-    const entity = prompt("Tax Form/Entity (e.g. Form 1040 or LLC):", "Form 1040");
-    
+window.selectClient = async function(docId) {
+    activeClientDocId = docId;
+    loadStaffClients();
+    const detailEl = document.getElementById("client-detail-view");
+    detailEl.innerHTML = '<div class="empty-feed">Loading client details...</div>';
+
+    try {
+        const clientRef = doc(db, "accounts", docId);
+        const clientSnap = await getDocs(collection(clientRef, "requests"));
+        const sigSnap = await getDocs(collection(clientRef, "signatures"));
+        
+        const allAccs = await getDocs(collection(db, "accounts"));
+        const clientDoc = allAccs.docs.find(d => d.id === docId);
+        if (!clientDoc) return;
+        const data = clientDoc.data();
+
+        let reqHtml = "";
+        clientSnap.docs.forEach(r => {
+            const rd = r.data();
+            reqHtml += `<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #f1f5f9; font-size:0.9rem;">
+                <div><strong>${escapeHtml(rd.title)}</strong><br><span style="color:#64748b; font-size:0.8rem;">Due: ${rd.due || 'N/A'} - Note: ${escapeHtml(rd.note || '')}</span></div>
+                <button class="btn-small-del" onclick="deleteClientSubItem('${docId}', 'requests', '${r.id}')"><i data-feather="trash-2" style="width:14px;"></i></button>
+            </div>`;
+        });
+        if (!reqHtml) reqHtml = '<p style="color:#94a3b8; font-size:0.85rem;">No open requests.</p>';
+
+        let sigHtml = "";
+        sigSnap.docs.forEach(s => {
+            const sd = s.data();
+            sigHtml += `<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #f1f5f9; font-size:0.9rem;">
+                <div><strong>${escapeHtml(sd.title)}</strong><br><span style="color:#64748b; font-size:0.8rem;">Status: ${sd.status || 'pending'}</span></div>
+                <button class="btn-small-del" onclick="deleteClientSubItem('${docId}', 'signatures', '${s.id}')"><i data-feather="trash-2" style="width:14px;"></i></button>
+            </div>`;
+        });
+        if (!sigHtml) sigHtml = '<p style="color:#94a3b8; font-size:0.85rem;">No pending signatures.</p>';
+
+        detailEl.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:1px solid #e2e8f0;">
+                <div>
+                    <h3 style="font-size:1.2rem; font-weight:600; color:#0f172a; margin-bottom:4px;">${escapeHtml(data.name)}</h3>
+                    <p style="font-size:0.85rem; color:#64748b;">Type: ${escapeHtml(data.type)} | Entity: ${escapeHtml(data.entity || 'N/A')} | Year: ${escapeHtml(data.taxYear || '2026')}</p>
+                    <p style="font-size:0.85rem; color:#64748b;">Member Emails: ${(data.memberEmails || []).join(', ')}</p>
+                </div>
+            </div>
+
+            <h4 style="font-size:0.95rem; font-weight:600; color:#0f172a; margin-bottom:10px;">Send Request / Document Task</h4>
+            <div class="inline-form" style="margin-bottom:1.5rem;">
+                <div class="form-group"><label class="form-label">Request Title</label><input type="text" id="req-title" class="form-input" placeholder="e.g. Upload 1099 form"></div>
+                <div class="form-group"><label class="form-label">Due Date</label><input type="date" id="req-due" class="form-input"></div>
+                <div class="form-group full" style="flex:100%;"><label class="form-label">Note / Instructions</label><input type="text" id="req-note" class="form-input" placeholder="Details for client..."></div>
+                <div class="form-group" style="flex:0; margin-top:auto;"><button class="add-email-btn" style="height:40px;" onclick="sendClientRequest('${docId}')">Send Request</button></div>
+            </div>
+
+            <div class="sub-section">
+                <h4 style="font-size:0.95rem; font-weight:600; color:#0f172a; margin-bottom:10px;">Active Requests</h4>
+                ${reqHtml}
+            </div>
+
+            <div class="sub-section">
+                <h4 style="font-size:0.95rem; font-weight:600; color:#0f172a; margin-bottom:10px;">Pending Signatures</h4>
+                ${sigHtml}
+            </div>
+        `;
+        if (typeof feather !== 'undefined') feather.replace();
+    } catch (err) {
+        detailEl.innerHTML = '<div class="empty-feed">Error loading client details.</div>';
+    }
+};
+
+window.sendClientRequest = async function(docId) {
+    const title = document.getElementById("req-title").value.trim();
+    const due = document.getElementById("req-due").value;
+    const note = document.getElementById("req-note").value.trim();
+    if (!title) { showToast("Enter a request title."); return; }
+
+    try {
+        const clientRef = doc(db, "accounts", docId);
+        await addDoc(collection(clientRef, "requests"), {
+            title: title,
+            due: due || new Date().toISOString().slice(0,10),
+            note: note,
+            status: "open"
+        });
+        await addDoc(collection(clientRef, "activity"), {
+            text: `Staff sent request: ${title}`,
+            at: new Date().toISOString()
+        });
+        showToast("Request sent to client successfully!");
+        selectClient(docId);
+    } catch (err) {
+        showToast("Error sending request: " + err.message);
+    }
+};
+
+window.deleteClientSubItem = async function(docId, subColl, subId) {
+    if (!confirm("Are you sure you want to delete this item?")) return;
+    try {
+        await deleteDoc(doc(db, "accounts", docId, subColl, subId));
+        showToast("Item deleted.");
+        selectClient(docId);
+    } catch (err) {
+        showToast("Error deleting item.");
+    }
+};
+
+window.openNewClientModal = function() {
+    document.getElementById("new-client-modal").style.display = "flex";
+};
+window.closeNewClientModal = function() {
+    document.getElementById("new-client-modal").style.display = "none";
+};
+
+window.createClientAccount = async function() {
+    const name = document.getElementById("nc-name").value.trim();
+    const email = document.getElementById("nc-email").value.trim().toLowerCase();
+    const type = document.getElementById("nc-type").value;
+    const entity = document.getElementById("nc-entity").value;
+    const year = document.getElementById("nc-year").value.trim();
+
+    if (!name || !email) { showToast("Enter client name and email."); return; }
+
     try {
         await addDoc(collection(db, "accounts"), {
             name: name,
-            type: "Individual",
-            entity: entity || "Form 1040",
-            taxYear: "2026",
+            type: type,
+            entity: entity,
+            taxYear: year || "2026",
             status: "Client",
             preparer: "Riska's Finance",
-            memberEmails: [email.toLowerCase().trim()]
+            memberEmails: [email]
         });
+        closeNewClientModal();
         showToast("Client account created successfully!");
         loadStaffClients();
-    } catch(e) {
-        alert("Error creating client: " + e.message);
+    } catch (err) {
+        showToast("Error creating client: " + err.message);
     }
 };
 
-async function selectClientAccount(id, data) {
-    selectedClientId = id;
-    document.querySelectorAll('.client-select-btn').forEach(b => b.classList.remove('active'));
-    loadStaffClients();
-
-    const view = document.getElementById('client-detail-view');
-    view.innerHTML = `
-        <h3 style="font-size:1.2rem; font-weight:600; color:#0f172a; margin-bottom:4px;">${data.name}</h3>
-        <p style="font-size:0.85rem; color:#64748b; margin-bottom:1rem;">Emails: <strong>${data.memberEmails ? data.memberEmails.join(', ') : 'None'}</strong> | Entity: ${data.entity}</p>
-        
-        <div class="sub-section">
-            <h4 style="font-size:1rem; margin-bottom:0.75rem; color:#0f172a;">1. Outstanding Document Requests</h4>
-            <div id="client-requests-list" style="margin-bottom:1rem;">Loading...</div>
-            <div style="display:flex; gap:8px;">
-                <input type="text" id="new-req-title" class="form-input" placeholder="Request title (e.g. W-2 Form)" style="margin:0;">
-                <input type="date" id="new-req-due" class="form-input" style="width:150px; margin:0;">
-                <button class="add-email-btn" onclick="addClientRequest('${id}')">Add Request</button>
-            </div>
-        </div>
-
-        <div class="sub-section">
-            <h4 style="font-size:1rem; margin-bottom:0.75rem; color:#0f172a;">2. Recent Activity Log (Timeline)</h4>
-            <div id="client-activity-list" style="margin-bottom:1rem;">Loading...</div>
-            <div style="display:flex; gap:8px;">
-                <input type="text" id="new-act-text" class="form-input" placeholder="Activity text (e.g. Reviewed tax documents)" style="margin:0;">
-                <button class="add-email-btn" onclick="addClientActivity('${id}')">Post Activity</button>
-            </div>
-        </div>
-    `;
-
-    loadClientSubcollections(id);
+function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
-async function loadClientSubcollections(accountId) {
-    // Load Requests
-    const reqSnap = await getDocs(collection(db, `accounts/${accountId}/requests`));
-    const reqList = document.getElementById('client-requests-list');
-    if(reqSnap.empty) {
-        reqList.innerHTML = '<p style="font-size:0.85rem; color:#94a3b8;">No open requests.</p>';
-    } else {
-        reqList.innerHTML = '';
-        reqSnap.forEach(r => {
-            const d = r.data();
-            const item = document.createElement('div');
-            item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:8px 12px; border-radius:6px; margin-bottom:6px; font-size:0.85rem;";
-            item.innerHTML = `<span><strong>${d.title}</strong> (Due: ${d.due || 'N/A'})</span> <button class="btn-small-del" onclick="deleteClientSubItem('${accountId}', 'requests', '${r.id}')"><i data-feather="trash-2" style="width:14px;"></i></button>`;
-            reqList.appendChild(item);
-        });
-    }
+onAuthStateChanged(auth, async (user) => {
+    const loginGate = document.getElementById("login-gate");
+    const mainContent = document.getElementById("main-content");
+    const userLabel = document.getElementById("user-label");
+    const userAvatar = document.getElementById("user-avatar");
+    const adminNavBtn = document.getElementById("admin-nav-btn");
 
-    // Load Activity
-    const actSnap = await getDocs(collection(db, `accounts/${accountId}/activity`));
-    const actList = document.getElementById('client-activity-list');
-    if(actSnap.empty) {
-        actList.innerHTML = '<p style="font-size:0.85rem; color:#94a3b8;">No activity logged.</p>';
-    } else {
-        actList.innerHTML = '';
-        actSnap.forEach(a => {
-            const d = a.data();
-            const item = document.createElement('div');
-            item.style.cssText = "display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:8px 12px; border-radius:6px; margin-bottom:6px; font-size:0.85rem;";
-            item.innerHTML = `<span>${d.text}</span> <button class="btn-small-del" onclick="deleteClientSubItem('${accountId}', 'activity', '${a.id}')"><i data-feather="trash-2" style="width:14px;"></i></button>`;
-            actList.appendChild(item);
-        });
-    }
-    if (typeof feather !== 'undefined') feather.replace();
-}
+    if (user) {
+        const email = user.email.toLowerCase();
+        let isAuthorized = OWNER_EMAILS.includes(email);
+        if (!isAuthorized) {
+            const q = query(collection(db, "approved_emails"), where("email", "==", email));
+            const snap = await getDocs(q);
+            if (!snap.empty) isAuthorized = true;
+        }
 
-window.addClientRequest = async (accountId) => {
-    const title = document.getElementById('new-req-title').value.trim();
-    const due = document.getElementById('new-req-due').value;
-    if(!title) return alert("Enter a request title");
-    await addDoc(collection(db, `accounts/${accountId}/requests`), {
-        title: title,
-        note: "Please upload via your portal.",
-        due: due || new Date().toISOString().slice(0,10),
-        status: "open"
-    });
-    showToast("Request sent to client portal!");
-    selectClientAccount(accountId, {});
-};
-
-window.addClientActivity = async (accountId) => {
-    const text = document.getElementById('new-act-text').value.trim();
-    if(!text) return alert("Enter activity description");
-    await addDoc(collection(db, `accounts/${accountId}/activity`), {
-        text: text,
-        at: new Date().toISOString()
-    });
-    showToast("Activity posted to client timeline!");
-    selectClientAccount(accountId, {});
-};
-
-window.deleteClientSubItem = async (accountId, subCol, itemId) => {
-    if(!confirm("Delete this item?")) return;
-    await deleteDoc(doc(db, `accounts/${accountId}/${subCol}`, itemId));
-    showToast("Item deleted.");
-    selectClientAccount(accountId, {});
-};
-
-// --- GENERAL STAFF DASHBOARD FEEDS ---
-function loadStaffDashboardFeeds() {
-    // Load News Feed
-    onSnapshot(query(collection(db, "posts"), orderBy("createdAt", "desc")), snap => {
-        const feed = document.getElementById('dashboard-news-feed');
-        const cmsFeed = document.getElementById('post-feed');
-        if(snap.empty) {
-            feed.innerHTML = '<div class="empty-feed">No announcements yet.</div>';
-            cmsFeed.innerHTML = '<div class="empty-feed">No posts published.</div>';
+        if (!isAuthorized) {
+            await fbSignOut(auth);
+            loginGate.classList.add("visible");
+            mainContent.classList.remove("visible");
+            showError("Access denied. Email not authorized.");
             return;
         }
-        feed.innerHTML = '';
-        cmsFeed.innerHTML = '';
-        snap.forEach(docSnap => {
-            const p = docSnap.data();
-            const card = document.createElement('div');
-            card.className = 'post-card';
-            card.innerHTML = `
+
+        loginGate.classList.remove("visible");
+        mainContent.classList.add("visible");
+        userLabel.textContent = user.displayName || user.email;
+        if (user.photoURL) {
+            userAvatar.src = user.photoURL;
+            userAvatar.style.display = "block";
+        }
+        if (OWNER_EMAILS.includes(email)) {
+            adminNavBtn.style.display = "flex";
+        }
+
+        initFeeds();
+        loadStaffClients();
+    } else {
+        loginGate.classList.add("visible");
+        mainContent.classList.remove("visible");
+    }
+});
+
+function initFeeds() {
+    onSnapshot(query(collection(db, "posts"), orderBy("createdAt", "desc")), (snap) => {
+        const feed = document.getElementById("post-feed");
+        const dashFeed = document.getElementById("dashboard-news-feed");
+        document.getElementById("post-count").textContent = snap.size + " items";
+        if (snap.empty) {
+            feed.innerHTML = '<div class="empty-feed">No announcements posted yet.</div>';
+            dashFeed.innerHTML = '<div class="empty-feed">No announcements.</div>';
+            return;
+        }
+        let html = "", dashHtml = "";
+        snap.docs.forEach(docSnap => {
+            const d = docSnap.data();
+            const dateStr = d.createdAt ? new Date(d.createdAt.toDate ? d.createdAt.toDate() : d.createdAt).toLocaleDateString() : '';
+            const card = `<div class="post-card">
                 <div class="post-meta">
-                    <span class="post-cat-badge cat-tax">${p.category || 'General'}</span>
-                    <span style="font-size:0.8rem; color:#64748b;">${p.createdAt ? new Date(p.createdAt).toLocaleDateString() : ''}</span>
+                    <span class="post-cat-badge cat-${getCatClass(d.category)}">${escapeHtml(d.category || 'General')}</span>
+                    <span style="font-size:0.8rem; color:#64748b;">${dateStr}</span>
                 </div>
-                <h3 style="font-size:1.1rem; color:#0f172a; margin-bottom:0.5rem; font-weight:600;">${p.title}</h3>
-                <p style="font-size:0.9rem; color:#475569; line-height:1.5;">${p.body}</p>
-            `;
-            feed.appendChild(card.cloneNode(true));
-            cmsFeed.appendChild(card);
+                <h3 style="font-size:1.05rem; font-weight:600; color:#0f172a; margin-bottom:8px;">${escapeHtml(d.title)}</h3>
+                <p style="font-size:0.9rem; color:#475569; line-height:1.5; white-space:pre-wrap; margin-bottom:${d.fileUrl ? '1rem':'0'};">${escapeHtml(d.body)}</p>
+                ${d.fileUrl ? `<a href="${escapeHtml(d.fileUrl)}" target="_blank" class="widget-link" style="display:inline-flex; align-items:center; gap:6px;"><i data-feather="paperclip" style="width:14px;"></i> View Attached Document</a>` : ''}
+            </div>`;
+            html += card;
+            if (dashHtml.split('post-card').length <= 3) dashHtml += card;
         });
-    });
-
-    // Load Tasks
-    onSnapshot(collection(db, "tasks"), snap => {
-        const tFeed = document.getElementById('dashboard-tasks-feed');
-        const mainTFeed = document.getElementById('task-feed');
-        if(snap.empty) {
-            tFeed.innerHTML = '<div class="empty-feed" style="padding:1rem;">No pending tasks.</div>';
-            mainTFeed.innerHTML = '<div class="empty-feed">No tasks found.</div>';
-            return;
-        }
-        tFeed.innerHTML = '';
-        mainTFeed.innerHTML = '';
-        snap.forEach(docSnap => {
-            const t = docSnap.data();
-            const id = docSnap.id;
-            const item = document.createElement('div');
-            item.className = 'task-item' + (t.completed ? ' completed' : '');
-            item.innerHTML = `
-                <div class="task-content" onclick="toggleTask('${id}', ${!t.completed})">
-                    <input type="checkbox" ${t.completed ? 'checked' : ''}>
-                    <span>${t.title}</span>
-                </div>
-                <button class="btn-small-del" onclick="deleteTask('${id}')"><i data-feather="trash-2" style="width:14px;"></i></button>
-            `;
-            tFeed.appendChild(item.cloneNode(true));
-            mainTFeed.appendChild(item);
-        });
+        feed.innerHTML = html;
+        dashFeed.innerHTML = dashHtml || '<div class="empty-feed">No announcements.</div>';
         if (typeof feather !== 'undefined') feather.replace();
     });
 
-    // Load Calendar
-    onSnapshot(collection(db, "calendar"), snap => {
-        const cFeed = document.getElementById('dashboard-cal-feed');
-        const mainCFeed = document.getElementById('calendar-feed');
-        if(snap.empty) {
-            cFeed.innerHTML = '<div class="empty-feed" style="padding:1rem;">No upcoming events.</div>';
-            mainCFeed.innerHTML = '<div class="empty-feed">No calendar events found.</div>';
+    onSnapshot(query(collection(db, "tasks")), (snap) => {
+        const feed = document.getElementById("task-feed");
+        const dashFeed = document.getElementById("dashboard-tasks-feed");
+        if (snap.empty) {
+            feed.innerHTML = '<div class="empty-feed">No tasks.</div>';
+            dashFeed.innerHTML = '<div class="empty-feed" style="padding:1rem;">No tasks.</div>';
             return;
         }
-        cFeed.innerHTML = '';
-        mainCFeed.innerHTML = '';
-        snap.forEach(docSnap => {
-            const c = docSnap.data();
-            const item = document.createElement('div');
-            item.className = 'calendar-item';
-            item.innerHTML = `
-                <div class="cal-date">${c.date}</div>
-                <div class="cal-desc">${c.description}</div>
-            `;
-            cFeed.appendChild(item.cloneNode(true));
-            mainCFeed.appendChild(item);
+        let html = "", dashHtml = "";
+        snap.docs.forEach(docSnap => {
+            const d = docSnap.data();
+            const completedClass = d.completed ? "completed" : "";
+            const item = `<div class="task-item ${completedClass}">
+                <div class="task-content" onclick="toggleTask('${docSnap.id}', ${!d.completed})">
+                    <input type="checkbox" ${d.completed ? "checked" : ""} onclick="event.stopPropagation(); toggleTask('${docSnap.id}', ${!d.completed})">
+                    <span>${escapeHtml(d.text)}</span>
+                </div>
+                <button class="btn-small-del" onclick="deleteTask('${docSnap.id}')"><i data-feather="trash-2" style="width:14px;"></i></button>
+            </div>`;
+            html += item;
+            if (!d.completed && dashHtml.split('task-item').length <= 4) dashHtml += item;
         });
-    });
-
-    // Load Resources
-    onSnapshot(collection(db, "resources"), snap => {
-        const rFeed = document.getElementById('resource-feed');
-        if(snap.empty) {
-            rFeed.innerHTML = '<div class="empty-feed" style="grid-column:1/-1;">No resources added yet.</div>';
-            return;
-        }
-        rFeed.innerHTML = '';
-        snap.forEach(docSnap => {
-            const r = docSnap.data();
-            const card = document.createElement('a');
-            card.href = r.url;
-            card.target = '_blank';
-            card.className = 'resource-card';
-            card.innerHTML = `
-                <div class="resource-icon"><i data-feather="link"></i></div>
-                <h3 style="font-size:1rem; font-weight:600; color:#0f172a; margin:0;">${r.title}</h3>
-                <p style="font-size:0.85rem; color:#64748b; margin:0; line-height:1.4;">${r.description || ''}</p>
-            `;
-            rFeed.appendChild(card);
-        });
+        feed.innerHTML = html;
+        dashFeed.innerHTML = dashHtml || '<div class="empty-feed" style="padding:1rem;">All tasks completed!</div>';
         if (typeof feather !== 'undefined') feather.replace();
     });
 
-    // Load Staff Directory
-    onSnapshot(collection(db, "allowed_staff"), snap => {
-        const dir = document.getElementById('directory-feed');
-        dir.innerHTML = '';
-        snap.forEach(docSnap => {
+    onSnapshot(query(collection(db, "calendar")), (snap) => {
+        const feed = document.getElementById("calendar-feed");
+        const dashFeed = document.getElementById("dashboard-cal-feed");
+        if (snap.empty) {
+            feed.innerHTML = '<div class="empty-feed">No upcoming events.</div>';
+            dashFeed.innerHTML = '<div class="empty-feed" style="padding:1rem;">No events.</div>';
+            return;
+        }
+        let html = "", dashHtml = "";
+        snap.docs.forEach(docSnap => {
             const d = docSnap.data();
-            const email = d.email || '';
-            const initial = email.charAt(0).toUpperCase() || 'S';
-            const card = document.createElement('div');
-            card.className = 'directory-card';
-            card.innerHTML = `
-                <div class="dir-avatar">${initial}</div>
-                <div>
-                    <h4 style="font-size:0.95rem; font-weight:600; color:#0f172a;">${email.split('@')[0]}</h4>
-                    <p style="font-size:0.8rem; color:#64748b;">${email}</p>
-                </div>
-            `;
-            dir.appendChild(card);
+            const item = `<div class="calendar-item">
+                <div class="cal-date">${escapeHtml(d.date)}</div>
+                <div class="cal-desc">${escapeHtml(d.description)}</div>
+                <button class="btn-small-del" onclick="deleteCalendarEvent('${docSnap.id}')"><i data-feather="trash-2" style="width:14px;"></i></button>
+            </div>`;
+            html += item;
+            if (dashHtml.split('calendar-item').length <= 3) dashHtml += item;
         });
+        feed.innerHTML = html;
+        dashFeed.innerHTML = dashHtml || '<div class="empty-feed" style="padding:1rem;">No upcoming events.</div>';
+        if (typeof feather !== 'undefined') feather.replace();
     });
-}
 
-// --- CMS & TASKS ACTIONS ---
-window.publishPost = async () => {
-    const title = document.getElementById('post-title').value.trim();
-    const category = document.getElementById('post-category').value;
-    const body = document.getElementById('post-body').value.trim();
-    if(!title || !body) return alert("Please fill out both headline and message content.");
-    
-    await addDoc(collection(db, "posts"), {
-        title, category, body,
-        createdAt: new Date().toISOString()
-    });
-    showToast("Announcement published!");
-    document.getElementById('post-title').value = '';
-    document.getElementById('post-body').value = '';
-};
-
-window.createTask = async () => {
-    const input = document.getElementById('new-task-input');
-    const title = input.value.trim();
-    if(!title) return;
-    await addDoc(collection(db, "tasks"), { title, completed: false, createdAt: new Date().toISOString() });
-    input.value = '';
-    showToast("Task added.");
-};
-
-window.toggleTask = async (id, completed) => {
-    await updateDoc(doc(db, "tasks", id), { completed });
-};
-
-window.deleteTask = async (id) => {
-    await deleteDoc(doc(db, "tasks", id));
-    showToast("Task deleted.");
-};
-
-window.createCalendarEvent = async () => {
-    const date = document.getElementById('new-cal-date').value.trim();
-    const desc = document.getElementById('new-cal-desc').value.trim();
-    if(!date || !desc) return alert("Fill in date and description.");
-    await addDoc(collection(db, "calendar"), { date, description: desc });
-    document.getElementById('new-cal-date').value = '';
-    document.getElementById('new-cal-desc').value = '';
-    showToast("Event added.");
-};
-
-window.createResource = async () => {
-    const title = document.getElementById('new-res-title').value.trim();
-    const url = document.getElementById('new-res-url').value.trim();
-    const description = document.getElementById('new-res-desc').value.trim();
-    if(!title || !url) return alert("Title and URL are required.");
-    await addDoc(collection(db, "resources"), { title, url, description });
-    document.getElementById('new-res-title').value = '';
-    document.getElementById('new-res-url').value = '';
-    document.getElementById('new-res-desc').value = '';
-    showToast("Resource added.");
-};
-
-async function loadAdminAccessList() {
-    onSnapshot(collection(db, "allowed_staff"), snap => {
-        const list = document.getElementById('approved-list');
-        list.innerHTML = '';
-        snap.forEach(docSnap => {
+    onSnapshot(query(collection(db, "resources")), (snap) => {
+        const feed = document.getElementById("resource-feed");
+        if (snap.empty) {
+            feed.innerHTML = '<div class="empty-feed" style="grid-column:1/-1;">No resources added.</div>';
+            return;
+        }
+        let html = "";
+        snap.docs.forEach(docSnap => {
             const d = docSnap.data();
-            const id = docSnap.id;
+            html += `<a href="${escapeHtml(d.url)}" target="_blank" class="resource-card">
+                <div style="display:flex; justify-content:space-between; width:100%; align-items:flex-start;">
+                    <div class="resource-icon"><i data-feather="link"></i></div>
+                    <button class="btn-small-del" onclick="event.preventDefault(); deleteResource('${docSnap.id}')"><i data-feather="trash-2" style="width:14px;"></i></button>
+                </div>
+                <h3 style="font-size:1rem; font-weight:600; color:#0f172a; margin-top:4px;">${escapeHtml(d.title)}</h3>
+                <p style="font-size:0.85rem; color:#64748b;">${escapeHtml(d.description || '')}</p>
+            </a>`;
+        });
+        feed.innerHTML = html;
+        if (typeof feather !== 'undefined') feather.replace();
+    });
+
+    onSnapshot(query(collection(db, "approved_emails")), (snap) => {
+        const feed = document.getElementById("directory-feed");
+        const adminList = document.getElementById("approved-list");
+        if (snap.empty) {
+            feed.innerHTML = '<div class="empty-feed">No staff members found.</div>';
+            adminList.innerHTML = '<div class="empty-feed">No approved emails.</div>';
+            return;
+        }
+        let dirHtml = "", adminHtml = "";
+        snap.docs.forEach(docSnap => {
+            const d = docSnap.data();
             const email = d.email;
-            const item = document.createElement('div');
-            item.className = 'approved-item';
-            item.innerHTML = `
-                <span>${email}</span>
-                <button class="revoke-btn" onclick="revokeAccess('${id}')">Revoke</button>
-            `;
-            list.appendChild(item);
+            const name = email.split('@')[0].replace('.', ' ');
+            const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+            
+            dirHtml += `<div class="directory-card">
+                <div class="dir-avatar">${initials}</div>
+                <div>
+                    <h3 style="font-size:0.95rem; font-weight:600; color:#0f172a; text-transform:capitalize;">${escapeHtml(name)}</h3>
+                    <p style="font-size:0.8rem; color:#64748b;">${escapeHtml(email)}</p>
+                </div>
+            </div>`;
+
+            adminHtml += `<div class="approved-item">
+                <span>${escapeHtml(email)}</span>
+                <button class="btn-small-del" onclick="removeApprovedEmail('${docSnap.id}')"><i data-feather="trash-2" style="width:14px;"></i></button>
+            </div>`;
         });
+        feed.innerHTML = dirHtml;
+        adminList.innerHTML = adminHtml;
+        if (typeof feather !== 'undefined') feather.replace();
     });
 }
 
-window.addApprovedEmail = async () => {
-    const input = document.getElementById('new-email-input');
-    const email = input.value.trim().toLowerCase();
-    if(!email) return;
-    await addDoc(collection(db, "allowed_staff"), { email });
-    input.value = '';
-    showToast("Staff member authorized!");
+function getCatClass(cat) {
+    if (cat === 'Tax Tips') return 'tax';
+    if (cat === 'Company News') return 'company';
+    if (cat === 'IRS News') return 'irs';
+    return 'reminder';
+}
+
+window.publishPost = async function() {
+    const title = document.getElementById("post-title").value.trim();
+    const category = document.getElementById("post-category").value;
+    const body = document.getElementById("post-body").value.trim();
+    const fileUrl = document.getElementById("post-file-url").value;
+    const dest = document.getElementById("post-dest").value;
+
+    if (!title || !body) { showToast("Enter headline and message content."); return; }
+    try {
+        await addDoc(collection(db, "posts"), {
+            title, category, body, fileUrl, dest,
+            createdAt: new Date()
+        });
+        document.getElementById("post-title").value = "";
+        document.getElementById("post-body").value = "";
+        document.getElementById("post-file-url").value = "";
+        showToast("Announcement published successfully!");
+    } catch (err) {
+        showToast("Error publishing post.");
+    }
 };
 
-window.revokeAccess = async (id) => {
-    if(!confirm("Revoke access for this user?")) return;
-    await deleteDoc(doc(db, "allowed_staff", id));
-    showToast("Access revoked.");
+window.createTask = async function() {
+    const input = document.getElementById("new-task-input");
+    const text = input.value.trim();
+    if (!text) return;
+    try {
+        await addDoc(collection(db, "tasks"), { text, completed: false, createdAt: new Date() });
+        input.value = "";
+    } catch (err) { showToast("Error adding task."); }
 };
+window.toggleTask = async function(id, completed) {
+    try { await updateDoc(doc(db, "tasks", id), { completed }); } catch (err) {}
+};
+window.deleteTask = async function(id) {
+    try { await deleteDoc(doc(db, "tasks", id)); } catch (err) {}
+};
+
+window.createCalendarEvent = async function() {
+    const date = document.getElementById("new-cal-date").value.trim();
+    const description = document.getElementById("new-cal-desc").value.trim();
+    if (!date || !description) { showToast("Enter date and description."); return; }
+    try {
+        await addDoc(collection(db, "calendar"), { date, description, createdAt: new Date() });
+        document.getElementById("new-cal-date").value = "";
+        document.getElementById("new-cal-desc").value = "";
+        showToast("Event added.");
+    } catch (err) { showToast("Error adding event."); }
+};
+window.deleteCalendarEvent = async function(id) {
+    try { await deleteDoc(doc(db, "calendar", id)); } catch (err) {}
+};
+
+window.createResource = async function() {
+    const title = document.getElementById("new-res-title").value.trim();
+    const url = document.getElementById("new-res-url").value.trim();
+    const description = document.getElementById("new-res-desc").value.trim();
+    if (!title || !url) { showToast("Enter title and URL."); return; }
+    try {
+        await addDoc(collection(db, "resources"), { title, url, description });
+        document.getElementById("new-res-title").value = "";
+        document.getElementById("new-res-url").value = "";
+        document.getElementById("new-res-desc").value = "";
+        showToast("Resource added.");
+    } catch (err) { showToast("Error adding resource."); }
+};
+window.deleteResource = async function(id) {
+    try { await deleteDoc(doc(db, "resources", id)); } catch (err) {}
+};
+
+window.addApprovedEmail = async function() {
+    const input = document.getElementById("new-email-input");
+    const email = input.value.trim().toLowerCase();
+    if (!email || !email.includes('@')) { showToast("Enter a valid email."); return; }
+    try {
+        await addDoc(collection(db, "approved_emails"), { email });
+        input.value = "";
+        showToast("Staff email authorized.");
+    } catch (err) { showToast("Error authorizing email."); }
+};
+window.removeApprovedEmail = async function(id) {
+    if (!confirm("Revoke access for this email?")) return;
+    try {
+        await deleteDoc(doc(db, "approved_emails", id));
+        showToast("Access revoked.");
+    } catch (err) { showToast("Error revoking access."); }
+};
+
+if (typeof feather !== 'undefined') feather.replace();
 </script>
 </body>
 </html>
