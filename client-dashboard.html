@@ -212,7 +212,7 @@
                     <h3>Your accounts</h3>
                     <ul class="acct-list" id="acctList"></ul>
                     <div class="side-links">
-                        <a href="portal.html">Upload documents</a>
+                        <a href="https://www.dropbox.com/scl/fo/fly93hiz63i1d07gpwy8b/AHZpVVuJoKXvX5UvqQhPsDw?rlkey=phtcpe13aneja0nz2zxzk8hz9&st=sp1zbapf&dl=0" target="_blank" rel="noopener noreferrer">Upload documents</a>
                         <a href="contact.html">Contact your preparer</a>
                     </div>
                     <div class="sidebar-contact">
@@ -258,7 +258,7 @@
                     <ul style="list-style: none; line-height: 2.2; font-size: 0.8rem; color: var(--text-gray);">
                         <li><a href="about.html" style="color: inherit;">About Us</a></li>
                         <li><a href="contact.html" style="color: inherit;">Contact Us</a></li>
-                        <li><a href="dashboard.html" style="color: inherit;">Sign In</a></li>
+                        <li><a href="signin.html" style="color: inherit;">Sign In</a></li>
                     </ul>
                 </div>
                 <div>
@@ -336,16 +336,16 @@
             const accountsRef = collection(db, "accounts");
             let snap = await getDocs(query(accountsRef, where("memberEmails", "array-contains", email)));
 
-            // Automatically create an account document if it doesn't exist yet
+            // Automatically create an account document if it doesn't exist yet (defaults to Business)
             if (snap.empty) {
                 await addDoc(accountsRef, {
                     name: user.displayName || email.split("@")[0],
-                    type: "Individual",
-                    entity: "Form 1040",
+                    type: "Business",
+                    entity: "LLC",
                     taxYear: "2026",
                     status: "Client",
                     preparer: "Riska's Finance",
-                    memberEmails: [email] // Correctly saved as a Firestore Array!
+                    memberEmails: [email]
                 });
                 snap = await getDocs(query(accountsRef, where("memberEmails", "array-contains", email)));
             }
@@ -361,7 +361,7 @@
                 ]);
                 const a = doc.data();
                 return {
-                    id: doc.id, name: a.name || "Account", type: a.type || "Individual", entity: a.entity || "",
+                    id: doc.id, name: a.name || "Account", type: a.type || "Business", entity: a.entity || "",
                     taxYear: a.taxYear || "", status: a.status || "Active", preparer: a.preparer || "Riska's Finance",
                     requests: rows(rq).map(r => ({ ...r, due: iso(r.due).slice(0, 10) })),
                     deadlines: rows(dl).map(r => ({ ...r, date: iso(r.date).slice(0, 10) })),
@@ -372,7 +372,6 @@
             return { clientName: (user.displayName || "").split(" ")[0], accounts };
         }
 
-        // ---------------------------------------------------------------
         const $ = id => document.getElementById(id);
         const fmtDate = s => new Date(s.length === 10 ? s + "T12:00:00" : s).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
         const daysFrom = s => Math.round((new Date(s + "T12:00:00") - new Date(new Date().toISOString().slice(0, 10) + "T12:00:00")) / 864e5);
@@ -417,7 +416,10 @@
             $("reqCount").textContent = reqs.length ? reqs.length + " open" : "";
             fill("requests", reqs, "You're all caught up. We don't need anything else right now.", r => {
                 const right = el("div"); right.style.textAlign = "right";
-                const up = el("a", "row-action", "Upload"); up.href = "portal.html";
+                const up = el("a", "row-action", "Upload"); 
+                up.href = "https://www.dropbox.com/scl/fo/fly93hiz63i1d07gpwy8b/AHZpVVuJoKXvX5UvqQhPsDw?rlkey=phtcpe13aneja0nz2zxzk8hz9&st=sp1zbapf&dl=0";
+                up.target = "_blank";
+                up.rel = "noopener noreferrer";
                 const bd = badgeFor(r.due); bd.style.marginRight = "10px";
                 right.append(bd, up);
                 return rowItem(r.title, r.note || "", right);
@@ -441,46 +443,54 @@
 
             const act = [...a.activity].sort((x, y) => y.at.localeCompare(x.at));
             const ul = $("activity"); ul.replaceChildren();
-            if (!act.length) ul.append(el("li", "empty", "No activity yet."));
-            act.forEach(i => { const li = el("li"); const tm = el("time", "", fmtDate(i.at)); li.append(document.createTextNode(i.text), tm); ul.append(li); });
+            if (!act.length) {
+                ul.append(el("li", "empty", "No activity yet."));
+            } else {
+                act.forEach(i => {
+                    const li = el("li");
+                    const tm = el("time", "", i.at ? new Date(i.at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "");
+                    li.append(i.text || "", tm);
+                    ul.append(li);
+                });
+            }
         }
 
-        onAuthStateChanged(auth, async (user) => {
+        onAuthStateChanged(auth, async user => {
             if (!user) {
-                window.location.href = "login.html";
+                window.location.href = "client-login.html";
                 return;
             }
-
             try {
                 const data = await getDashboardData(user);
-                let currentAccount = data.accounts[0];
-
+                if (data.clientName) $("welcome").textContent = "Welcome back, " + data.clientName;
+                
                 const acctList = $("acctList");
                 acctList.replaceChildren();
                 data.accounts.forEach((acc, idx) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'acct-btn';
-                    btn.setAttribute('aria-pressed', idx === 0 ? 'true' : 'false');
-                    btn.innerHTML = `<strong>${acc.name}</strong><span>${acc.type} &middot; ${acc.entity || 'Personal'}</span>`;
-                    btn.addEventListener('click', () => {
-                        document.querySelectorAll('.acct-btn').forEach(b => b.setAttribute('aria-pressed', 'false'));
-                        btn.setAttribute('aria-pressed', 'true');
+                    const btn = el("button", "acct-btn");
+                    btn.setAttribute("aria-pressed", idx === 0 ? "true" : "false");
+                    btn.append(el("strong", "", acc.name), el("span", "", acc.type + (acc.entity ? " \u00B7 " + acc.entity : "")));
+                    btn.addEventListener("click", () => {
+                        acctList.querySelectorAll(".acct-btn").forEach(b => b.setAttribute("aria-pressed", "false"));
+                        btn.setAttribute("aria-pressed", "true");
                         render(acc);
                     });
                     acctList.append(btn);
                 });
 
-                const signOutLink = $("signOutLink");
-                if (signOutLink) {
-                    signOutLink.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        signOut(auth).then(() => { window.location.href = "index.html"; });
-                    });
-                }
-
-                render(currentAccount);
+                if (data.accounts.length) render(data.accounts[0]);
             } catch (err) {
                 console.error("Dashboard error:", err);
+            }
+        });
+
+        $("signOutLink").addEventListener("click", async e => {
+            e.preventDefault();
+            try {
+                await signOut(auth);
+                window.location.href = "client-login.html";
+            } catch (err) {
+                console.error("Sign out error:", err);
             }
         });
     </script>
