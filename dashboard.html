@@ -284,7 +284,12 @@
                 </div>
                 <div class="client-mgmt-grid">
                     <div class="client-list-box">
-                        <h3 style="font-size:0.95rem; font-weight:600; margin-bottom:1rem; color:#0f172a;">Select Client</h3>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <h3 style="font-size:0.95rem; font-weight:600; color:#0f172a;">Client Accounts</h3>
+                        </div>
+                        <!-- Search / Filter input for portal-created clients -->
+                        <input type="text" id="client-search-input" class="form-input" placeholder="Search by name, email..." oninput="filterClientList()" style="margin-bottom: 12px; font-size: 0.85rem; padding: 8px 10px;">
+                        
                         <div id="staff-client-list"><div class="empty-feed">Loading accounts...</div></div>
                     </div>
                     <div class="client-detail-card" id="client-detail-view">
@@ -514,8 +519,9 @@ function showError(msg) {
     errBox.style.display = "block";
 }
 
-// Client Portals Management
+// Client Portals Management & Filtering
 let activeClientDocId = null;
+let allStaffClients = [];
 
 async function loadStaffClients() {
     const listEl = document.getElementById("staff-client-list");
@@ -525,24 +531,54 @@ async function loadStaffClients() {
             listEl.innerHTML = '<div class="empty-feed">No client accounts found.</div>';
             return;
         }
-        let html = "";
-        snap.docs.forEach(docSnap => {
-            const data = docSnap.data();
-            const isActive = activeClientDocId === docSnap.id ? "active" : "";
-            html += `<button class="client-select-btn ${isActive}" onclick="selectClient('${docSnap.id}')">
-                <strong>${escapeHtml(data.name || 'Unnamed')}</strong>
-                <span style="font-size:0.75rem; color:#64748b;">${escapeHtml(data.type || '')} (${escapeHtml(data.entity || 'N/A')})</span>
-            </button>`;
-        });
-        listEl.innerHTML = html;
+        allStaffClients = snap.docs.map(docSnap => ({
+            id: docSnap.id,
+            ...docSnap.data()
+        }));
+        renderClientList(allStaffClients);
     } catch (err) {
         listEl.innerHTML = '<div class="empty-feed">Error loading client accounts.</div>';
     }
 }
 
+function renderClientList(clients) {
+    const listEl = document.getElementById("staff-client-list");
+    if (!clients.length) {
+        listEl.innerHTML = '<div class="empty-feed">No matching client accounts.</div>';
+        return;
+    }
+    let html = "";
+    clients.forEach(client => {
+        const isActive = activeClientDocId === client.id ? "active" : "";
+        const emails = (client.memberEmails || []).join(', ');
+        html += `<button class="client-select-btn ${isActive}" onclick="selectClient('${client.id}')">
+            <strong>${escapeHtml(client.name || 'Unnamed')}</strong>
+            <span style="font-size:0.75rem; color:#64748b; display:block;">${escapeHtml(client.type || '')} (${escapeHtml(client.entity || 'N/A')})</span>
+            ${emails ? `<span style="font-size:0.7rem; color:#FF6B35; display:block; margin-top:2px;">✉️ ${escapeHtml(emails)}</span>` : ''}
+        </button>`;
+    });
+    listEl.innerHTML = html;
+}
+
+window.filterClientList = function() {
+    const queryStr = document.getElementById("client-search-input").value.trim().toLowerCase();
+    if (!queryStr) {
+        renderClientList(allStaffClients);
+        return;
+    }
+    const filtered = allStaffClients.filter(c => {
+        const name = (c.name || "").toLowerCase();
+        const emails = (c.memberEmails || []).join(' ').toLowerCase();
+        const entity = (c.entity || "").toLowerCase();
+        const type = (c.type || "").toLowerCase();
+        return name.includes(queryStr) || emails.includes(queryStr) || entity.includes(queryStr) || type.includes(queryStr);
+    });
+    renderClientList(filtered);
+};
+
 window.selectClient = async function(docId) {
     activeClientDocId = docId;
-    loadStaffClients();
+    renderClientList(allStaffClients);
     const detailEl = document.getElementById("client-detail-view");
     detailEl.innerHTML = '<div class="empty-feed">Loading client details...</div>';
 
@@ -551,10 +587,9 @@ window.selectClient = async function(docId) {
         const clientSnap = await getDocs(collection(clientRef, "requests"));
         const sigSnap = await getDocs(collection(clientRef, "signatures"));
         
-        const allAccs = await getDocs(collection(db, "accounts"));
-        const clientDoc = allAccs.docs.find(d => d.id === docId);
+        const clientDoc = allStaffClients.find(d => d.id === docId);
         if (!clientDoc) return;
-        const data = clientDoc.data();
+        const data = clientDoc;
 
         let reqHtml = "";
         clientSnap.docs.forEach(r => {
