@@ -62,18 +62,17 @@
         .sidebar-contact a:hover { text-decoration: underline; }
         .content-col { display: grid; gap: 24px; min-width: 0; }
 
-        /* FORM */
+        /* FORM / MODALS */
         .field-label { display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 6px; }
         input[type="text"], input[type="email"], select { width: 100%; font: inherit; font-size: 0.95rem; color: var(--text-dark); background: var(--white); border: 1px solid #D1D5DB; border-radius: 8px; padding: 11px 13px; min-height: 46px; }
         input:focus, select:focus { outline: 3px solid rgba(255,107,53,0.3); border-color: var(--primary-color); }
 
-        /* ONBOARDING MODAL */
-        #onboarding-modal { display: none; position: fixed; inset: 0; background: rgba(17, 24, 39, 0.75); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
-        #onboarding-modal.visible { display: flex; animation: fadeIn 0.2s ease; }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(17, 24, 39, 0.75); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay.visible { display: flex; animation: fadeIn 0.2s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .onboarding-box { background: var(--white); border-radius: 16px; padding: 2.5rem; width: 100%; max-width: 480px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); }
-        .onboarding-box h2 { font-size: 1.6rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.5rem; }
-        .onboarding-box p { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 1.5rem; line-height: 1.5; }
+        .modal-box { background: var(--white); border-radius: 16px; padding: 2.5rem; width: 100%; max-width: 500px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto; }
+        .modal-box h2 { font-size: 1.6rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.5rem; }
+        .modal-box p { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 1.5rem; line-height: 1.5; }
 
         @media (max-width: 1024px) {
             .mobile-menu-btn { display: block; }
@@ -177,7 +176,7 @@
                     <h3>Your accounts</h3>
                     <ul class="acct-list" id="acctList"></ul>
                     <div class="side-links">
-                        <a href="https://www.dropbox.com/scl/fo/fly93hiz63i1d07gpwy8b/AHZpVVuJoKXvX5UvqQhPsDw?rlkey=phtcpe13aneja0nz2zxzk8hz9&st=sp1zbapf&dl=0" target="_blank" rel="noopener noreferrer">Upload documents</a>
+                        <a href="https://www.dropbox.com/request/DJ1llMlQHMkZ5bhpGaJz" target="_blank" rel="noopener noreferrer">Upload documents</a>
                         <a href="contact.html">Contact your preparer</a>
                     </div>
                     <div class="sidebar-contact">
@@ -215,15 +214,15 @@
         </section>
     </main>
 
-    <!-- ONBOARDING MODAL FOR NEW CLIENTS -->
-    <div id="onboarding-modal">
-        <div class="onboarding-box">
+    <!-- ONBOARDING MODAL FOR NEW CLIENTS (EXPANDED) -->
+    <div id="onboarding-modal" class="modal-overlay">
+        <div class="modal-box">
             <h2>Welcome to Riska's Finance!</h2>
-            <p>Please provide your business or account details below to set up your client portal.</p>
+            <p>Please provide your detailed business or tax profile information below.</p>
             <form id="onboarding-form">
                 <div style="margin-bottom: 1rem;">
                     <label class="field-label">Business or Account Name</label>
-                    <input type="text" id="onb-name" class="form-input" required placeholder="e.g. My Company LLC or Your Name">
+                    <input type="text" id="onb-name" class="form-input" required placeholder="e.g. Acme LLC or John Doe">
                 </div>
                 <div style="margin-bottom: 1rem;">
                     <label class="field-label">Account Type</label>
@@ -236,17 +235,74 @@
                     <label class="field-label">Tax Entity / Structure</label>
                     <select id="onb-entity" class="form-input">
                         <option value="LLC">LLC</option>
-                        <option value="Corporation">Corporation (C-Corp / S-Corp)</option>
+                        <option value="S-Corporation">S-Corporation</option>
+                        <option value="C-Corporation">C-Corporation</option>
                         <option value="Partnership">Partnership</option>
                         <option value="Sole Proprietorship">Sole Proprietorship</option>
                         <option value="Form 1040">Form 1040 (Individual)</option>
                     </select>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label class="field-label">Phone Number</label>
+                    <input type="text" id="onb-phone" class="form-input" placeholder="(815) 555-0199">
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label class="field-label">Business Address</label>
+                    <input type="text" id="onb-address" class="form-input" placeholder="614 Crawford Ave, Dixon, IL">
                 </div>
                 <div style="margin-bottom: 1.5rem;">
                     <label class="field-label">Tax Year</label>
                     <input type="text" id="onb-year" class="form-input" value="2026">
                 </div>
                 <button type="submit" class="row-action green" style="width: 100%; text-align: center; padding: 12px; font-size: 1rem;">Complete Setup</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- EDIT PROFILE MODAL -->
+    <div id="edit-modal" class="modal-overlay">
+        <div class="modal-box">
+            <h2>Edit Profile & Account Info</h2>
+            <p>Update your business or tax profile details below.</p>
+            <form id="edit-form">
+                <div style="margin-bottom: 1rem;">
+                    <label class="field-label">Business or Account Name</label>
+                    <input type="text" id="edit-name" class="form-input" required>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label class="field-label">Account Type</label>
+                    <select id="edit-type" class="form-input">
+                        <option value="Business">Business</option>
+                        <option value="Individual">Individual</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label class="field-label">Tax Entity / Structure</label>
+                    <select id="edit-entity" class="form-input">
+                        <option value="LLC">LLC</option>
+                        <option value="S-Corporation">S-Corporation</option>
+                        <option value="C-Corporation">C-Corporation</option>
+                        <option value="Partnership">Partnership</option>
+                        <option value="Sole Proprietorship">Sole Proprietorship</option>
+                        <option value="Form 1040">Form 1040 (Individual)</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label class="field-label">Phone Number</label>
+                    <input type="text" id="edit-phone" class="form-input" placeholder="(815) 555-0199">
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label class="field-label">Business Address</label>
+                    <input type="text" id="edit-address" class="form-input" placeholder="614 Crawford Ave, Dixon, IL">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label class="field-label">Tax Year</label>
+                    <input type="text" id="edit-year" class="form-input">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="row-action" style="background:#6B7280; flex:1; text-align:center; padding:10px;" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="row-action green" style="flex:1; text-align:center; padding:10px;">Save Changes</button>
+                </div>
             </form>
         </div>
     </div>
@@ -314,7 +370,7 @@
     <script type="module">
         import { auth, db } from "./client-firebase.js";
         import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { collection, query, where, orderBy, limit, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { collection, query, where, orderBy, limit, getDocs, addDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         if (typeof feather !== 'undefined') feather.replace();
 
@@ -332,6 +388,8 @@
         const iso = v => !v ? "" : (typeof v === "string" ? v : (v.toDate ? v.toDate().toISOString() : new Date(v).toISOString()));
         const rows = snap => snap.docs.map(x => ({ id: x.id, ...x.data() }));
 
+        let currentActiveAccount = null;
+
         function showOnboardingModal(user, email) {
             return new Promise((resolve) => {
                 const modal = document.getElementById("onboarding-modal");
@@ -347,6 +405,8 @@
                     const name = document.getElementById("onb-name").value.trim();
                     const type = document.getElementById("onb-type").value;
                     const entity = document.getElementById("onb-entity").value;
+                    const phone = document.getElementById("onb-phone").value.trim();
+                    const address = document.getElementById("onb-address").value.trim();
                     const taxYear = document.getElementById("onb-year").value.trim() || "2026";
 
                     try {
@@ -354,6 +414,8 @@
                             name: name,
                             type: type,
                             entity: entity,
+                            phone: phone,
+                            address: address,
                             taxYear: taxYear,
                             status: "Client",
                             preparer: "Riska's Finance",
@@ -368,29 +430,65 @@
             });
         }
 
+        window.openEditModal = function(acc) {
+            currentActiveAccount = acc;
+            document.getElementById("edit-name").value = acc.name || "";
+            document.getElementById("edit-type").value = acc.type || "Business";
+            document.getElementById("edit-entity").value = acc.entity || "LLC";
+            document.getElementById("edit-phone").value = acc.phone || "";
+            document.getElementById("edit-address").value = acc.address || "";
+            document.getElementById("edit-year").value = acc.taxYear || "2026";
+            document.getElementById("edit-modal").classList.add("visible");
+        };
+
+        window.closeEditModal = function() {
+            document.getElementById("edit-modal").classList.remove("visible");
+        };
+
+        document.getElementById("edit-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            if (!currentActiveAccount) return;
+
+            const updatedData = {
+                name: document.getElementById("edit-name").value.trim(),
+                type: document.getElementById("edit-type").value,
+                entity: document.getElementById("edit-entity").value,
+                phone: document.getElementById("edit-phone").value.trim(),
+                address: document.getElementById("edit-address").value.trim(),
+                taxYear: document.getElementById("edit-year").value.trim()
+            };
+
+            try {
+                await updateDoc(doc(db, "accounts", currentActiveAccount.id), updatedData);
+                closeEditModal();
+                window.location.reload();
+            } catch (err) {
+                alert("Error updating profile: " + err.message);
+            }
+        });
+
         async function getDashboardData(user) {
             const email = user.email.toLowerCase();
             const accountsRef = collection(db, "accounts");
             let snap = await getDocs(query(accountsRef, where("memberEmails", "array-contains", email)));
 
-            // If account doesn't exist, show the onboarding modal form
             if (snap.empty) {
                 await showOnboardingModal(user, email);
                 snap = await getDocs(query(accountsRef, where("memberEmails", "array-contains", email)));
             }
 
-            console.log("[dashboard] looked up", JSON.stringify(email), "-> accounts found:", snap.size);
-            const accounts = await Promise.all(snap.docs.map(async doc => {
-                const sub = n => collection(doc.ref, n);
+            const accounts = await Promise.all(snap.docs.map(async docSnap => {
+                const sub = n => collection(docSnap.ref, n);
                 const [rq, dl, sg, ac] = await Promise.all([
                     getDocs(query(sub("requests"), where("status", "==", "open"))),
                     getDocs(sub("deadlines")),
                     getDocs(query(sub("signatures"), where("status", "==", "pending"))),
                     getDocs(query(sub("activity"), orderBy("at", "desc"), limit(10)))
                 ]);
-                const a = doc.data();
+                const a = docSnap.data();
                 return {
-                    id: doc.id, name: a.name || "Account", type: a.type || "Business", entity: a.entity || "",
+                    id: docSnap.id, name: a.name || "Account", type: a.type || "Business", entity: a.entity || "",
+                    phone: a.phone || "", address: a.address || "",
                     taxYear: a.taxYear || "", status: a.status || "Active", preparer: a.preparer || "Riska's Finance",
                     requests: rows(rq).map(r => ({ ...r, due: iso(r.due).slice(0, 10) })),
                     deadlines: rows(dl).map(r => ({ ...r, date: iso(r.date).slice(0, 10) })),
@@ -431,11 +529,23 @@
 
         function render(a) {
             const card = $("acctCard"); card.replaceChildren();
+            
             const top = el("div"); 
+            top.style.cssText = "display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;";
+
+            const leftInfo = el("div");
             const h = el("h2", "", a.name);
             const t = el("span", "badge", a.type); t.style.marginRight = "8px";
-            const e = el("span", "row-sub", [a.entity, a.taxYear ? "Tax year " + a.taxYear : ""].filter(Boolean).join(" \u00B7 "));
-            top.append(h, t, e);
+            const subText = [a.entity, a.taxYear ? "Tax year " + a.taxYear : "", a.phone ? "Tel: " + a.phone : ""].filter(Boolean).join(" \u00B7 ");
+            const e = el("span", "row-sub", subText);
+            leftInfo.append(h, t, e);
+
+            const editBtn = el("button", "row-action", "Edit Profile");
+            editBtn.style.cssText = "background: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); padding: 6px 14px; font-size: 0.8rem; cursor: pointer; border-radius: 50px; white-space: nowrap;";
+            editBtn.onclick = () => openEditModal(a);
+
+            top.append(leftInfo, editBtn);
+
             const dl = el("dl", "acct-meta");
             [["Status", a.status], ["Prepared by", a.preparer], ["Open requests", String(a.requests.length)], ["Pending signatures", String(a.signatures.length)]]
                 .forEach(([k, v]) => { const d = el("div"); d.append(el("dt", "", k), el("dd", "", v)); dl.append(d); });
