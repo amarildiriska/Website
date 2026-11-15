@@ -393,7 +393,8 @@
 
         const rows = snap => snap.docs.map(x => ({ id: x.id, ...x.data() }));
 
-        let currentActiveAccount = null;
+        // Properly exposed on window for inline HTML onclick handlers
+        window.currentActiveAccount = null;
 
         function showOnboardingModal(user, email) {
             return new Promise((resolve) => {
@@ -454,8 +455,9 @@
             });
         }
 
-        window.openEditModal = function(acc) {
-            currentActiveAccount = acc;
+        window.openEditModal = function() {
+            const acc = window.currentActiveAccount;
+            if (!acc) return;
             document.getElementById("edit-name").value = acc.name || "";
             document.getElementById("edit-type").value = acc.type || "Business";
             document.getElementById("edit-entity").value = acc.entity || "LLC";
@@ -471,7 +473,7 @@
 
         document.getElementById("edit-form").addEventListener("submit", async (e) => {
             e.preventDefault();
-            if (!currentActiveAccount) return;
+            if (!window.currentActiveAccount) return;
 
             const updatedData = {
                 name: document.getElementById("edit-name").value.trim(),
@@ -483,7 +485,7 @@
             };
 
             try {
-                await updateDoc(doc(db, "accounts", currentActiveAccount.id), updatedData);
+                await updateDoc(doc(db, "accounts", window.currentActiveAccount.id), updatedData);
                 closeEditModal();
                 window.location.reload();
             } catch (err) {
@@ -516,7 +518,7 @@
             `).join('');
 
             let activeAcc = accounts[0];
-            currentActiveAccount = activeAcc;
+            window.currentActiveAccount = activeAcc;
             renderAccountData(activeAcc);
 
             acctListEl.querySelectorAll('.acct-btn').forEach(btn => {
@@ -525,7 +527,7 @@
                     btn.setAttribute('aria-pressed', 'true');
                     const accId = btn.getAttribute('data-id');
                     activeAcc = accounts.find(a => a.id === accId);
-                    currentActiveAccount = activeAcc;
+                    window.currentActiveAccount = activeAcc;
                     renderAccountData(activeAcc);
                 });
             });
@@ -541,7 +543,7 @@
                         <h2>${escapeHtml(acc.name)}</h2>
                         <p style="color: var(--text-gray); font-size: 0.9rem;">Account ID: ${acc.id}</p>
                     </div>
-                    <button class="row-action" onclick="openEditModal(window.currentActiveAccount)">Edit Profile</button>
+                    <button class="row-action" onclick="openEditModal()">Edit Profile</button>
                 </div>
                 <dl class="acct-meta">
                     <div><dt>ACCOUNT TYPE</dt><dd>${escapeHtml(acc.type || 'N/A')}</dd></div>
