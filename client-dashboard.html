@@ -214,7 +214,7 @@
         </section>
     </main>
 
-    <!-- ONBOARDING MODAL FOR NEW CLIENTS (EXPANDED) -->
+    <!-- ONBOARDING MODAL FOR NEW CLIENTS -->
     <div id="onboarding-modal" class="modal-overlay">
         <div class="modal-box">
             <h2>Welcome to Riska's Finance!</h2>
@@ -421,6 +421,26 @@
                             preparer: "Riska's Finance",
                             memberEmails: [email]
                         });
+
+                        // Notify admin@riskasfinance.com via your Formspree endpoint
+                        await fetch("https://formspree.io/f/xvgvwydp", {
+                            method: "POST",
+                            headers: {
+                                "Accept": "application/json",
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                _subject: `New Client Portal Signup: ${name}`,
+                                business_or_account_name: name,
+                                email: email,
+                                account_type: type,
+                                entity_type: entity,
+                                phone: phone || "Not provided",
+                                address: address || "Not provided",
+                                tax_year: taxYear
+                            })
+                        }).catch(err => console.log("Formspree notification error:", err));
+
                         modal.classList.remove("visible");
                         resolve();
                     } catch (err) {
