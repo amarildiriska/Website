@@ -57,54 +57,23 @@
         .signup-layout { display: grid; grid-template-columns: 290px 1fr; gap: 40px; padding: 4rem 0; align-items: start; }
         .signup-sidebar { position: sticky; top: 80px; background: var(--white); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
         .signup-sidebar h3 { font-size: 1.05rem; margin-bottom: 1rem; }
-        .next-steps { list-style: none; margin-bottom: 1.5rem; counter-reset: step; }
-        .next-steps li { counter-increment: step; position: relative; padding: 0 0 16px 40px; font-size: 0.9rem; color: var(--text-gray); line-height: 1.5; }
-        .next-steps li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--primary-color); color: var(--white); font-weight: 700; font-size: 0.8rem; display: grid; place-items: center; }
-        .next-steps li:not(:last-child)::after { content: ""; position: absolute; left: 12px; top: 30px; bottom: 4px; width: 2px; background: var(--border-color); }
-        .next-steps strong { display: block; color: var(--text-dark); font-weight: 600; }
         .sidebar-contact { border-top: 1px solid var(--border-color); padding-top: 1.1rem; font-size: 0.85rem; color: var(--text-gray); line-height: 1.7; }
         .sidebar-contact a { color: var(--primary-color); font-weight: 600; }
         .sidebar-contact a:hover { text-decoration: underline; }
         .content-col { display: grid; gap: 24px; min-width: 0; }
-        .signup-content { background: var(--white); border: 1px solid var(--border-color); border-radius: 12px; padding: 3.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
-        .signup-content h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
-        .signup-intro { color: var(--text-gray); font-size: 0.95rem; line-height: 1.8; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--light-bg); }
 
         /* FORM */
-        fieldset { border: 0; min-width: 0; margin-bottom: 2rem; }
-        legend { font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; padding: 0; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 18px; }
-        .full { grid-column: 1 / -1; }
         .field-label { display: block; font-weight: 600; font-size: 0.88rem; margin-bottom: 6px; }
         input[type="text"], input[type="email"], select { width: 100%; font: inherit; font-size: 0.95rem; color: var(--text-dark); background: var(--white); border: 1px solid #D1D5DB; border-radius: 8px; padding: 11px 13px; min-height: 46px; }
         input:focus, select:focus { outline: 3px solid rgba(255,107,53,0.3); border-color: var(--primary-color); }
-        .invalid { border-color: var(--error-color) !important; }
-        .err { color: var(--error-color); font-size: 0.83rem; margin-top: 5px; display: none; }
-        .err.show { display: block; }
-        .privacy-note { background: var(--light-bg); border-left: 4px solid var(--primary-color); border-radius: 4px; padding: 12px 14px; font-size: 0.88rem; color: var(--text-gray); }
-        .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-        :focus-visible { outline: 3px solid rgba(255,107,53,0.55); outline-offset: 2px; }
-        .form-error { color: var(--error-color); font-weight: 600; margin-top: 14px; display: none; }
-        .form-error.show { display: block; }
 
-        /* UPLOAD */
-        .upload-card { background: var(--white); border: 1px solid var(--border-color); border-top: 4px solid #16A34A; border-radius: 12px; padding: 2.5rem 3.5rem 3rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
-        .upload-card h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
-        .upload-section { background: #F0FDF4; border: 1px dashed #16A34A; border-radius: 12px; padding: 28px; text-align: center; transition: background 0.2s, border-color 0.2s; }
-        .upload-section.over { background: #DCFCE7; border-style: solid; }
-        .upload-section h3 { color: #166534; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .upload-section p { color: #166534; font-size: 0.9rem; margin-bottom: 1.25rem; }
-        .upload-btn { display: inline-flex; align-items: center; gap: 8px; background: #16A34A; color: #fff; padding: 14px 28px; border-radius: 50px; font: inherit; font-weight: 700; font-size: 0.95rem; border: 0; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 15px rgba(22,163,74,0.3); }
-        .upload-btn:hover { background: #15803D; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(22,163,74,0.4); }
-        .cf { display: flex; justify-content: center; margin-bottom: 1.25rem; }
-        .file-list { list-style: none; margin-top: 1.5rem; }
-        .file-list li { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 12px 14px; margin-bottom: 8px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.9rem; }
-        .file-list .name { font-weight: 600; overflow-wrap: anywhere; }
-        .file-list .bar { grid-column: 1 / -1; height: 5px; background: var(--border-color); border-radius: 3px; overflow: hidden; }
-        .file-list .bar i { display: block; height: 100%; width: 0; background: #16A34A; transition: width 0.2s; }
-        .st { color: var(--text-gray); font-weight: 600; }
-        .st.done { color: #146C43; }
-        .st.fail { color: var(--error-color); }
+        /* ONBOARDING MODAL */
+        #onboarding-modal { display: none; position: fixed; inset: 0; background: rgba(17, 24, 39, 0.75); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+        #onboarding-modal.visible { display: flex; animation: fadeIn 0.2s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .onboarding-box { background: var(--white); border-radius: 16px; padding: 2.5rem; width: 100%; max-width: 480px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); }
+        .onboarding-box h2 { font-size: 1.6rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.5rem; }
+        .onboarding-box p { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 1.5rem; line-height: 1.5; }
 
         @media (max-width: 1024px) {
             .mobile-menu-btn { display: block; }
@@ -117,16 +86,12 @@
             .page-hero h1 { font-size: 2.2rem; }
             .signup-layout { grid-template-columns: 1fr; gap: 20px; }
             .signup-sidebar { position: static; margin-bottom: 1rem; }
-            .signup-content, .upload-card { padding: 2rem 1.25rem; }
-            .form-grid { grid-template-columns: 1fr; }
             input[type="text"], input[type="email"], select { font-size: 16px; }
         }
-        @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
         /* DASHBOARD */
         .dash-hero { padding: 56px 20px; }
         .dash-hero h1 { font-size: 2.2rem; }
-        .sample-note { background: #FFF6F1; border: 1px solid #FFD9C7; border-radius: 8px; padding: 10px 14px; font-size: 0.85rem; color: var(--text-gray); margin-bottom: 20px; }
         .acct-list { list-style: none; display: grid; gap: 8px; margin-bottom: 1.5rem; }
         .acct-btn { width: 100%; text-align: left; font: inherit; background: var(--white); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
         .acct-btn:hover { border-color: #C5CBD3; }
@@ -154,7 +119,7 @@
         .row-item:last-child { border-bottom: 0; padding-bottom: 0; }
         .row-title { font-weight: 600; font-size: 0.95rem; }
         .row-sub { font-size: 0.85rem; color: var(--text-gray); }
-        .row-action { display: inline-block; font-weight: 700; font-size: 0.85rem; color: var(--white); background: var(--primary-color); padding: 8px 16px; border-radius: 50px; transition: background 0.2s; }
+        .row-action { display: inline-block; font-weight: 700; font-size: 0.85rem; color: var(--white); background: var(--primary-color); padding: 8px 16px; border-radius: 50px; transition: background 0.2s; cursor: pointer; border: none; }
         .row-action:hover { background: #E85A24; }
         .row-action.green { background: #16A34A; }
         .row-action.green:hover { background: #15803D; }
@@ -250,6 +215,42 @@
         </section>
     </main>
 
+    <!-- ONBOARDING MODAL FOR NEW CLIENTS -->
+    <div id="onboarding-modal">
+        <div class="onboarding-box">
+            <h2>Welcome to Riska's Finance!</h2>
+            <p>Please provide your business or account details below to set up your client portal.</p>
+            <form id="onboarding-form">
+                <div style="margin-bottom: 1rem;">
+                    <label class="field-label">Business or Account Name</label>
+                    <input type="text" id="onb-name" class="form-input" required placeholder="e.g. My Company LLC or Your Name">
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label class="field-label">Account Type</label>
+                    <select id="onb-type" class="form-input">
+                        <option value="Business">Business</option>
+                        <option value="Individual">Individual</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label class="field-label">Tax Entity / Structure</label>
+                    <select id="onb-entity" class="form-input">
+                        <option value="LLC">LLC</option>
+                        <option value="Corporation">Corporation (C-Corp / S-Corp)</option>
+                        <option value="Partnership">Partnership</option>
+                        <option value="Sole Proprietorship">Sole Proprietorship</option>
+                        <option value="Form 1040">Form 1040 (Individual)</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label class="field-label">Tax Year</label>
+                    <input type="text" id="onb-year" class="form-input" value="2026">
+                </div>
+                <button type="submit" class="row-action green" style="width: 100%; text-align: center; padding: 12px; font-size: 1rem;">Complete Setup</button>
+            </form>
+        </div>
+    </div>
+
     <footer class="footer" style="padding: 4rem 0 2.5rem; background: var(--white); border-top: 1px solid var(--border-color);">
         <div class="container">
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 30px; margin-bottom: 40px;">
@@ -331,22 +332,50 @@
         const iso = v => !v ? "" : (typeof v === "string" ? v : (v.toDate ? v.toDate().toISOString() : new Date(v).toISOString()));
         const rows = snap => snap.docs.map(x => ({ id: x.id, ...x.data() }));
 
+        function showOnboardingModal(user, email) {
+            return new Promise((resolve) => {
+                const modal = document.getElementById("onboarding-modal");
+                modal.classList.add("visible");
+                document.getElementById("onb-name").value = user.displayName || email.split("@")[0];
+
+                const form = document.getElementById("onboarding-form");
+                const newForm = form.cloneNode(true);
+                form.parentNode.replaceChild(newForm, form);
+
+                document.getElementById("onboarding-form").addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const name = document.getElementById("onb-name").value.trim();
+                    const type = document.getElementById("onb-type").value;
+                    const entity = document.getElementById("onb-entity").value;
+                    const taxYear = document.getElementById("onb-year").value.trim() || "2026";
+
+                    try {
+                        await addDoc(collection(db, "accounts"), {
+                            name: name,
+                            type: type,
+                            entity: entity,
+                            taxYear: taxYear,
+                            status: "Client",
+                            preparer: "Riska's Finance",
+                            memberEmails: [email]
+                        });
+                        modal.classList.remove("visible");
+                        resolve();
+                    } catch (err) {
+                        alert("Error saving account: " + err.message);
+                    }
+                });
+            });
+        }
+
         async function getDashboardData(user) {
             const email = user.email.toLowerCase();
             const accountsRef = collection(db, "accounts");
             let snap = await getDocs(query(accountsRef, where("memberEmails", "array-contains", email)));
 
-            // Automatically create an account document if it doesn't exist yet (defaults to Business)
+            // If account doesn't exist, show the onboarding modal form
             if (snap.empty) {
-                await addDoc(accountsRef, {
-                    name: user.displayName || email.split("@")[0],
-                    type: "Business",
-                    entity: "LLC",
-                    taxYear: "2026",
-                    status: "Client",
-                    preparer: "Riska's Finance",
-                    memberEmails: [email]
-                });
+                await showOnboardingModal(user, email);
                 snap = await getDocs(query(accountsRef, where("memberEmails", "array-contains", email)));
             }
 
