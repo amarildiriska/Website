@@ -287,8 +287,8 @@
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                             <h3 style="font-size:0.95rem; font-weight:600; color:#0f172a;">Client Accounts</h3>
                         </div>
-                        <!-- Search / Filter input for portal-created clients -->
-                        <input type="text" id="client-search-input" class="form-input" placeholder="Search by name, email..." oninput="filterClientList()" style="margin-bottom: 12px; font-size: 0.85rem; padding: 8px 10px;">
+                        <!-- Search & Filter Input -->
+                        <input type="text" id="client-search-input" class="form-input" placeholder="Filter by name, email, entity..." oninput="filterClientList()" style="margin-bottom: 12px; font-size: 0.85rem; padding: 8px 10px;">
                         
                         <div id="staff-client-list"><div class="empty-feed">Loading accounts...</div></div>
                     </div>
@@ -410,27 +410,13 @@
     </div>
 </div>
 
-<!-- FIREBASE SDK & APP LOGIC -->
+<!-- FIREBASE SDK & APP LOGIC (Connected to client-firebase.js) -->
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as fbSignOut, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, updateDoc, onSnapshot, deleteDoc, doc, query, orderBy, getDocs, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { auth, db } from "./client-firebase.js";
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as fbSignOut, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { collection, addDoc, updateDoc, onSnapshot, deleteDoc, doc, query, orderBy, getDocs, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = {
-    apiKey:            "AIzaSyAUsHaf3_npOkomivpF9fVT6xtSD0E0xFU",
-    authDomain:        "riskasfinance-4b13a.firebaseapp.com",
-    projectId:         "riskasfinance-4b13a",
-    storageBucket:     "riskasfinance-4b13a.firebasestorage.app",
-    messagingSenderId: "502736076948",
-    appId:             "1:502736076948:web:9d6bc637d4f25e8c653481",
-    measurementId:     "G-300CNKNFSL"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app); 
 const provider = new GoogleAuthProvider();
-
 const OWNER_EMAILS = ["amarildiriska15@gmail.com", "arbririska1@gmail.com"];
 
 window.showToast = function(msg) {
