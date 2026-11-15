@@ -370,7 +370,7 @@
     <script type="module">
         import { auth, db } from "./client-firebase.js";
         import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { collection, query, where, orderBy, limit, getDocs, addDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { collection, query, where, getDocs, addDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         if (typeof feather !== 'undefined') feather.replace();
 
@@ -385,7 +385,12 @@
             if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) navMenu.classList.remove('active');
         });
 
-        const iso = v => !v ? "" : (typeof v === "string" ? v : (v.toDate ? v.toDate().toISOString() : new Date(v).toISOString()));
+        document.getElementById("signOutLink").addEventListener("click", async (e) => {
+            e.preventDefault();
+            await signOut(auth);
+            window.location.href = "signin.html";
+        });
+
         const rows = snap => snap.docs.map(x => ({ id: x.id, ...x.data() }));
 
         let currentActiveAccount = null;
@@ -422,7 +427,6 @@
                             memberEmails: [email]
                         });
 
-                        // Notify admin@riskasfinance.com via your Formspree endpoint
                         await fetch("https://formspree.io/f/xvgvwydp", {
                             method: "POST",
                             headers: {
@@ -487,169 +491,158 @@
             }
         });
 
-        async function getDashboardData(user) {
+        async function loadClientDashboard(user) {
             const email = user.email.toLowerCase();
-            const accountsRef = collection(db, "accounts");
-            let snap = await getDocs(query(accountsRef, where("memberEmails", "array-contains", email)));
+            const accountsQuery = query(collection(db, "accounts"), where("memberEmails", "array-contains", email));
+            const accountsSnap = await getDocs(accountsQuery);
 
-            if (snap.empty) {
+            let accounts = rows(accountsSnap);
+            if (accounts.length === 0) {
                 await showOnboardingModal(user, email);
-                snap = await getDocs(query(accountsRef, where("memberEmails", "array-contains", email)));
+                const retrySnap = await getDocs(accountsQuery);
+                accounts = rows(retrySnap);
             }
 
-            const accounts = await Promise.all(snap.docs.map(async docSnap => {
-                const sub = n => collection(docSnap.ref, n);
-                const [rq, dl, sg, ac] = await Promise.all([
-                    getDocs(query(sub("requests"), where("status", "==", "open"))),
-                    getDocs(sub("deadlines")),
-                    getDocs(query(sub("signatures"), where("status", "==", "pending"))),
-                    getDocs(query(sub("activity"), orderBy("at", "desc"), limit(10)))
-                ]);
-                const a = docSnap.data();
-                return {
-                    id: docSnap.id, name: a.name || "Account", type: a.type || "Business", entity: a.entity || "",
-                    phone: a.phone || "", address: a.address || "",
-                    taxYear: a.taxYear || "", status: a.status || "Active", preparer: a.preparer || "Riska's Finance",
-                    requests: rows(rq).map(r => ({ ...r, due: iso(r.due).slice(0, 10) })),
-                    deadlines: rows(dl).map(r => ({ ...r, date: iso(r.date).slice(0, 10) })),
-                    signatures: rows(sg).map(r => ({ ...r, sent: iso(r.sent) })),
-                    activity: rows(ac).map(r => ({ ...r, at: iso(r.at) }))
-                };
-            }));
-            return { clientName: (user.displayName || "").split(" ")[0], accounts };
+            if (accounts.length === 0) return;
+
+            const acctListEl = document.getElementById("acctList");
+            acctListEl.innerHTML = accounts.map((acc, i) => `
+                <li>
+                    <button class="acct-btn" data-id="${acc.id}" aria-pressed="${i === 0}">
+                        <strong>${escapeHtml(acc.name)}</strong>
+                        <span>${escapeHtml(acc.type || 'Account')} (${escapeHtml(acc.entity || 'N/A')})</span>
+                    </button>
+                </li>
+            `).join('');
+
+            let activeAcc = accounts[0];
+            currentActiveAccount = activeAcc;
+            renderAccountData(activeAcc);
+
+            acctListEl.querySelectorAll('.acct-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    acctListEl.querySelectorAll('.acct-btn').forEach(b => b.setAttribute('aria-pressed', 'false'));
+                    btn.setAttribute('aria-pressed', 'true');
+                    const accId = btn.getAttribute('data-id');
+                    activeAcc = accounts.find(a => a.id === accId);
+                    currentActiveAccount = activeAcc;
+                    renderAccountData(activeAcc);
+                });
+            });
         }
 
-        const $ = id => document.getElementById(id);
-        const fmtDate = s => new Date(s.length === 10 ? s + "T12:00:00" : s).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-        const daysFrom = s => Math.round((new Date(s + "T12:00:00") - new Date(new Date().toISOString().slice(0, 10) + "T12:00:00")) / 864e5);
+        async function renderAccountData(acc) {
+            document.getElementById("welcome").textContent = `Welcome, ${acc.name}`;
 
-        function el(tag, cls, text) {
-            const n = document.createElement(tag);
-            if (cls) n.className = cls;
-            if (text !== undefined) n.textContent = text;
-            return n;
-        }
-        function badgeFor(s) {
-            const n = daysFrom(s);
-            if (n < 0) return el("span", "badge bad", Math.abs(n) + (Math.abs(n) === 1 ? " day overdue" : " days overdue"));
-            if (n === 0) return el("span", "badge warn", "Due today");
-            if (n <= 7) return el("span", "badge warn", "Due in " + n + (n === 1 ? " day" : " days"));
-            return el("span", "badge", "Due " + fmtDate(s));
-        }
-        function fill(listId, items, emptyText, build) {
-            const ul = $(listId); ul.replaceChildren();
-            if (!items.length) { const li = el("li", "empty", emptyText); ul.append(li); return; }
-            items.forEach(i => ul.append(build(i)));
-        }
-        function rowItem(title, sub, right) {
-            const li = el("li", "row-item");
-            const left = el("div"); left.append(el("div", "row-title", title), el("div", "row-sub", sub));
-            li.append(left, right); return li;
-        }
+            const acctCard = document.getElementById("acctCard");
+            acctCard.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <h2>${escapeHtml(acc.name)}</h2>
+                        <p style="color: var(--text-gray); font-size: 0.9rem;">Account ID: ${acc.id}</p>
+                    </div>
+                    <button class="row-action" onclick="openEditModal(window.currentActiveAccount)">Edit Profile</button>
+                </div>
+                <dl class="acct-meta">
+                    <div><dt>ACCOUNT TYPE</dt><dd>${escapeHtml(acc.type || 'N/A')}</dd></div>
+                    <div><dt>TAX ENTITY</dt><dd>${escapeHtml(acc.entity || 'N/A')}</dd></div>
+                    <div><dt>TAX YEAR</dt><dd>${escapeHtml(acc.taxYear || '2026')}</dd></div>
+                    <div><dt>STATUS</dt><dd><span class="badge ok">${escapeHtml(acc.status || 'Active')}</span></dd></div>
+                    <div><dt>PHONE</dt><dd>${escapeHtml(acc.phone || 'Not provided')}</dd></div>
+                    <div><dt>ADDRESS</dt><dd>${escapeHtml(acc.address || 'Not provided')}</dd></div>
+                </dl>
+            `;
 
-        function render(a) {
-            const card = $("acctCard"); card.replaceChildren();
+            // Load subcollections: requests, signatures, activity
+            const accRef = doc(db, "accounts", acc.id);
             
-            const top = el("div"); 
-            top.style.cssText = "display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;";
-
-            const leftInfo = el("div");
-            const h = el("h2", "", a.name);
-            const t = el("span", "badge", a.type); t.style.marginRight = "8px";
-            const subText = [a.entity, a.taxYear ? "Tax year " + a.taxYear : "", a.phone ? "Tel: " + a.phone : ""].filter(Boolean).join(" \u00B7 ");
-            const e = el("span", "row-sub", subText);
-            leftInfo.append(h, t, e);
-
-            const editBtn = el("button", "row-action", "Edit Profile");
-            editBtn.style.cssText = "background: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); padding: 6px 14px; font-size: 0.8rem; cursor: pointer; border-radius: 50px; white-space: nowrap;";
-            editBtn.onclick = () => openEditModal(a);
-
-            top.append(leftInfo, editBtn);
-
-            const dl = el("dl", "acct-meta");
-            [["Status", a.status], ["Prepared by", a.preparer], ["Open requests", String(a.requests.length)], ["Pending signatures", String(a.signatures.length)]]
-                .forEach(([k, v]) => { const d = el("div"); d.append(el("dt", "", k), el("dd", "", v)); dl.append(d); });
-            card.append(top, dl);
-
-            const reqs = [...a.requests].sort((x, y) => x.due.localeCompare(y.due));
-            $("reqCount").textContent = reqs.length ? reqs.length + " open" : "";
-            fill("requests", reqs, "You're all caught up. We don't need anything else right now.", r => {
-                const right = el("div"); right.style.textAlign = "right";
-                const up = el("a", "row-action", "Upload"); 
-                up.href = "https://www.dropbox.com/scl/fo/fly93hiz63i1d07gpwy8b/AHZpVVuJoKXvX5UvqQhPsDw?rlkey=phtcpe13aneja0nz2zxzk8hz9&st=sp1zbapf&dl=0";
-                up.target = "_blank";
-                up.rel = "noopener noreferrer";
-                const bd = badgeFor(r.due); bd.style.marginRight = "10px";
-                right.append(bd, up);
-                return rowItem(r.title, r.note || "", right);
-            });
-
-            $("signCount").textContent = a.signatures.length ? a.signatures.length + " waiting" : "";
-            fill("signatures", a.signatures, "Nothing to sign right now.", s => {
-                const right = el("div"); right.style.textAlign = "right";
-                const go = el("a", "row-action green", "Review and sign");
-                go.href = /^https:\/\//.test(s.url || "") ? s.url : "contact.html";
-                right.append(go);
-                return rowItem(s.title, [s.note, s.sent ? "Sent " + fmtDate(s.sent) + "." : ""].filter(Boolean).join(" "), right);
-            });
-
-            const dls = [...a.deadlines].filter(d => daysFrom(d.date) >= -1).sort((x, y) => x.date.localeCompare(y.date));
-            fill("deadlines", dls, "No upcoming deadlines.", d => {
-                const n = daysFrom(d.date);
-                const right = el("span", "badge" + (n <= 7 ? " warn" : ""), n <= 0 ? "Today" : n + (n === 1 ? " day" : " days"));
-                return rowItem(d.title, fmtDate(d.date), right);
-            });
-
-            const act = [...a.activity].sort((x, y) => y.at.localeCompare(x.at));
-            const ul = $("activity"); ul.replaceChildren();
-            if (!act.length) {
-                ul.append(el("li", "empty", "No activity yet."));
+            // Requests
+            const reqSnap = await getDocs(collection(accRef, "requests"));
+            const requests = rows(reqSnap);
+            const reqCount = document.getElementById("reqCount");
+            const reqList = document.getElementById("requests");
+            reqCount.textContent = requests.length ? `${requests.length} open` : "All clear";
+            
+            if (requests.length === 0) {
+                reqList.innerHTML = `<li class="empty">No outstanding requests at this time.</li>`;
             } else {
-                act.forEach(i => {
-                    const li = el("li");
-                    const tm = el("time", "", i.at ? new Date(i.at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "");
-                    li.append(i.text || "", tm);
-                    ul.append(li);
-                });
+                reqList.innerHTML = requests.map(r => `
+                    <li class="row-item">
+                        <div>
+                            <div class="row-title">${escapeHtml(r.title)}</div>
+                            <div class="row-sub">Due: ${escapeHtml(r.due || 'N/A')} ${r.note ? '— ' + escapeHtml(r.note) : ''}</div>
+                        </div>
+                        <a href="https://www.dropbox.com/request/DJ1llMlQHMkZ5bhpGaJz" target="_blank" rel="noopener noreferrer" class="row-action">Upload File</a>
+                    </li>
+                `).join('');
             }
+
+            // Signatures
+            const sigSnap = await getDocs(collection(accRef, "signatures"));
+            const signatures = rows(sigSnap);
+            const signCount = document.getElementById("signCount");
+            const signList = document.getElementById("signatures");
+            signCount.textContent = signatures.length ? `${signatures.length} pending` : "None pending";
+
+            if (signatures.length === 0) {
+                signList.innerHTML = `<li class="empty">No documents awaiting signature.</li>`;
+            } else {
+                signList.innerHTML = signatures.map(s => `
+                    <li class="row-item">
+                        <div>
+                            <div class="row-title">${escapeHtml(s.title)}</div>
+                            <div class="row-sub">Status: ${escapeHtml(s.status || 'pending')}</div>
+                        </div>
+                        <button class="row-action green">Sign Now</button>
+                    </li>
+                `).join('');
+            }
+
+            // Deadlines
+            const calSnap = await getDocs(collection(db, "calendar"));
+            const deadlines = rows(calSnap);
+            const dlList = document.getElementById("deadlines");
+            if (deadlines.length === 0) {
+                dlList.innerHTML = `<li class="empty">No upcoming deadlines.</li>`;
+            } else {
+                dlList.innerHTML = deadlines.slice(0, 5).map(d => `
+                    <li class="row-item">
+                        <div>
+                            <div class="row-title">${escapeHtml(d.description)}</div>
+                            <div class="row-sub">Date: ${escapeHtml(d.date)}</div>
+                        </div>
+                    </li>
+                `).join('');
+            }
+
+            // Activity Log
+            const actSnap = await getDocs(collection(accRef, "activity"));
+            const activity = rows(actSnap);
+            const actList = document.getElementById("activity");
+            if (activity.length === 0) {
+                actList.innerHTML = `<li class="empty">No recent activity.</li>`;
+            } else {
+                actList.innerHTML = activity.map(a => `
+                    <li>
+                        <time>${escapeHtml(a.at ? new Date(a.at).toLocaleDateString() : '')}</time>
+                        ${escapeHtml(a.text || a.description || 'Activity recorded')}
+                    </li>
+                `).join('');
+            }
+
+            if (typeof feather !== 'undefined') feather.replace();
         }
 
-        onAuthStateChanged(auth, async user => {
-            if (!user) {
-                window.location.href = "client-login.html";
-                return;
-            }
-            try {
-                const data = await getDashboardData(user);
-                if (data.clientName) $("welcome").textContent = "Welcome back, " + data.clientName;
-                
-                const acctList = $("acctList");
-                acctList.replaceChildren();
-                data.accounts.forEach((acc, idx) => {
-                    const btn = el("button", "acct-btn");
-                    btn.setAttribute("aria-pressed", idx === 0 ? "true" : "false");
-                    btn.append(el("strong", "", acc.name), el("span", "", acc.type + (acc.entity ? " \u00B7 " + acc.entity : "")));
-                    btn.addEventListener("click", () => {
-                        acctList.querySelectorAll(".acct-btn").forEach(b => b.setAttribute("aria-pressed", "false"));
-                        btn.setAttribute("aria-pressed", "true");
-                        render(acc);
-                    });
-                    acctList.append(btn);
-                });
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
 
-                if (data.accounts.length) render(data.accounts[0]);
-            } catch (err) {
-                console.error("Dashboard error:", err);
-            }
-        });
-
-        $("signOutLink").addEventListener("click", async e => {
-            e.preventDefault();
-            try {
-                await signOut(auth);
-                window.location.href = "client-login.html";
-            } catch (err) {
-                console.error("Sign out error:", err);
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                await loadClientDashboard(user);
+            } else {
+                window.location.href = "signin.html";
             }
         });
     </script>
