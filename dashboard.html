@@ -38,9 +38,7 @@
         .google-btn svg { flex-shrink: 0; }
 
         .login-error { color: #b91c1c; font-size: 0.85rem; margin-top: 1rem; padding: 10px; background: #fef2f2; border-radius: 6px; display: none; text-align: left; word-wrap: break-word; }
-        .login-loading { display: none; margin-top: 1rem; }
-        .spinner { width: 24px; height: 24px; border: 3px solid #cbd5e1; border-top-color: #FF6B35; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .login-divider { font-size: 0.75rem; color: #94a3b8; margin-top: 2rem; text-transform: uppercase; letter-spacing: 0.05em; }
 
         #main-content { display: none; height: 100vh; overflow: hidden; }
         #main-content.visible { display: flex; }
@@ -92,6 +90,13 @@
         .widget-link { font-size: 0.8rem; color: #FF6B35; font-weight: 500; cursor: pointer; text-decoration: none; }
         .widget-link:hover { text-decoration: underline; }
 
+        .mini-task { padding: 8px 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; color: #334155; }
+        .mini-task:last-child { border-bottom: none; padding-bottom: 0; }
+        .mini-cal { padding: 8px 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.85rem; }
+        .mini-cal:last-child { border-bottom: none; padding-bottom: 0; }
+        .mini-cal-date { font-weight: 600; color: #FF6B35; margin-bottom: 2px; }
+        .mini-cal-desc { color: #475569; }
+
         .inline-form { background: #f8fafc; border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;}
         .inline-form .form-group { margin-bottom: 0; flex: 1; min-width: 200px; }
         .btn-small-del { background: none; border: none; color: #ef4444; cursor: pointer; padding: 4px; border-radius: 4px; display: flex; align-items: center; }
@@ -101,6 +106,7 @@
         .resource-card { position: relative; background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1.5rem; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; transition: transform 0.2s, box-shadow 0.2s; color: inherit; }
         .resource-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-color: #FF6B35; }
         .resource-icon { width: 42px; height: 42px; background: #fff3ed; color: #FF6B35; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .resource-del { position: absolute; top: 1rem; right: 1rem; }
 
         .calendar-list { display: flex; flex-direction: column; gap: 1rem; }
         .calendar-item { background: white; border: 1px solid #e2e8f0; border-left: 4px solid #FF6B35; border-radius: 8px; padding: 1rem 1.5rem; display: flex; align-items: center; gap: 2rem; position: relative; }
@@ -127,16 +133,25 @@
         .post-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 0.75rem; flex-wrap: wrap; }
         .post-cat-badge { font-size: 0.7rem; font-weight: 600; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
         
-        .cat-tax   { background:#fef3c7; color:#92400e; }
+        .cat-tax      { background:#fef3c7; color:#92400e; }
         .cat-company  { background:#dbeafe; color:#1e40af; }
-        .cat-irs   { background:#fce7f3; color:#9d174d; }
+        .cat-irs      { background:#fce7f3; color:#9d174d; }
         .cat-reminder { background:#d1fae5; color:#065f46; }
+
+        .post-dest-badge { font-size: 0.7rem; padding: 4px 10px; border-radius: 4px; background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+        .post-date { font-size: 0.8rem; color: #64748b; margin-left: auto; }
+        .download-btn { display: inline-flex; align-items: center; gap: 6px; background: #f8fafc; color: #334155; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; border: 1px solid #e2e8f0; margin-top: 1rem; font-weight: 500; }
+        .post-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #f1f5f9; }
+        .post-author { color: #64748b; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; }
+        .post-del-btn { background: none; border: none; color: #ef4444; font-size: 0.8rem; font-weight: 500; cursor: pointer; padding: 4px 8px; border-radius: 4px; }
 
         .empty-feed { text-align: center; padding: 2rem 1rem; color: #94a3b8; width: 100%; font-size: 0.9rem;}
 
         .admin-layout { max-width: 600px; }
         .approved-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
         .approved-item { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 14px; font-size: 0.85rem; }
+        .owner-tag { font-size: 0.7rem; background: #0f172a; color: white; padding: 2px 6px; border-radius: 4px; margin-left: 8px; font-weight: 600; }
+        .revoke-btn { background: none; border: 1px solid #fca5a5; color: #ef4444; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; }
         .add-email-row { display: flex; gap: 10px; }
         .add-email-btn { background: #0f172a; color: white; border: none; padding: 0 20px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; cursor: pointer; white-space: nowrap; }
 
@@ -159,6 +174,7 @@
 
         @media (max-width: 900px) { 
             .cms-grid, .home-grid, .client-mgmt-grid { grid-template-columns: 1fr; } 
+            .calendar-item { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
             .app-sidebar { position: fixed; top: 0; left: 0; bottom: 0; transform: translateX(-100%); width: 280px; }
             .app-sidebar.open { transform: translateX(0); }
             .mobile-menu-btn, .mobile-close-btn { display: block; }
@@ -260,7 +276,7 @@
             <div id="tab-dashboard" class="tab-panel active">
                 <div class="home-grid">
                     <div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;"><h2 style="font-size:1.25rem; font-weight:600; color:#0f172a;">Internal News & Announcements</h2></div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;"><h2 style="font-size:1.25rem; font-weight:600; color:#0f172a;">Internal News & Announcements</h2></div>
                         <div id="dashboard-news-feed" class="post-feed"><div class="empty-feed">Loading recent posts...</div></div>
                     </div>
                     <div>
@@ -311,7 +327,7 @@
                         <button class="publish-btn" onclick="publishPost()"><i data-feather="send" style="width:16px;"></i> Broadcast Post</button>
                     </div>
                     <div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.0rem;"><h2 style="font-size:1.1rem; color:#0f172a;">Manage All Dispatches</h2><span style="font-size:0.85rem; color:#64748b;" id="post-count">0 items</span></div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;"><h2 style="font-size:1.1rem; color:#0f172a;">Manage All Dispatches</h2><span style="font-size:0.85rem; color:#64748b;" id="post-count">0 items</span></div>
                         <div id="post-feed" class="post-feed"><div class="empty-feed">Loading database...</div></div>
                     </div>
                 </div>
@@ -765,11 +781,16 @@ function initFeeds() {
             const card = `<div class="post-card">
                 <div class="post-meta">
                     <span class="post-cat-badge cat-${getCatClass(d.category)}">${escapeHtml(d.category || 'General')}</span>
-                    <span style="font-size:0.8rem; color:#64748b;">${dateStr}</span>
+                    <span class="post-dest-badge">${escapeHtml(d.dest || 'both')}</span>
+                    <span class="post-date">${dateStr}</span>
                 </div>
                 <h3 style="font-size:1.05rem; font-weight:600; color:#0f172a; margin-bottom:8px;">${escapeHtml(d.title)}</h3>
-                <p style="font-size:0.9rem; color:#475569; line-height:1.5; white-space:pre-wrap; margin-bottom:${d.fileUrl ? '1rem':'0'};">${escapeHtml(d.body)}</p>
-                ${d.fileUrl ? `<a href="${escapeHtml(d.fileUrl)}" target="_blank" class="widget-link" style="display:inline-flex; align-items:center; gap:6px;"><i data-feather="paperclip" style="width:14px;"></i> View Attached Document</a>` : ''}
+                <p style="font-size:0.9rem; color:#475569; line-height:1.5; white-space:pre-wrap;">${escapeHtml(d.body)}</p>
+                ${d.fileUrl ? `<a href="${escapeHtml(d.fileUrl)}" target="_blank" class="download-btn"><i data-feather="paperclip" style="width:14px;"></i> View Attached Document</a>` : ''}
+                <div class="post-actions">
+                    <span class="post-author"><i data-feather="user" style="width:12px;"></i> Staff Portal</span>
+                    <button class="post-del-btn" onclick="deletePost('${docSnap.id}')">Delete Post</button>
+                </div>
             </div>`;
             html += card;
             if (dashHtml.split('post-card').length <= 3) dashHtml += card;
@@ -784,7 +805,7 @@ function initFeeds() {
         const dashFeed = document.getElementById("dashboard-tasks-feed");
         if (snap.empty) {
             feed.innerHTML = '<div class="empty-feed">No tasks.</div>';
-            dashFeed.innerHTML = '<div class="empty-feed" style="padding:1rem;">No tasks.</div>';
+            dashFeed.innerHTML = '<div class="empty-feed" style="padding: 1rem;">No tasks.</div>';
             return;
         }
         let html = "", dashHtml = "";
@@ -799,10 +820,11 @@ function initFeeds() {
                 <button class="btn-small-del" onclick="deleteTask('${docSnap.id}')"><i data-feather="trash-2" style="width:14px;"></i></button>
             </div>`;
             html += item;
-            if (!d.completed && dashHtml.split('task-item').length <= 4) dashHtml += item;
+            const miniItem = `<div class="mini-task"><input type="checkbox" ${d.completed ? "checked" : ""} disabled style="accent-color:#FF6B35;"> <span style="${d.completed ? 'text-decoration:line-through; opacity:0.5;':''}">${escapeHtml(d.text)}</span></div>`;
+            if (!d.completed && dashHtml.split('mini-task').length <= 4) dashHtml += miniItem;
         });
         feed.innerHTML = html;
-        dashFeed.innerHTML = dashHtml || '<div class="empty-feed" style="padding:1rem;">All tasks completed!</div>';
+        dashFeed.innerHTML = dashHtml || '<div class="empty-feed" style="padding: 1rem;">All tasks completed!</div>';
         if (typeof feather !== 'undefined') feather.replace();
     });
 
@@ -811,7 +833,7 @@ function initFeeds() {
         const dashFeed = document.getElementById("dashboard-cal-feed");
         if (snap.empty) {
             feed.innerHTML = '<div class="empty-feed">No upcoming events.</div>';
-            dashFeed.innerHTML = '<div class="empty-feed" style="padding:1rem;">No events.</div>';
+            dashFeed.innerHTML = '<div class="empty-feed" style="padding: 1rem;">No events.</div>';
             return;
         }
         let html = "", dashHtml = "";
@@ -823,27 +845,26 @@ function initFeeds() {
                 <button class="btn-small-del" onclick="deleteCalendarEvent('${docSnap.id}')"><i data-feather="trash-2" style="width:14px;"></i></button>
             </div>`;
             html += item;
-            if (dashHtml.split('calendar-item').length <= 3) dashHtml += item;
+            const miniItem = `<div class="mini-cal"><div class="mini-cal-date">${escapeHtml(d.date)}</div><div class="mini-cal-desc">${escapeHtml(d.description)}</div></div>`;
+            if (dashHtml.split('mini-cal').length <= 3) dashHtml += miniItem;
         });
         feed.innerHTML = html;
-        dashFeed.innerHTML = dashHtml || '<div class="empty-feed" style="padding:1rem;">No upcoming events.</div>';
+        dashFeed.innerHTML = dashHtml || '<div class="empty-feed" style="padding: 1rem;">No upcoming events.</div>';
         if (typeof feather !== 'undefined') feather.replace();
     });
 
     onSnapshot(query(collection(db, "resources")), (snap) => {
         const feed = document.getElementById("resource-feed");
         if (snap.empty) {
-            feed.innerHTML = '<div class="empty-feed" style="grid-column:1/-1;">No resources added.</div>';
+            feed.innerHTML = '<div class="empty-feed" style="grid-column: 1 / -1;">No resources added.</div>';
             return;
         }
         let html = "";
         snap.docs.forEach(docSnap => {
             const d = docSnap.data();
             html += `<a href="${escapeHtml(d.url)}" target="_blank" class="resource-card">
-                <div style="display:flex; justify-content:space-between; width:100%; align-items:flex-start;">
-                    <div class="resource-icon"><i data-feather="link"></i></div>
-                    <button class="btn-small-del" onclick="event.preventDefault(); deleteResource('${docSnap.id}')"><i data-feather="trash-2" style="width:14px;"></i></button>
-                </div>
+                <button class="btn-small-del resource-del" onclick="event.preventDefault(); deleteResource('${docSnap.id}')"><i data-feather="trash-2" style="width:14px;"></i></button>
+                <div class="resource-icon"><i data-feather="link"></i></div>
                 <h3 style="font-size:1rem; font-weight:600; color:#0f172a; margin-top:4px;">${escapeHtml(d.title)}</h3>
                 <p style="font-size:0.85rem; color:#64748b;">${escapeHtml(d.description || '')}</p>
             </a>`;
@@ -876,8 +897,8 @@ function initFeeds() {
             </div>`;
 
             adminHtml += `<div class="approved-item">
-                <span>${escapeHtml(email)}</span>
-                <button class="btn-small-del" onclick="removeApprovedEmail('${docSnap.id}')"><i data-feather="trash-2" style="width:14px;"></i></button>
+                <span>${escapeHtml(email)} <span class="owner-tag">Staff</span></span>
+                <button class="revoke-btn" onclick="removeApprovedEmail('${docSnap.id}')">Revoke</button>
             </div>`;
         });
         feed.innerHTML = dirHtml;
@@ -913,6 +934,11 @@ window.publishPost = async function() {
     } catch (err) {
         showToast("Error publishing post.");
     }
+};
+
+window.deletePost = async function(id) {
+    if (!confirm("Delete this announcement?")) return;
+    try { await deleteDoc(doc(db, "posts", id)); showToast("Deleted."); } catch(e){}
 };
 
 window.createTask = async function() {
